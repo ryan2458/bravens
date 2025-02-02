@@ -1,2 +1,8 @@
-﻿using var game = new bravens.Game1();
-game.Run();
+﻿internal class Program
+{
+    private static void Main(string[] args)
+    {
+        using var game = new bravens.GameCore();
+        game.Run();
+    }
+}

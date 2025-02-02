@@ -1,16 +1,21 @@
-﻿using Microsoft.Xna.Framework;
+﻿using bravens.Managers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace bravens
 {
-    public class Game1 : Game
+    public class GameCore : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        public Game1()
+        private GameObjectManager gameObjectManager;
+
+
+        public GameCore()
         {
+            gameObjectManager = new GameObjectManager();
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -35,7 +40,8 @@ namespace bravens
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            // call update on all managers (currently just GameObjectManager)
+            gameObjectManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -45,6 +51,8 @@ namespace bravens
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            gameObjectManager.Draw();
 
             base.Draw(gameTime);
         }
