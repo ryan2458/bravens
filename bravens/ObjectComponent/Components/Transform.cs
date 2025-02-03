@@ -12,21 +12,23 @@ namespace bravens.ObjectComponent.Components
     {
         private Matrix transform;
 
-        public Vector3 Position { get; set; }
+        public Vector2 Position { get; set; }
 
-        public Vector3 Scalar { get; set; }
+        public Vector2 Scalar { get; set; }
 
         public float Rotation { get; set; }
 
         public Transform(GameObject parent) : base(parent, nameof(Transform))
         {
             transform = Matrix.Identity;
+            Position = Vector2.Zero;
         }
 
-        public void Translate(Vector3 vector)
+        public void Translate(Vector2 vector)
         {
             Position += vector;
-            transform.Translation = new Vector3(Position.X, Position.Y, Position.Z);
+            // is a transform even necessary?
+            transform.Translation = new Vector3(Position.X, Position.Y, 0.0f);
         }
 
         public void Rotate(float angle)
@@ -34,7 +36,7 @@ namespace bravens.ObjectComponent.Components
             Rotation += angle;
         }
 
-        public void Scale(Vector3 scalar)
+        public void Scale(Vector2 scalar)
         {
             Scalar += scalar;
         }

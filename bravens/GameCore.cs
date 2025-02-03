@@ -1,4 +1,6 @@
 ﻿using bravens.Managers;
+using bravens.ObjectComponent.Components;
+using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,6 +26,10 @@ namespace bravens
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gameObjectManager.CreateGameObject(null, "Player");
+            GameObject player = gameObjectManager.FindGameObjectByName("Player");
+
+            player.AddComponent<PlayerControls>();
 
             base.Initialize();
         }
@@ -49,8 +55,7 @@ namespace bravens
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            _graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
             // TODO: Add your drawing code here
 
             gameObjectManager.Draw();

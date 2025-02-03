@@ -21,10 +21,15 @@ namespace bravens.Managers
             gameCore = core;
         }
 
-        public void CreateGameObject()
+        public void CreateGameObject(GameObject parent, string objectName = null)
         {
-            GameObject newGameObject = GameObjectFactory.CreateGameObject();
+            GameObject newGameObject = GameObjectFactory.CreateGameObject(gameCore, parent, objectName);
             GameObjects.Add(newGameObject);
+        }
+
+        public GameObject FindGameObjectByName(string objectName)
+        {
+            return GameObjects.Where(go => go.Name.Equals(objectName)).FirstOrDefault();
         }
 
         public override void Draw()

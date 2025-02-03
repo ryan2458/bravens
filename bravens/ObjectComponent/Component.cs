@@ -1,4 +1,5 @@
-﻿using System;
+﻿using bravens.ObjectComponent.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,11 @@ namespace bravens.ObjectComponent
             }
 
             Parent = parent;
+        }
+
+        public GameObject GetGameObject()
+        {
+            return Parent as GameObject;
         }
     }
 }

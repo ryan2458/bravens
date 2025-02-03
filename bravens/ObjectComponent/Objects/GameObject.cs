@@ -16,7 +16,7 @@ namespace bravens.ObjectComponent.Objects
 
         private List<Component> Components { get; } = [];
 
-        public GameObject(GameCore gameCore, GameObject parent = null) : base(GenerateDefaultName())
+        public GameObject(GameCore gameCore, GameObject parent = null, string name = null) : base(name ?? GenerateDefaultName())
         {
             Parent = parent;
         }
@@ -47,14 +47,20 @@ namespace bravens.ObjectComponent.Objects
             Components.Add(newComponent);
         }
 
+        public void AddComponent<T>(Func<T> ctor) where T : Component
+        {
+            T newComponent = ctor();
+            Components.Add(newComponent);
+        }
+
         /// <summary>
         /// Gets the first component on this game object that matches the type T.
         /// </summary>
         /// <typeparam name="T">The component type.</typeparam>
         /// <returns>The first component found that matches type T.</returns>
-        public Component GetComponent<T>()
+        public T GetComponent<T>() where T : Component
         {
-            return Components.Where(c => c.GetType() == typeof(T)).FirstOrDefault();
+            return (T)Components.Where(c => c.GetType() == typeof(T)).FirstOrDefault();
         }
 
         /// <summary>
