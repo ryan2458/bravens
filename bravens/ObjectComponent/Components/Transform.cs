@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using bravens.ObjectComponent.Objects;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace bravens.ObjectComponent.Components
 
         public float Rotation { get; set; }
 
-        public Transform(BaseObject parent) : base(parent, nameof(Transform))
+        public Transform(GameObject parent) : base(parent, nameof(Transform))
         {
             transform = Matrix.Identity;
         }

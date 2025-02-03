@@ -15,7 +15,7 @@ namespace bravens
 
         public GameCore()
         {
-            gameObjectManager = new GameObjectManager();
+            gameObjectManager = new GameObjectManager(this);
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -33,6 +33,7 @@ namespace bravens
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            
         }
 
         protected override void Update(GameTime gameTime)

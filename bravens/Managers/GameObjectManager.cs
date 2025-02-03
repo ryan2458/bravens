@@ -1,4 +1,5 @@
-﻿using bravens.ObjectComponent;
+﻿using bravens.Factories;
+using bravens.ObjectComponent;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using System;
@@ -11,10 +12,19 @@ namespace bravens.Managers
 {
     public class GameObjectManager : BaseObject
     {
+        private GameCore gameCore;
+
         public List<GameObject> GameObjects { get; } = [];
 
-        public GameObjectManager() : base(nameof(GameObjectManager))
+        public GameObjectManager(GameCore core) : base(nameof(GameObjectManager))
         {
+            gameCore = core;
+        }
+
+        public void CreateGameObject()
+        {
+            GameObject newGameObject = GameObjectFactory.CreateGameObject();
+            GameObjects.Add(newGameObject);
         }
 
         public override void Draw()
