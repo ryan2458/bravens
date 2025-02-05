@@ -19,7 +19,6 @@ namespace bravens.ObjectComponent.Components
         {
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
-            Console.WriteLine();
         }
 
         public override void Update(GameTime deltaTime)
