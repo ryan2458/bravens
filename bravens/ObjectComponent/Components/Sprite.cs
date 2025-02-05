@@ -26,7 +26,7 @@ namespace bravens.ObjectComponent.Components
             spriteBatch = parent.Core.SpriteBatch;
             content = parent.Core.Content;
             
-            SpriteTexture = content.Load<Texture2D>("ball");
+            SpriteTexture = content.Load<Texture2D>("balls");
         }
 
         public override void Update(GameTime deltaTime)

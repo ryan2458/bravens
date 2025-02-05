@@ -4,6 +4,9 @@ using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace bravens
 {
@@ -28,6 +31,7 @@ namespace bravens
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             CreatePlayer();
+            ///CreateEnemyTypeA();
 
             base.Initialize();
         }
@@ -60,6 +64,12 @@ namespace bravens
         {
             GameObject player = gameObjectManager.Create("Player");
             player.AddComponent<PlayerControls>();
+        }
+
+        private void CreateEnemyTypeA() 
+        {
+            GameObject enemyA = gameObjectManager.Create("EnemyA");
+            enemyA.AddComponent<EnemyABehaviour>();
         }
     }
 }
