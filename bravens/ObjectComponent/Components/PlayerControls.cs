@@ -11,9 +11,12 @@ namespace bravens.ObjectComponent.Components
 
         private readonly Sprite sprite;
 
-        private float movementSpeed = 200.0f;
+        private float currentSpeed;
+        private float normalSpeed = 400.0f;
+        private float slowedSpeed = 200.0f;
 
         private float rotationSpeed = 25.0f;
+
 
         public PlayerControls(GameObject parent) : base(parent, nameof(PlayerControls))
         {
@@ -23,31 +26,44 @@ namespace bravens.ObjectComponent.Components
 
         public override void Update(GameTime deltaTime)
         {
+            currentSpeed = Keyboard.GetState().IsKeyDown(Keys.Space) ? slowedSpeed : normalSpeed;
+
+            Vector2 movement = Vector2.Zero;
+
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                transform.Translate(new Vector2(0, -movementSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+                movement.Y -= 1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                transform.Translate(new Vector2(-movementSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds, 0));
+                movement.X -= 1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                transform.Translate(new Vector2(0, movementSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+                movement.Y += 1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                transform.Translate(new Vector2(movementSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds, 0));
+                movement.X += 1;
             }
+
+            if (movement != Vector2.Zero) 
+            {
+                movement.Normalize();
+            }
+
+            transform.Translate(movement * currentSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
+
             if (Keyboard.GetState().IsKeyDown(Keys.E))
             {
                 transform.Rotate(rotationSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
             }
-
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
                 transform.Rotate(-rotationSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
             }
+
+            
 
             ConfineToWindow();
         }
