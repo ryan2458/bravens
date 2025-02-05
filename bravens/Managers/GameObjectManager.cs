@@ -64,16 +64,18 @@ namespace bravens.Managers
             }
         }
 
-        public GameObject Create(string objectName = null, GameObject parent = null)
+        public GameObject Create(string objectName = null, GameObject parent = null, string texturePath = null)
         {
             if (GameObjects.Select(go => go.Name).Any(n => n.Equals(objectName)))
             {
                 throw new Exception("GameObject names must be unique.");
             }
 
+            if (texturePath == null) texturePath = "ball";
+
             GameObject newGameObject = new GameObject(gameCore, parent, objectName);
             newGameObject.AddComponent<Transform>();
-            newGameObject.AddComponent<Sprite>();
+            newGameObject.AddComponent<Sprite>(() => new Sprite(newGameObject, texturePath));
 
             GameObjects.Add(newGameObject);
             return newGameObject;

@@ -62,13 +62,13 @@ namespace bravens
 
         private void CreatePlayer()
         {
-            GameObject player = gameObjectManager.Create("Player");
+            GameObject player = gameObjectManager.Create("Player", null, "ball");
             player.AddComponent<PlayerControls>();
         }
 
         private void CreateEnemyTypeA() 
         {
-            GameObject enemyA = gameObjectManager.Create("EnemyA");
+            GameObject enemyA = gameObjectManager.Create("EnemyA", null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
         }
     }
