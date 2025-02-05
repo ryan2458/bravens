@@ -9,37 +9,32 @@ namespace bravens
 {
     public class GameCore : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-
         private GameObjectManager gameObjectManager;
 
+        public GraphicsDeviceManager GraphicsDeviceManager { get; }
+
+        public SpriteBatch SpriteBatch { get; protected set; }
 
         public GameCore()
         {
             gameObjectManager = new GameObjectManager(this);
-            _graphics = new GraphicsDeviceManager(this);
+            GraphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            gameObjectManager.CreateGameObject(null, "Player");
-            GameObject player = gameObjectManager.FindGameObjectByName("Player");
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            player.AddComponent<PlayerControls>();
+            CreatePlayer();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-            
         }
 
         protected override void Update(GameTime gameTime)
@@ -55,12 +50,16 @@ namespace bravens
 
         protected override void Draw(GameTime gameTime)
         {
-            _graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
-            // TODO: Add your drawing code here
-
+            GraphicsDeviceManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameObjectManager.Draw();
 
             base.Draw(gameTime);
+        }
+
+        private void CreatePlayer()
+        {
+            GameObject player = gameObjectManager.Create("Player");
+            player.AddComponent<PlayerControls>();
         }
     }
 }

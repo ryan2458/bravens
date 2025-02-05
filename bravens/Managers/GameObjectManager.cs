@@ -1,12 +1,10 @@
-﻿using bravens.Factories;
-using bravens.ObjectComponent;
+﻿using bravens.ObjectComponent;
+using bravens.ObjectComponent.Components;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bravens.Managers
 {
@@ -19,12 +17,6 @@ namespace bravens.Managers
         public GameObjectManager(GameCore core) : base(nameof(GameObjectManager))
         {
             gameCore = core;
-        }
-
-        public void CreateGameObject(GameObject parent, string objectName = null)
-        {
-            GameObject newGameObject = GameObjectFactory.CreateGameObject(gameCore, parent, objectName);
-            GameObjects.Add(newGameObject);
         }
 
         public GameObject FindGameObjectByName(string objectName)
@@ -70,6 +62,26 @@ namespace bravens.Managers
             {
                 GameObjects[i].Update(deltaTime);
             }
+        }
+
+        public GameObject Create(string objectName = null, GameObject parent = null)
+        {
+            if (GameObjects.Select(go => go.Name).Any(n => n.Equals(objectName)))
+            {
+                throw new Exception("GameObject names must be unique.");
+            }
+
+            GameObject newGameObject = new GameObject(gameCore, parent, objectName);
+            newGameObject.AddComponent<Transform>();
+            newGameObject.AddComponent<Sprite>();
+
+            GameObjects.Add(newGameObject);
+            return newGameObject;
+        }
+
+        public void Destroy(GameObject gameObject)
+        {
+            GameObjects.Remove(gameObject);
         }
     }
 }
