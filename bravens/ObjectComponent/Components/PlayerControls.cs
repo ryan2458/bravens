@@ -1,6 +1,7 @@
 ﻿using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace bravens.ObjectComponent.Components
 {
@@ -18,6 +19,7 @@ namespace bravens.ObjectComponent.Components
         {
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
+            Console.WriteLine();
         }
 
         public override void Update(GameTime deltaTime)
