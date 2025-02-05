@@ -66,7 +66,7 @@ namespace bravens
             player.AddComponent<PlayerControls>();
         }
 
-        private void CreateEnemyTypeA() 
+        private void CreateEnemyTypeA()
         {
             GameObject enemyA = gameObjectManager.Create("EnemyA", null, "square");
             enemyA.AddComponent<EnemyABehaviour>();

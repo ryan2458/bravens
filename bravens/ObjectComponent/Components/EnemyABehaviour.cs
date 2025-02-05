@@ -14,7 +14,7 @@ namespace bravens.ObjectComponent.Components
 
         private readonly Sprite sprite;
 
-        private float speed = 100.0f;
+        private float speed = 200.0f;
         private int xDirection = 1;
 
         public EnemyABehaviour(GameObject parent) : base(parent, nameof(EnemyABehaviour))
@@ -22,7 +22,7 @@ namespace bravens.ObjectComponent.Components
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
         }
-        
+
         public override void Update(GameTime deltaTime)
         {
             Vector2 movement = Vector2.Zero;
@@ -31,6 +31,7 @@ namespace bravens.ObjectComponent.Components
             transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
 
             SwitchDirections();
+            KeepFromTopOfScreen();
         }
 
         private void SwitchDirections()
@@ -44,6 +45,14 @@ namespace bravens.ObjectComponent.Components
             else if (transform.Position.X < sprite.SpriteTexture.Width / 2)
             {
                 xDirection = 1;
+            }
+        }
+
+        private void KeepFromTopOfScreen() 
+        {
+            if (transform.Position.Y < sprite.SpriteTexture.Height / 2)
+            {
+                transform.SetPositionY(sprite.SpriteTexture.Height / 2);
             }
         }
     }  
