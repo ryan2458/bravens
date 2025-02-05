@@ -31,7 +31,7 @@ namespace bravens
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             CreatePlayer();
-            ///CreateEnemyTypeA();
+            CreateEnemyTypeA();
 
             base.Initialize();
         }
