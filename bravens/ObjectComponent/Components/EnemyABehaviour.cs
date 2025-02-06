@@ -13,6 +13,7 @@ namespace bravens.ObjectComponent.Components
         private readonly Transform transform;
 
         private readonly Sprite sprite;
+        private readonly EnemyAGun gun;
 
         private float speed = 200.0f;
         private int xDirection = 1;
@@ -21,6 +22,7 @@ namespace bravens.ObjectComponent.Components
         {
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
+            gun = parent.GetComponent<EnemyAGun>();
         }
 
         public override void Update(GameTime deltaTime)
