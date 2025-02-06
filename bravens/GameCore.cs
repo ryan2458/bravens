@@ -12,7 +12,7 @@ namespace bravens
 {
     public class GameCore : Game
     {
-        private GameObjectManager gameObjectManager;
+        public GameObjectManager gameObjectManager { get; }
 
         public GraphicsDeviceManager GraphicsDeviceManager { get; }
 
@@ -70,6 +70,7 @@ namespace bravens
         {
             GameObject enemyA = gameObjectManager.Create("EnemyA", null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
+            enemyA.AddComponent<EnemyAGun>();
         }
     }
 }
