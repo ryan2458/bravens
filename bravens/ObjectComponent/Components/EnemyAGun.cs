@@ -15,6 +15,8 @@ namespace bravens.ObjectComponent.Components
         private GameObjectManager GameObjectManager { get; }
 
         private double timeBetweenProjectileInSeconds = 1.0;
+        private double currentTimeBetweenProjectileInSeconds = 0.0f;
+        private int fasterFireIndex = 5; // Every n projectiles will come out a little quicker. Ex. 5, every fifth bullet will come out half a cooldown faster
 
         private int projectileCount = 0;
         private double accumulatedTime = 0.0;
@@ -26,9 +28,12 @@ namespace bravens.ObjectComponent.Components
 
         public override void Update(GameTime deltaTime)
         {
-            if (accumulatedTime + deltaTime.ElapsedGameTime.TotalSeconds >= timeBetweenProjectileInSeconds)
+            if (accumulatedTime + deltaTime.ElapsedGameTime.TotalSeconds >= currentTimeBetweenProjectileInSeconds)
             {
                 CreateAndFireProjectile();
+
+                currentTimeBetweenProjectileInSeconds = projectileCount % fasterFireIndex == 0 ? timeBetweenProjectileInSeconds / 2 : timeBetweenProjectileInSeconds;
+                
                 accumulatedTime = 0f;
             }
             else 
@@ -36,17 +41,17 @@ namespace bravens.ObjectComponent.Components
                 accumulatedTime += deltaTime.ElapsedGameTime.TotalSeconds;
             }
 
-            base.Update(deltaTime);
+            //base.Update(deltaTime);
         }
 
         private void CreateAndFireProjectile() 
         {
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
             GameObject projectile = GameObjectManager.Create($"EnemyAProjectile{projectileCount}" , GetGameObject(), "enemyAProjectile");
-            projectileCount++;
             projectile.AddComponent<EnemyAProjectile>();
             Transform transform = projectile.GetComponent<Transform>();
             transform.Translate(position);
+            projectileCount++;
         }
     }
 }
