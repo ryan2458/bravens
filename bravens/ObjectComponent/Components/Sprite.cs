@@ -21,12 +21,12 @@ namespace bravens.ObjectComponent.Components
 
         public float Rotation { get; set; }
 
-        public Sprite(GameObject parent) : base(parent, nameof(Sprite))
+        public Sprite(GameObject parent, string texturePath) : base(parent, nameof(Sprite))
         {
             spriteBatch = parent.Core.SpriteBatch;
             content = parent.Core.Content;
             
-            SpriteTexture = content.Load<Texture2D>("ball");
+            SpriteTexture = content.Load<Texture2D>(texturePath);
         }
 
         public override void Update(GameTime deltaTime)
