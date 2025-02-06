@@ -40,8 +40,6 @@ namespace bravens.ObjectComponent.Components
             {
                 accumulatedTime += deltaTime.ElapsedGameTime.TotalSeconds;
             }
-
-            //base.Update(deltaTime);
         }
 
         private void CreateAndFireProjectile() 
