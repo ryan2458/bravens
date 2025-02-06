@@ -42,7 +42,7 @@ namespace bravens.ObjectComponent.Components
         private void CreateAndFireProjectile() 
         {
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
-            GameObject projectile = GameObjectManager.Create($"EnemyAProjectile{projectileCount}" , GetGameObject(), "ball");
+            GameObject projectile = GameObjectManager.Create($"EnemyAProjectile{projectileCount}" , GetGameObject(), "enemyAProjectile");
             projectileCount++;
             projectile.AddComponent<EnemyAProjectile>();
             Transform transform = projectile.GetComponent<Transform>();
