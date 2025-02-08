@@ -76,8 +76,9 @@ namespace bravens
 
         private void CreateEnemyTypeB()
         {
-            GameObject enemyB = gameObjectManager.Create("EnemyB", null, "square");
+            GameObject enemyB = gameObjectManager.Create("EnemyB", null, "square_2");
             enemyB.AddComponent<EnemyBBehaviour>();
+            enemyB.AddComponent<EnemyBGun>();
         }
     }
 }
