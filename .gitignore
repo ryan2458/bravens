@@ -6,6 +6,8 @@
 # Idea stuff
 .idea
 
+.config/dotnet-tools.json
+
 
 # User-specific files
 *.rsuser
