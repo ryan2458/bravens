@@ -9,20 +9,15 @@ using System.Threading.Tasks;
 
 namespace bravens.ObjectComponent.Components
 {
-    public class EnemyBProjectile : Component
+    public class Projectile : Component
     {
         private GameObjectManager GameObjectManager { get; }
 
-        private readonly Transform transform;
-        private readonly Sprite sprite;
+        private float speed = 100.0f;
 
-        private float speed = 30.0f;
-
-        public EnemyBProjectile(GameObject parent) : base(parent, nameof(EnemyBProjectile))
+        public Projectile(GameObject parent) : base(parent, nameof(Projectile))
         {
             GameObjectManager = parent.Core.GameObjectManager;
-            transform = parent.GetComponent<Transform>();
-            sprite = parent.GetComponent<Sprite>();
         }
 
         public override void Update(GameTime deltaTime)
@@ -31,27 +26,19 @@ namespace bravens.ObjectComponent.Components
 
             Transform transform = projectileGameObject.GetComponent<Transform>();
 
-            transform.Translate(new Vector2(0.0f, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+            transform.Translate(new Vector2(0.0f, -speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+
 
             if (!IsVisible())
             {
                 GameObjectManager.Destroy(GetGameObject());
             }
-
-            speed = speed + 5;
         }
 
         private bool IsVisible()
         {
-            GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
-
-            if (transform.Position.Y > graphics.PreferredBackBufferHeight + sprite.SpriteTexture.Height)
-            {
-                return false;
-            }
-
+            // TODO: Check if we're in screen bounds.
             return true;
         }
-
     }
 }
