@@ -43,12 +43,7 @@ namespace bravens.ObjectComponent.Components
         {
             GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
 
-            if (transform.Position.Y > graphics.PreferredBackBufferHeight + sprite.SpriteTexture.Height)
-            {
-                return false;
-            }
-
-            return true;
+            return !(transform.Position.Y > graphics.PreferredBackBufferHeight + sprite.SpriteTexture.Height);
         }
 
     }
