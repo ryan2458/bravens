@@ -31,7 +31,7 @@ namespace bravens
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             CreatePlayer();
-            CreateEnemyTypeA();
+            CreateBoss();
 
             base.Initialize();
         }
@@ -71,6 +71,13 @@ namespace bravens
             GameObject enemyA = gameObjectManager.Create("EnemyA", null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
+        }
+
+        private void CreateBoss()
+        {
+            GameObject boss = gameObjectManager.Create("Boss", null, "boss");
+            boss.AddComponent<BossBehavior>();
+            boss.AddComponent<BossGun>();
         }
     }
 }
