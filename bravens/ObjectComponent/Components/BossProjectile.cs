@@ -18,7 +18,7 @@ namespace bravens.ObjectComponent.Components
 
         private float speed = 300.0f + new Random().Next(-5, 3);
 
-        private readonly float yOffset = new Random().Next(-2, 3);
+        private readonly float yOffset = GetRandomYOffset();
 
         public BossProjectile(GameObject parent) : base(parent, nameof(BossProjectile))
         {
@@ -55,5 +55,16 @@ namespace bravens.ObjectComponent.Components
                    !(transform.Position.X < sprite.SpriteTexture.Width);
         }
 
+        /// <summary>
+        ///  Generate a random number to indicate the angle which
+        /// will be between -2.5 and 2.5.
+        /// </summary>
+        /// <returns>Random yOffset for current projectile.</returns>
+        private static float GetRandomYOffset()
+        {
+            var random = new Random();
+
+            return (float)(random.NextDouble() * 5 - 2.5);
+        }
     }
 }
