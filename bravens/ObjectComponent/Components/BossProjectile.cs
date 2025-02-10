@@ -41,11 +41,18 @@ namespace bravens.ObjectComponent.Components
             }
         }
 
+        /// <summary>
+        /// Checks if the projectile is visible on the screen. This will check for all bounds.
+        /// </summary>
+        /// <returns>Indication if the projectile is visible.</returns>
         private bool IsVisible()
         {
             GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
 
-            return !(transform.Position.Y > graphics.PreferredBackBufferHeight + sprite.SpriteTexture.Height);
+            return !(transform.Position.Y > graphics.PreferredBackBufferHeight + sprite.SpriteTexture.Height) &&
+                   !(transform.Position.Y < 0) &&
+                   !(transform.Position.X > graphics.PreferredBackBufferWidth) &&
+                   !(transform.Position.X < sprite.SpriteTexture.Width);
         }
 
     }
