@@ -23,6 +23,7 @@ namespace bravens.ObjectComponent.Components
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
             gun = parent.GetComponent<BossGun>();
+            KeepFromTopOfScreen();
         }
 
         public override void Update(GameTime deltaTime)
@@ -33,7 +34,6 @@ namespace bravens.ObjectComponent.Components
             transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
 
             SwitchDirectionsIfNeeded();
-            KeepFromTopOfScreen();
         }
 
         private void SwitchDirectionsIfNeeded()
