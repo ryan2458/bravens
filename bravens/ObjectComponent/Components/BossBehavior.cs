@@ -10,6 +10,8 @@ namespace bravens.ObjectComponent.Components
 {
     public class BossBehavior : Component
     {
+        private readonly Random _random = new();
+        
         private readonly Transform transform;
 
         private readonly Sprite sprite;
@@ -42,11 +44,13 @@ namespace bravens.ObjectComponent.Components
         {
             GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
 
-            if (transform.Position.X > graphics.PreferredBackBufferWidth - sprite.SpriteTexture.Width / 2)
+            var randMax = _random.Next(graphics.PreferredBackBufferWidth / 3);
+
+            if (transform.Position.X > graphics.PreferredBackBufferWidth - sprite.SpriteTexture.Width / 2 - randMax)
             {
                 xDirection = -1;
             }
-            else if (transform.Position.X < sprite.SpriteTexture.Width / 2)
+            else if (transform.Position.X < sprite.SpriteTexture.Width / 2 + randMax)
             {
                 xDirection = 1;
             }
