@@ -25,6 +25,11 @@ namespace bravens.ObjectComponent.Components
         public float Rotation { get; private set; }
 
         /// <summary>
+        /// Gets the transform's current velocity.
+        /// </summary>
+        public Vector2 Velocity { get; private set; }
+
+        /// <summary>
         /// Initializes a new <see cref="Transform"/> component.
         /// </summary>
         /// <param name="parent">The game object this component is attached to.</param>

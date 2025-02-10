@@ -33,6 +33,7 @@ namespace bravens
             CreatePlayer();
             CreateEnemyTypeA();
             CreateEnemyTypeB();
+            CreateBoss();
 
             base.Initialize();
         }
@@ -72,6 +73,13 @@ namespace bravens
             GameObject enemyA = gameObjectManager.Create("EnemyA", null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
+        }
+
+        private void CreateBoss()
+        {
+            GameObject boss = gameObjectManager.Create("Boss", null, "boss");
+            boss.AddComponent<BossBehavior>();
+            boss.AddComponent<BossGun>();
         }
 
         private void CreateEnemyTypeB()
