@@ -24,6 +24,8 @@ namespace bravens.ObjectComponent.Components
             sprite = parent.GetComponent<Sprite>();
             gun = parent.GetComponent<BossGun>();
             KeepFromTopOfScreen();
+
+            CenterBoss();
         }
 
         public override void Update(GameTime deltaTime)
@@ -31,7 +33,8 @@ namespace bravens.ObjectComponent.Components
             Vector2 movement = Vector2.Zero;
             movement.X = xDirection;
 
-            transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
+            // Disabled temporarily to work on projectiles.
+            // transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
 
             SwitchDirectionsIfNeeded();
         }
@@ -56,6 +59,16 @@ namespace bravens.ObjectComponent.Components
             {
                 transform.SetPositionY(sprite.SpriteTexture.Height / 2);
             }
+        }
+
+        /// <summary>
+        /// Center the boss on the screen.
+        /// </summary>
+        private void CenterBoss()
+        {
+            GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
+            
+            transform.SetPositionX(graphics.PreferredBackBufferWidth / 2);
         }
     }
 }
