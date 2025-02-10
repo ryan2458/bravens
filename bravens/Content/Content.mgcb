@@ -61,7 +61,7 @@
 /processorParam:TextureFormat=Color
 /build:enemyAProjectile.png
 
-#begin square _2.png
+#begin square_2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -71,7 +71,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:square _2.png
+/build:square_2.png
 
 #begin square.png
 /importer:TextureImporter
