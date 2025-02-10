@@ -32,11 +32,11 @@ namespace bravens.ObjectComponent.Components
 
             transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
 
-            SwitchDirections();
+            SwitchDirectionsIfNeeded();
             KeepFromTopOfScreen();
         }
 
-        private void SwitchDirections()
+        private void SwitchDirectionsIfNeeded()
         {
             GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
 
