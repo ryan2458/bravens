@@ -23,8 +23,8 @@ namespace bravens.ObjectComponent.Components
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
             gun = parent.GetComponent<BossGun>();
+            
             KeepFromTopOfScreen();
-
             CenterBoss();
         }
 
@@ -33,8 +33,7 @@ namespace bravens.ObjectComponent.Components
             Vector2 movement = Vector2.Zero;
             movement.X = xDirection;
 
-            // Disabled temporarily to work on projectiles.
-            // transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
+            transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
 
             SwitchDirectionsIfNeeded();
         }
