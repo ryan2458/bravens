@@ -23,7 +23,7 @@ namespace bravens.ObjectComponent.Components
 
         public EnemyAGun(GameObject parent) : base(parent, nameof(EnemyAGun)) 
         {
-            GameObjectManager = parent.Core.gameObjectManager;
+            GameObjectManager = parent.Core.GameObjectManager;
         }
 
         public override void Update(GameTime deltaTime)
