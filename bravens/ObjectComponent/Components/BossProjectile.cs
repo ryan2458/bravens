@@ -18,6 +18,8 @@ namespace bravens.ObjectComponent.Components
 
         private float speed = 300.0f;
 
+        private readonly float yOffset = new Random().Next(-2, 3);
+
         public BossProjectile(GameObject parent) : base(parent, nameof(BossProjectile))
         {
             GameObjectManager = parent.Core.gameObjectManager;
@@ -31,7 +33,7 @@ namespace bravens.ObjectComponent.Components
 
             Transform transform = projectileGameObject.GetComponent<Transform>();
 
-            transform.Translate(new Vector2(0.0f, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+            transform.Translate(new Vector2(yOffset, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
 
             if (!IsVisible())
             {
