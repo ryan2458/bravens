@@ -18,6 +18,8 @@ namespace bravens
 
         public SpriteBatch SpriteBatch { get; protected set; }
 
+        public TimeSpan GlobalTimer { get; protected set; }
+
         public GameCore()
         {
             GameObjectManager = new GameObjectManager(this);
@@ -31,6 +33,7 @@ namespace bravens
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             CreatePlayer();
+
             CreateEnemyTypeA();
             CreateEnemyTypeB();
             CreateBoss();
@@ -50,6 +53,8 @@ namespace bravens
 
             // call update on all managers (currently just GameObjectManager)
             GameObjectManager.Update(gameTime);
+
+            GlobalTimer += gameTime.ElapsedGameTime;
 
             base.Update(gameTime);
         }
@@ -71,7 +76,7 @@ namespace bravens
 
         private void CreateEnemyTypeA()
         {
-            GameObject enemyA = GameObjectManager.Create("EnemyA", null, "square");
+            GameObject enemyA = GameObjectManager.Create($"EnemyA", null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
         }
