@@ -66,7 +66,7 @@ namespace bravens.Managers
 
         public GameObject Create(string objectName = null, GameObject parent = null, string texturePath = null)
         {
-            if (objectName == null && GameObjects.Select(go => go.Name).Any(n => n.Equals(objectName)))
+            if (GameObjects.Select(go => go.Name).Any(n => n.Equals(objectName)))
             {
                 throw new Exception("GameObject names must be unique.");
             }
