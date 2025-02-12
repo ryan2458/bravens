@@ -12,6 +12,7 @@ namespace bravens.Managers
         private TimeSpan globalTimer;
         private int globalTimerInSeconds;
 
+        // Spawn times need to be in ascending order and there cannot be any repeats. If you have [5,5], it won't ever read the second 5.
         private List<int> _enemyASpawnTimes = [5,7,10,15,18];
         private int _enemyASpawnIndex = 0;
 
