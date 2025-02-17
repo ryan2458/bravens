@@ -14,6 +14,8 @@ namespace bravens
     {
         public GameObjectManager GameObjectManager { get; }
 
+        public WaveManager WaveManager { get; }
+
         public GraphicsDeviceManager GraphicsDeviceManager { get; }
 
         public SpriteBatch SpriteBatch { get; protected set; }
@@ -22,6 +24,7 @@ namespace bravens
         {
             GameObjectManager = new GameObjectManager(this);
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
+            WaveManager = new WaveManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -31,9 +34,6 @@ namespace bravens
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             CreatePlayer();
-            CreateEnemyTypeA();
-            CreateEnemyTypeB();
-            CreateBoss();
 
             base.Initialize();
         }
@@ -50,6 +50,8 @@ namespace bravens
 
             // call update on all managers (currently just GameObjectManager)
             GameObjectManager.Update(gameTime);
+
+            WaveManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -69,23 +71,23 @@ namespace bravens
             player.AddComponent<PlayerGun>();
         }
 
-        private void CreateEnemyTypeA()
+        public void CreateEnemyTypeA()
         {
-            GameObject enemyA = GameObjectManager.Create("EnemyA", null, "square");
+            GameObject enemyA = GameObjectManager.Create(null, null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
         }
 
-        private void CreateBoss()
+        public void CreateBoss()
         {
-            GameObject boss = GameObjectManager.Create("Boss", null, "boss");
+            GameObject boss = GameObjectManager.Create(null, null, "boss");
             boss.AddComponent<BossBehavior>();
             boss.AddComponent<BossGun>();
         }
 
-        private void CreateEnemyTypeB()
+        public void CreateEnemyTypeB()
         {
-            GameObject enemyB = GameObjectManager.Create("EnemyB", null, "square_2");
+            GameObject enemyB = GameObjectManager.Create(null, null, "square_2");
             enemyB.AddComponent<EnemyBBehaviour>();
             enemyB.AddComponent<EnemyBGun>();
         }
