@@ -85,6 +85,20 @@ namespace bravens
             boss.AddComponent<BossGun>();
         }
 
+        public void CreateMidBoss()
+        {
+            GameObject midboss = GameObjectManager.Create(null, null, "midboss");
+            midboss.AddComponent<MidBossBehavior>();
+            midboss.AddComponent<MidBossGun>();
+        }
+
+        public void CreateFinalBoss()
+        {
+            GameObject finalboss = GameObjectManager.Create(null, null, "finalboss");
+            finalboss.AddComponent<FinalBossBehavior>();
+            finalboss.AddComponent<FinalBossGun>();
+        }
+
         public void CreateEnemyTypeB()
         {
             GameObject enemyB = GameObjectManager.Create(null, null, "square_2");
