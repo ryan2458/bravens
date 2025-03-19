@@ -83,6 +83,7 @@ namespace bravens.Managers
 
         public void Destroy(GameObject gameObject)
         {
+            gameObject.Unload();
             GameObjects.Remove(gameObject);
         }
     }

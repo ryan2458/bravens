@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using bravens.ObjectComponent.Components;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,14 @@ namespace bravens.ObjectComponent.Objects
             Core = gameCore;
         }
 
+        public override void Initialize()
+        {
+            for (int i = 0; i < Components.Count; ++i)
+            {
+                Components[i].Initialize();
+            }
+        }
+
         /// <summary>
         /// Draws all components attached to this game object.
         /// </summary>
@@ -64,6 +73,14 @@ namespace bravens.ObjectComponent.Objects
             for (int i = 0; i < Components.Count; ++i)
             {
                 Components[i].Update(deltaTime);
+            }
+        }
+
+        public override void Unload()
+        {
+            for (int i = 0; i < Components.Count; ++i)
+            {
+                Components[i].Unload();
             }
         }
 

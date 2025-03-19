@@ -1,4 +1,5 @@
 ﻿using bravens.Managers;
+using bravens.ObjectComponent.Enums;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using System;
@@ -47,6 +48,9 @@ namespace bravens.ObjectComponent.Components
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
             GameObject projectile = GameObjectManager.Create($"EnemyAProjectile{projectileCount}" , GetGameObject(), "enemyAProjectile");
             projectile.AddComponent<EnemyAProjectile>();
+            projectile.AddComponent<Collider>();
+
+            projectile.GetComponent<Collider>().Tag = CollisionTag.Enemy;
             Transform transform = projectile.GetComponent<Transform>();
             transform.Translate(position);
             projectileCount++;
