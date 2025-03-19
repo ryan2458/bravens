@@ -22,7 +22,7 @@ namespace bravens.ObjectComponent.Components
 
         public BossProjectile(GameObject parent) : base(parent, nameof(BossProjectile))
         {
-            GameObjectManager = parent.Core.gameObjectManager;
+            GameObjectManager = parent.Core.GameObjectManager;
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
         }

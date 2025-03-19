@@ -57,6 +57,12 @@ namespace bravens.ObjectComponent.Components
             Position = new Vector2(Position.X, yPos);
         }
 
+        public void SetPositionXY(float xPos, float yPos)
+        {
+            SetPositionX(xPos);
+            SetPositionY(yPos);
+        }
+
         /// <summary>
         /// Rotates this transform.
         /// </summary>

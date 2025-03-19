@@ -20,7 +20,7 @@ namespace bravens.ObjectComponent.Components
 
         public EnemyBProjectile(GameObject parent) : base(parent, nameof(EnemyBProjectile))
         {
-            GameObjectManager = parent.Core.gameObjectManager;
+            GameObjectManager = parent.Core.GameObjectManager;
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
         }

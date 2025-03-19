@@ -21,11 +21,12 @@ namespace bravens.ObjectComponent.Components
 
         public PlayerGun(GameObject parent) : base(parent, nameof(PlayerGun))
         {
-            GameObjectManager = parent.Core.gameObjectManager;
+            GameObjectManager = parent.Core.GameObjectManager;
         }
 
         public override void Update(GameTime deltaTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.F))
             double currentTime = deltaTime.TotalGameTime.TotalMilliseconds;
 
             if (Keyboard.GetState().IsKeyDown(Keys.F) || Keyboard.GetState().IsKeyDown(Keys.Space)

@@ -14,20 +14,19 @@ namespace bravens.Managers
         private int globalTimerInSeconds;
 
         // Spawn times need to be in ascending order and there cannot be any repeats. If you have [5,5], it won't ever read the second 5.
-
-        private List<int> _enemyASpawnTimes = [99];
+        private List<int> _enemyASpawnTimes = [5,7,10,15,18];
         private int _enemyASpawnIndex = 0;
 
-        private List<int> _enemyBSpawnTimes = [];
+        private List<int> _enemyBSpawnTimes = [13, 19];
         private int _enemyBSpawnIndex = 0;
 
 
-        private List<int> _bossSpawnTimes = [];
+        private List<int> _bossSpawnTimes = [25];
         private int _bossSpawnIndex = 0;
 
 
         private int _timeLastCheckedInSeconds = 0;
-        
+
         private double lastSpawnTime = 0; // for using 1, 2, 3 to debug enemies
         private double spawnCooldown = 500; // Delay between shots in milliseconds
 
@@ -44,7 +43,7 @@ namespace bravens.Managers
         {
             globalTimer += deltaTime.ElapsedGameTime;
             globalTimerInSeconds = (int)globalTimer.TotalSeconds;
-
+            
             double currentTime = deltaTime.TotalGameTime.TotalMilliseconds;
 
             // This is to prevent spawning multiple enemies of the same type at once
@@ -71,13 +70,14 @@ namespace bravens.Managers
                 lastSpawnTime = currentTime;
             }
 
+                _timeLastCheckedInSeconds = globalTimerInSeconds;
             if (Keyboard.GetState().IsKeyDown(Keys.D3) && currentTime - lastSpawnTime >= spawnCooldown)
             {
                 gameCore.CreateBoss();
                 lastSpawnTime = currentTime;
             }
 
-
+            
         }
         public override void Draw() { }
 

@@ -12,7 +12,9 @@ namespace bravens
 {
     public class GameCore : Game
     {
-        public GameObjectManager gameObjectManager { get; }
+        public GameObjectManager GameObjectManager { get; }
+
+        public WaveManager WaveManager { get; }
 
         public GraphicsDeviceManager GraphicsDeviceManager { get; }
 
@@ -20,8 +22,9 @@ namespace bravens
 
         public GameCore()
         {
-            gameObjectManager = new GameObjectManager(this);
+            GameObjectManager = new GameObjectManager(this);
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
+            WaveManager = new WaveManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
@@ -34,10 +37,9 @@ namespace bravens
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
+            GameObjectManager.Initialize();
+
             CreatePlayer();
-            CreateEnemyTypeA();
-            CreateEnemyTypeB();
-            CreateBoss();
 
             base.Initialize();
         }
@@ -53,7 +55,10 @@ namespace bravens
                 Exit();
 
             // call update on all managers (currently just GameObjectManager)
-            gameObjectManager.Update(gameTime);
+            GameObjectManager.Update(gameTime);
+
+            WaveManager.Update(gameTime);
+            CollisionManager.CheckCollisions();
 
             base.Update(gameTime);
         }
@@ -61,34 +66,38 @@ namespace bravens
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDeviceManager.GraphicsDevice.Clear(Color.CornflowerBlue);
-            gameObjectManager.Draw();
+            GameObjectManager.Draw();
 
             base.Draw(gameTime);
         }
 
         private void CreatePlayer()
         {
-            GameObject player = gameObjectManager.Create("Player", null, "ball");
+            GameObject player = GameObjectManager.Create("Player", null);
             player.AddComponent<PlayerControls>();
+            player.AddComponent<PlayerGun>();
+            player.AddComponent<Collider>();
+
+            player.GetComponent<Collider>().Tag = ObjectComponent.Enums.CollisionTag.Player;
         }
 
-        private void CreateEnemyTypeA()
+        public void CreateEnemyTypeA()
         {
-            GameObject enemyA = gameObjectManager.Create("EnemyA", null, "square");
+            GameObject enemyA = GameObjectManager.Create(null, null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
         }
 
-        private void CreateBoss()
+        public void CreateBoss()
         {
-            GameObject boss = gameObjectManager.Create("Boss", null, "boss");
+            GameObject boss = GameObjectManager.Create(null, null, "boss");
             boss.AddComponent<BossBehavior>();
             boss.AddComponent<BossGun>();
         }
 
-        private void CreateEnemyTypeB()
+        public void CreateEnemyTypeB()
         {
-            GameObject enemyB = gameObjectManager.Create("EnemyB", null, "square_2");
+            GameObject enemyB = GameObjectManager.Create(null, null, "square_2");
             enemyB.AddComponent<EnemyBBehaviour>();
             enemyB.AddComponent<EnemyBGun>();
         }

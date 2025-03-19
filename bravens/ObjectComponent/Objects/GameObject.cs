@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using bravens.ObjectComponent.Components;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,14 @@ namespace bravens.ObjectComponent.Objects
             Core = gameCore;
         }
 
+        public override void Initialize()
+        {
+            for (int i = 0; i < Components.Count; ++i)
+            {
+                Components[i].Initialize();
+            }
+        }
+
         /// <summary>
         /// Draws all components attached to this game object.
         /// </summary>
@@ -67,14 +76,23 @@ namespace bravens.ObjectComponent.Objects
             }
         }
 
+        public override void Unload()
+        {
+            for (int i = 0; i < Components.Count; ++i)
+            {
+                Components[i].Unload();
+            }
+        }
+
         /// <summary>
         /// Adds a component of type T to this game object.
         /// </summary>
         /// <typeparam name="T">The type of the component we're adding.</typeparam>
-        public void AddComponent<T>() where T : Component
+        public T AddComponent<T>() where T : Component
         {
             T newComponent = (T)Activator.CreateInstance(typeof(T), this);
             Components.Add(newComponent);
+            return newComponent;
         }
 
         /// <summary>
@@ -82,10 +100,11 @@ namespace bravens.ObjectComponent.Objects
         /// </summary>
         /// <typeparam name="T">The type of component we're adding.</typeparam>
         /// <param name="factory"></param>
-        public void AddComponent<T>(Func<T> factory) where T : Component
+        public T AddComponent<T>(Func<T> factory) where T : Component
         {
             T newComponent = factory();
             Components.Add(newComponent);
+            return newComponent;
         }
 
         /// <summary>
