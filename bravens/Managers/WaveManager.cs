@@ -58,20 +58,20 @@ namespace bravens.Managers
                 _timeLastCheckedInSeconds = globalTimerInSeconds;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D1) && currentTime - lastSpawnTime >= spawnCooldown)
+            if (Keyboard.GetState().IsKeyDown(Keys.F1) && currentTime - lastSpawnTime >= spawnCooldown)
             {
                 gameCore.CreateEnemyTypeA();
                 lastSpawnTime = currentTime;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D2) && currentTime - lastSpawnTime >= spawnCooldown)
+            if (Keyboard.GetState().IsKeyDown(Keys.F2) && currentTime - lastSpawnTime >= spawnCooldown)
             {
                 gameCore.CreateEnemyTypeB();
                 lastSpawnTime = currentTime;
             }
 
                 _timeLastCheckedInSeconds = globalTimerInSeconds;
-            if (Keyboard.GetState().IsKeyDown(Keys.D3) && currentTime - lastSpawnTime >= spawnCooldown)
+            if (Keyboard.GetState().IsKeyDown(Keys.F3) && currentTime - lastSpawnTime >= spawnCooldown)
             {
                 gameCore.CreateBoss();
                 lastSpawnTime = currentTime;
