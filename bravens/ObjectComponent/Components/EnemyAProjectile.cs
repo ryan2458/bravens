@@ -1,4 +1,6 @@
 ﻿using bravens.Managers;
+using bravens.ObjectComponent.Enums;
+using bravens.ObjectComponent.Interfaces;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using System;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace bravens.ObjectComponent.Components
 {
-    public class EnemyAProjectile : Component
+    public class EnemyAProjectile : Component, ICollisionObserver
     {
         private GameObjectManager GameObjectManager { get; }
 
@@ -51,5 +53,14 @@ namespace bravens.ObjectComponent.Components
             return true;
         }
 
+        public void OnCollisionEnter(Collider collider)
+        {
+            if (collider.Tag == CollisionTag.Player)
+            {
+                GameObjectManager.Destroy(collider.GetGameObject());
+            }
+
+            GameObjectManager.Destroy(GetGameObject());
+        }
     }
 }

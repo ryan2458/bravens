@@ -33,6 +33,8 @@ namespace bravens
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
+            GameObjectManager.Initialize();
+
             CreatePlayer();
 
             base.Initialize();
@@ -52,6 +54,7 @@ namespace bravens
             GameObjectManager.Update(gameTime);
 
             WaveManager.Update(gameTime);
+            CollisionManager.CheckCollisions();
 
             base.Update(gameTime);
         }
@@ -69,6 +72,9 @@ namespace bravens
             GameObject player = GameObjectManager.Create("Player", null);
             player.AddComponent<PlayerControls>();
             player.AddComponent<PlayerGun>();
+            player.AddComponent<Collider>();
+
+            player.GetComponent<Collider>().Tag = ObjectComponent.Enums.CollisionTag.Player;
         }
 
         public void CreateEnemyTypeA()
