@@ -14,12 +14,16 @@ namespace bravens.ObjectComponent.Components
     {
         private GameObjectManager GameObjectManager { get; }
 
-        private double timeBetweenProjectileInSeconds = 0.5;
-        private double currentTimeBetweenProjectileInSeconds = 0.0f;
-        private int fasterFireIndex = 1; // Every n projectiles will come out a little quicker. Ex. 5, every fifth bullet will come out half a cooldown faster
+        // Burst firing variables
+        private int burstSize = 10; // Number of shots in a burst
+        private double timeBetweenShotsInBurst = 0.1; // Delay between shots inside a burst
+        private double timeBetweenBursts = 3; // Delay before starting a new burst
+
+        private double accumulatedTime = 0.0;
+        private int shotsFiredInBurst = 0;
+        private bool isBurstFiring = false;
 
         private int projectileCount = 0;
-        private double accumulatedTime = 0.0;
 
         public BossGun(GameObject parent) : base(parent, nameof(BossGun))
         {
@@ -28,17 +32,31 @@ namespace bravens.ObjectComponent.Components
 
         public override void Update(GameTime deltaTime)
         {
-            if (accumulatedTime + deltaTime.ElapsedGameTime.TotalSeconds >= currentTimeBetweenProjectileInSeconds)
+            accumulatedTime += deltaTime.ElapsedGameTime.TotalSeconds;
+
+            if (isBurstFiring)
             {
-                CreateAndFireProjectile();
+                if (shotsFiredInBurst < burstSize && accumulatedTime >= timeBetweenShotsInBurst)
+                {
+                    CreateAndFireProjectile();
+                    shotsFiredInBurst++;
+                    accumulatedTime = 0;
+                }
 
-                currentTimeBetweenProjectileInSeconds = projectileCount % fasterFireIndex == 0 ? timeBetweenProjectileInSeconds / 2 : timeBetweenProjectileInSeconds;
-
-                accumulatedTime = 0f;
+                if (shotsFiredInBurst >= burstSize)
+                {
+                    isBurstFiring = false;
+                    shotsFiredInBurst = 0;
+                    accumulatedTime = 0;
+                }
             }
             else
             {
-                accumulatedTime += deltaTime.ElapsedGameTime.TotalSeconds;
+                if (accumulatedTime >= timeBetweenBursts)
+                {
+                    isBurstFiring = true;
+                    accumulatedTime = 0;
+                }
             }
         }
 

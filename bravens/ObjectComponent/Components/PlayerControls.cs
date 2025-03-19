@@ -26,7 +26,7 @@ namespace bravens.ObjectComponent.Components
 
         public override void Update(GameTime deltaTime)
         {
-            currentSpeed = Keyboard.GetState().IsKeyDown(Keys.Space) ? slowedSpeed : normalSpeed;
+            currentSpeed = normalSpeed;
 
             Vector2 movement = Vector2.Zero;
 

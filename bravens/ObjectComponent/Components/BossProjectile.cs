@@ -16,7 +16,7 @@ namespace bravens.ObjectComponent.Components
         private readonly Transform transform;
         private readonly Sprite sprite;
 
-        private readonly float speed = 300.0f + new Random().Next(-5, 3);
+        private readonly float speed = 500.0f + new Random().Next(-5, 3);
 
         private readonly float yOffset = GetRandomYOffset();
 

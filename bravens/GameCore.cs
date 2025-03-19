@@ -24,6 +24,10 @@ namespace bravens
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            GraphicsDeviceManager.PreferredBackBufferWidth = 900;  // Width
+            GraphicsDeviceManager.PreferredBackBufferHeight = 1280;  // Height
+            GraphicsDeviceManager.ApplyChanges();
         }
 
         protected override void Initialize()
