@@ -60,7 +60,10 @@ namespace bravens.ObjectComponent.Components
                 GameObjectManager.Destroy(collider.GetGameObject());
             }
 
-            GameObjectManager.Destroy(GetGameObject());
+            if (collider.Tag != CollisionTag.Enemy)
+            {
+                GameObjectManager.Destroy(GetGameObject());
+            }
         }
     }
 }

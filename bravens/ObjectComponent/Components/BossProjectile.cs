@@ -28,6 +28,7 @@ namespace bravens.ObjectComponent.Components
             sprite = parent.GetComponent<Sprite>();
 
             parent.AddComponent<Collider>();
+            parent.GetComponent<Collider>().Tag = Enums.CollisionTag.Enemy;
         }
 
         public override void Update(GameTime deltaTime)
