@@ -23,7 +23,7 @@ namespace bravens.ObjectComponent.Components
         private int shotsFiredInBurst = 0;
         private bool isBurstFiring = false;
 
-        private int projectileCount = 0;
+        private static int projectileCount = 0;
 
         public BossGun(GameObject parent) : base(parent, nameof(BossGun))
         {
@@ -64,9 +64,9 @@ namespace bravens.ObjectComponent.Components
         {
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
 
-            GameObject projectile1 = GameObjectManager.Create($"BossProjectile{projectileCount}", GetGameObject(), "bossProjectile");
-            GameObject projectile2 = GameObjectManager.Create($"BossProjectile{projectileCount + 1}", GetGameObject(), "bossProjectile");
-            GameObject projectile3 = GameObjectManager.Create($"BossProjectile{projectileCount + 2}", GetGameObject(), "bossProjectile");
+            GameObject projectile1 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
+            GameObject projectile2 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
+            GameObject projectile3 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
 
             projectile1.AddComponent<BossProjectile>();
             projectile2.AddComponent<BossProjectile>();
@@ -79,8 +79,6 @@ namespace bravens.ObjectComponent.Components
             transform1.Translate(position);
             transform2.Translate(position);
             transform3.Translate(position);
-
-            projectileCount += 3;
         }
     }
 }
