@@ -58,10 +58,6 @@ namespace bravens.ObjectComponent.Components
             if (collider.Tag == CollisionTag.Player)
             {
                 GameObjectManager.Destroy(collider.GetGameObject());
-            }
-
-            if (collider.Tag != CollisionTag.Enemy)
-            {
                 GameObjectManager.Destroy(GetGameObject());
             }
         }

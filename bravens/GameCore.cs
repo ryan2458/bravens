@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -79,7 +80,6 @@ namespace bravens
             player.AddComponent<PlayerControls>();
             player.AddComponent<PlayerGun>();
             player.AddComponent<Collider>();
-
             player.GetComponent<Collider>().Tag = ObjectComponent.Enums.CollisionTag.Player;
         }
 
@@ -88,6 +88,8 @@ namespace bravens
             GameObject enemyA = GameObjectManager.Create(null, null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
+            enemyA.AddComponent<Collider>();
+            enemyA.GetComponent<Collider>().Tag = ObjectComponent.Enums.CollisionTag.Enemy;
         }
 
         public void CreateBoss()
@@ -102,6 +104,8 @@ namespace bravens
             GameObject enemyB = GameObjectManager.Create(null, null, "square_2");
             enemyB.AddComponent<EnemyBBehaviour>();
             enemyB.AddComponent<EnemyBGun>();
+            enemyB.AddComponent<Collider>();
+            enemyB.GetComponent<Collider>().Tag = ObjectComponent.Enums.CollisionTag.Enemy;
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using bravens.Managers;
+using bravens.ObjectComponent.Enums;
+using bravens.ObjectComponent.Interfaces;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using System;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace bravens.ObjectComponent.Components
 {
-    public class Projectile : Component
+    public class Projectile : Component, ICollisionObserver
     {
         private GameObjectManager GameObjectManager { get; }
 
@@ -39,6 +41,15 @@ namespace bravens.ObjectComponent.Components
         {
             // TODO: Check if we're in screen bounds.
             return true;
+        }
+
+        public void OnCollisionEnter(Collider collider)
+        {
+            if (collider.Tag == CollisionTag.Enemy)
+            {
+                GameObjectManager.Destroy(collider.GetGameObject());
+                GameObjectManager.Destroy(GetGameObject());
+            }
         }
     }
 }

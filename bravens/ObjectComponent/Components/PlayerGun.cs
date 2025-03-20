@@ -1,4 +1,5 @@
 ﻿using bravens.Managers;
+using bravens.ObjectComponent.Enums;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -38,15 +39,10 @@ namespace bravens.ObjectComponent.Components
 
         private void CreateAndFireProjectile()
         {
-            //Vector2 position = GetGameObject().GetComponent<Transform>().Position;
-            //GameObject projectile = GameObjectManager.Create(new Vector2(position.X, position.Y));
-            ////projectile.AddComponent<Transform>();
-            ////projectile.AddComponent<Sprite>();
-            ////projectile.AddComponent<Projectile>();
-
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
-            GameObject projectile = GameObjectManager.Create($"PlayerAProjectile{projectileCount++}", GetGameObject(), "enemyAProjectile");
+            GameObject projectile = GameObjectManager.Create($"PlayerProjectile{projectileCount++}", GetGameObject(), "enemyAProjectile");
             projectile.AddComponent<Projectile>();
+            projectile.AddComponent<Collider>();
             Transform transform = projectile.GetComponent<Transform>();
             transform.Translate(position);
         }
