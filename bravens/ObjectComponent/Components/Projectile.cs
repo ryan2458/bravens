@@ -13,7 +13,7 @@ namespace bravens.ObjectComponent.Components
     {
         private GameObjectManager GameObjectManager { get; }
 
-        private float speed = 100.0f;
+        private float speed = 500.0f;
 
         public Projectile(GameObject parent) : base(parent, nameof(Projectile))
         {

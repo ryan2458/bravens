@@ -1,4 +1,5 @@
 ﻿using bravens.Managers;
+using bravens.ObjectComponent.Interfaces;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using System;
@@ -9,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace bravens.ObjectComponent.Components
 {
-    public class BossProjectile : Component
+    public class BossProjectile : Component, ICollisionObserver
     {
         private GameObjectManager GameObjectManager { get; }
 
         private readonly Transform transform;
         private readonly Sprite sprite;
 
-        private readonly float speed = 300.0f + new Random().Next(-5, 3);
+        private readonly float speed = 500.0f + new Random().Next(-5, 3);
 
         private readonly float yOffset = GetRandomYOffset();
 
@@ -25,6 +26,9 @@ namespace bravens.ObjectComponent.Components
             GameObjectManager = parent.Core.GameObjectManager;
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
+
+            parent.AddComponent<Collider>();
+            parent.GetComponent<Collider>().Tag = Enums.CollisionTag.Enemy;
         }
 
         public override void Update(GameTime deltaTime)
@@ -56,7 +60,7 @@ namespace bravens.ObjectComponent.Components
         }
 
         /// <summary>
-        ///  Generate a random number to indicate the angle which
+        /// Generate a random number to indicate the angle which
         /// will be between -2.5 and 2.5.
         /// </summary>
         /// <returns>Random yOffset for current projectile.</returns>
@@ -65,6 +69,15 @@ namespace bravens.ObjectComponent.Components
             var random = new Random();
 
             return (float)(random.NextDouble() * 5 - 2.5);
+        }
+
+        /// <inheritdoc />
+        public void OnCollisionEnter(Collider collider)
+        {
+            if (collider.Tag == Enums.CollisionTag.Player)
+            {
+                Console.WriteLine("Hit player!");
+            }
         }
     }
 }

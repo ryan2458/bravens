@@ -16,6 +16,9 @@ namespace bravens.ObjectComponent.Components
 
         private GameObjectManager GameObjectManager { get; }
 
+        private double lastShotTime = 0;
+        private double shotCooldown = 250; // Delay between shots in milliseconds
+
         public PlayerGun(GameObject parent) : base(parent, nameof(PlayerGun))
         {
             GameObjectManager = parent.Core.GameObjectManager;
@@ -23,9 +26,13 @@ namespace bravens.ObjectComponent.Components
 
         public override void Update(GameTime deltaTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.F))
+            double currentTime = deltaTime.TotalGameTime.TotalMilliseconds;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.F) || Keyboard.GetState().IsKeyDown(Keys.Space)
+                && currentTime - lastShotTime >= shotCooldown)
             {
                 CreateAndFireProjectile();
+                lastShotTime = currentTime; // Reset timer
             }
         }
 

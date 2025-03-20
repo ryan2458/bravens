@@ -1,5 +1,6 @@
 ﻿using bravens.ObjectComponent;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
@@ -26,6 +27,9 @@ namespace bravens.Managers
 
         private int _timeLastCheckedInSeconds = 0;
 
+        private double lastSpawnTime = 0; // for using 1, 2, 3 to debug enemies
+        private double spawnCooldown = 500; // Delay between shots in milliseconds
+
         public WaveManager(GameCore core) : base(nameof(WaveManager))
         {
             gameCore = core;
@@ -40,6 +44,8 @@ namespace bravens.Managers
             globalTimer += deltaTime.ElapsedGameTime;
             globalTimerInSeconds = (int)globalTimer.TotalSeconds;
             
+            double currentTime = deltaTime.TotalGameTime.TotalMilliseconds;
+
             // This is to prevent spawning multiple enemies of the same type at once
             if (_timeLastCheckedInSeconds != globalTimerInSeconds) 
             {
@@ -49,8 +55,26 @@ namespace bravens.Managers
                 CheckEnemySpawn(_enemyBSpawnTimes, ref _enemyBSpawnIndex, "EnemyB");
                 CheckEnemySpawn(_bossSpawnTimes, ref _bossSpawnIndex, "Boss");
 
+                _timeLastCheckedInSeconds = globalTimerInSeconds;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.F1) && currentTime - lastSpawnTime >= spawnCooldown)
+            {
+                gameCore.CreateEnemyTypeA();
+                lastSpawnTime = currentTime;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.F2) && currentTime - lastSpawnTime >= spawnCooldown)
+            {
+                gameCore.CreateEnemyTypeB();
+                lastSpawnTime = currentTime;
+            }
 
                 _timeLastCheckedInSeconds = globalTimerInSeconds;
+            if (Keyboard.GetState().IsKeyDown(Keys.F3) && currentTime - lastSpawnTime >= spawnCooldown)
+            {
+                gameCore.CreateBoss();
+                lastSpawnTime = currentTime;
             }
 
             

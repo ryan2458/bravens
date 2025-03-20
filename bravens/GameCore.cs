@@ -27,11 +27,17 @@ namespace bravens
             WaveManager = new WaveManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            
         }
 
         protected override void Initialize()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+            GraphicsDeviceManager.PreferredBackBufferWidth = 900;  // Width
+            GraphicsDeviceManager.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100; // subtract 100 to account for task bar.
+            GraphicsDeviceManager.ApplyChanges();
 
             GameObjectManager.Initialize();
 
@@ -42,7 +48,7 @@ namespace bravens
 
         protected override void LoadContent()
         {
-
+            
         }
 
         protected override void Update(GameTime gameTime)

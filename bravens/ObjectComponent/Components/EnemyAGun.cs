@@ -19,7 +19,7 @@ namespace bravens.ObjectComponent.Components
         private double currentTimeBetweenProjectileInSeconds = 0.0f;
         private int fasterFireIndex = 5; // Every n projectiles will come out a little quicker. Ex. 5, every fifth bullet will come out half a cooldown faster
 
-        private int projectileCount = 0;
+        private static int projectileCount = 0;
         private double accumulatedTime = 0.0;
 
         public EnemyAGun(GameObject parent) : base(parent, nameof(EnemyAGun)) 
@@ -46,14 +46,13 @@ namespace bravens.ObjectComponent.Components
         private void CreateAndFireProjectile() 
         {
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
-            GameObject projectile = GameObjectManager.Create($"EnemyAProjectile{projectileCount}" , GetGameObject(), "enemyAProjectile");
+            GameObject projectile = GameObjectManager.Create($"EnemyAProjectile{projectileCount++}" , GetGameObject(), "enemyAProjectile");
             projectile.AddComponent<EnemyAProjectile>();
             projectile.AddComponent<Collider>();
 
             projectile.GetComponent<Collider>().Tag = CollisionTag.Enemy;
             Transform transform = projectile.GetComponent<Transform>();
             transform.Translate(position);
-            projectileCount++;
         }
     }
 }
