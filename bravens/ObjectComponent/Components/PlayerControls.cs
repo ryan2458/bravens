@@ -28,6 +28,11 @@ namespace bravens.ObjectComponent.Components
         {
             currentSpeed = normalSpeed;
 
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift)) 
+            {
+                currentSpeed = slowedSpeed;
+            }
+
             Vector2 movement = Vector2.Zero;
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
@@ -53,18 +58,7 @@ namespace bravens.ObjectComponent.Components
             }
 
             transform.Translate(movement * currentSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
-
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
-            {
-                transform.Rotate(rotationSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Q))
-            {
-                transform.Rotate(-rotationSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
-            }
-
             
-
             ConfineToWindow();
         }
 
