@@ -28,8 +28,6 @@ namespace bravens
             WaveManager = new WaveManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-            
         }
 
         protected override void Initialize()
@@ -74,15 +72,18 @@ namespace bravens
             base.Draw(gameTime);
         }
 
-        private void CreatePlayer()
+        public void CreatePlayer()
         {
-            GameObject player = GameObjectManager.Create("Player", null);
+            float x = GraphicsDeviceManager.PreferredBackBufferWidth / 2.0f;
+            float y = GraphicsDeviceManager.PreferredBackBufferHeight - 100.0f;
+
+            GameObject player = GameObjectManager.Create(new Vector2(x, y), null, "Player"); ;
             player.AddComponent<PlayerControls>();
             player.AddComponent<PlayerGun>();
             player.AddComponent<Collider>();
             player.AddComponent(() => new Health(player, 100));
 
-            player.GetComponent<Collider>().Tag = ObjectComponent.Enums.CollisionTag.Player;
+            player.GetComponent<Collider>().Tag = CollisionTag.Player;
         }
 
         public void CreateEnemyTypeA()
