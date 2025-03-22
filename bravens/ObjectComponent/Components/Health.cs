@@ -16,7 +16,7 @@ namespace bravens.ObjectComponent.Components
 
         public int CurrentHealth { get; private set; }
 
-        public event EventHandler<GameObject> Died;
+        public event EventHandler<GameObject> Died = delegate { };
         
         public Health(GameObject parent, int maxHealth) : base(parent, nameof(Health))
         {
@@ -33,8 +33,6 @@ namespace bravens.ObjectComponent.Components
 
             if (CurrentHealth <= 0)
             {
-                Died(this, GetGameObject());
-                Died = null; // clear subscriptions before we delete this game object.
                 Die();
             }
         }
@@ -51,6 +49,8 @@ namespace bravens.ObjectComponent.Components
 
         public void Die()
         {
+            Died(this, GetGameObject());
+            Died = null; // clear subscriptions before we delete this game object.
             gameObjectManager.Destroy(GetGameObject());
         }
     }

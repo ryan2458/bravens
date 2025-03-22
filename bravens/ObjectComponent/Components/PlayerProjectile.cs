@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace bravens.ObjectComponent.Components
 {
-    public class Projectile : Component, ICollisionObserver
+    public class PlayerProjectile : Component, ICollisionObserver
     {
         private GameObjectManager GameObjectManager { get; }
 
         private float speed = 500.0f;
         private int projectileDamage = 5;
 
-        public Projectile(GameObject parent) : base(parent, nameof(Projectile))
+        public PlayerProjectile(GameObject parent) : base(parent, nameof(PlayerProjectile))
         {
             GameObjectManager = parent.Core.GameObjectManager;
         }
@@ -40,6 +40,7 @@ namespace bravens.ObjectComponent.Components
             if (collider.Tag == Enums.CollisionTag.Enemy)
             {
                 collider.GetGameObject().GetComponent<Health>().DamageUnit(projectileDamage);
+                GameObjectManager.Destroy(GetGameObject());
             }
         }
     }

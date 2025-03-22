@@ -40,7 +40,7 @@ namespace bravens.ObjectComponent.Components
         {
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
             GameObject projectile = GameObjectManager.Create($"PlayerAProjectile{projectileCount++}", GetGameObject(), "enemyAProjectile");
-            projectile.AddComponent<Projectile>();
+            projectile.AddComponent<PlayerProjectile>();
             projectile.AddComponent<Collider>();
             projectile.GetComponent<Collider>().Tag = Enums.CollisionTag.PlayerProjectile;
             Transform transform = projectile.GetComponent<Transform>();

@@ -84,7 +84,7 @@ namespace bravens
             player.AddComponent<PlayerControls>();
             player.AddComponent<PlayerGun>();
             player.AddComponent<Collider>();
-            player.AddComponent(() => new Health(player, 100));
+            player.AddComponent(() => new Health(player, 1));
 
             player.GetComponent<Collider>().Tag = CollisionTag.Player;
             player.GetComponent<Health>().Died += LivesManager.PlayerDiedEventHandler;
