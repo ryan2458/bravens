@@ -33,7 +33,7 @@ namespace bravens.ObjectComponent.Components
 
             if (CurrentHealth <= 0)
             {
-                Died(this, GetGameObject());
+                Died?.Invoke(this, GetGameObject());
                 Died = null; // clear subscriptions before we delete this game object.
                 Die();
             }

@@ -16,7 +16,7 @@ namespace bravens.ObjectComponent.Components
         private GameObjectManager GameObjectManager { get; }
 
         private float speed = 500.0f;
-        private int projectileDamage = 5;
+        private int projectileDamage = 10;
 
         public Projectile(GameObject parent) : base(parent, nameof(Projectile))
         {
@@ -40,6 +40,7 @@ namespace bravens.ObjectComponent.Components
             if (collider.Tag == Enums.CollisionTag.Enemy)
             {
                 collider.GetGameObject().GetComponent<Health>().DamageUnit(projectileDamage);
+                GameObjectManager.Destroy(GetGameObject());
             }
         }
     }

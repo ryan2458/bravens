@@ -22,7 +22,7 @@ namespace bravens.ObjectComponent.Components
 
         private readonly float yOffset = GetRandomYOffset();
 
-        private int projectileDamage = 8;
+        private int projectileDamage = 10;
 
         public BossProjectile(GameObject parent) : base(parent, nameof(BossProjectile))
         {

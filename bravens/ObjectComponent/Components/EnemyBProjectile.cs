@@ -20,7 +20,7 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
 
         private float speed = 30.0f;
-        private int projectileDamage = 5;
+        private int projectileDamage = 10;
 
         public EnemyBProjectile(GameObject parent) : base(parent, nameof(EnemyBProjectile))
         {

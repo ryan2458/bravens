@@ -40,6 +40,7 @@ namespace bravens.Managers
                 lifeIconObjects.Remove(lifeIconObject);
                 Core.CreatePlayer();
                 Lives -= 1;
+                Console.WriteLine($"Current Lives: {Lives}");
             }
             else
             {
