@@ -28,6 +28,11 @@ namespace bravens.ObjectComponent.Components
         {
             currentSpeed = normalSpeed;
 
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift)) 
+            {
+                currentSpeed = slowedSpeed;
+            }
+
             Vector2 movement = Vector2.Zero;
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
