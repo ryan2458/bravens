@@ -2,10 +2,12 @@
 using bravens.ObjectComponent.Components;
 using bravens.ObjectComponent.Enums;
 using bravens.ObjectComponent.Objects;
+using bravens.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -23,6 +25,8 @@ namespace bravens
 
         public SpriteBatch SpriteBatch { get; protected set; }
 
+        public CoroutineRunner CoroutineRunner { get; protected set; }
+
         public GameCore()
         {
             GameObjectManager = new GameObjectManager(this);
@@ -30,6 +34,8 @@ namespace bravens
             WaveManager = new WaveManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            CoroutineRunner = new CoroutineRunner();
         }
 
         protected override void Initialize()
@@ -64,6 +70,8 @@ namespace bravens
             WaveManager.Update(gameTime);
             CollisionManager.CheckCollisions();
 
+            CoroutineRunner.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
             base.Update(gameTime);
         }
 
@@ -83,12 +91,11 @@ namespace bravens
             GameObject player = GameObjectManager.Create(new Vector2(x, y), null, "Player"); ;
             player.AddComponent<PlayerControls>();
             player.AddComponent<PlayerGun>();
-            player.AddComponent<Collider>();
             player.AddComponent(() => new Health(player, 1));
 
-            player.GetComponent<Collider>().Tag = CollisionTag.Player;
             player.GetComponent<Health>().Died += LivesManager.PlayerDiedEventHandler;
         }
+
 
         public void CreateEnemyTypeA()
         {

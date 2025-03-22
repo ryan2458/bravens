@@ -8,10 +8,11 @@ namespace bravens.Managers
 {
     public class WaveManager : BaseObject
     {
+        public TimeSpan globalTimer;
+        public int globalTimerInSeconds;
+
         private GameCore gameCore;
         private GameObjectManager gameObjectManager;
-        private TimeSpan globalTimer;
-        private int globalTimerInSeconds;
 
         // Spawn times need to be in ascending order and there cannot be any repeats. If you have [5,5], it won't ever read the second 5.
         private List<int> _enemyASpawnTimes = [5,7,10,15,18,50,51,52,53,54,55,60,61,62,63,64,65,70,71,72,73,74,75,80,81,82,83,84,85];
