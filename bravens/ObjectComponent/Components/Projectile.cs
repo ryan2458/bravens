@@ -16,7 +16,7 @@ namespace bravens.ObjectComponent.Components
         private GameObjectManager GameObjectManager { get; }
 
         private float speed = 500.0f;
-        private int projectileDamage = 10;
+        private int projectileDamage = 5;
 
         public Projectile(GameObject parent) : base(parent, nameof(Projectile))
         {
