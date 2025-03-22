@@ -10,6 +10,7 @@ using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace bravens
 {
@@ -25,8 +26,6 @@ namespace bravens
 
         public SpriteBatch SpriteBatch { get; protected set; }
 
-        public CoroutineRunner CoroutineRunner { get; protected set; }
-
         public GameCore()
         {
             GameObjectManager = new GameObjectManager(this);
@@ -34,8 +33,6 @@ namespace bravens
             WaveManager = new WaveManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-            CoroutineRunner = new CoroutineRunner();
         }
 
         protected override void Initialize()
@@ -70,8 +67,6 @@ namespace bravens
             WaveManager.Update(gameTime);
             CollisionManager.CheckCollisions();
 
-            CoroutineRunner.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
-
             base.Update(gameTime);
         }
 
@@ -95,17 +90,14 @@ namespace bravens
 
             player.GetComponent<Health>().Died += LivesManager.PlayerDiedEventHandler;
 
-            // Player invincibility (Apply collider after a delay)
-            CoroutineRunner.StartCoroutine(ApplyColliderOnDelay(player, 5f));
-        }
-
-        private IEnumerator ApplyColliderOnDelay(GameObject gameObject, float delay) 
-        {
             Console.WriteLine("Invincibility Started");
-            yield return new WaitForSeconds(delay);
-            Collider collider = gameObject.AddComponent<Collider>();
-            collider.Tag = CollisionTag.Player;
-            Console.WriteLine("Invincibility Ended");
+            Task.Run(async () =>
+            {
+                await Task.Delay(5000);
+                player.AddComponent<Collider>();
+                player.GetComponent<Collider>().Tag = CollisionTag.Player;
+                Console.WriteLine("Invincibility Ended");
+            });
         }
 
 
