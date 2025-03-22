@@ -27,8 +27,10 @@ namespace bravens.Utilities
         /// <param name="deltaTime"></param>
         public void Update(float deltaTime)
         {
-            foreach (IEnumerator coroutine in _coroutines) 
+            for (int i = _coroutines.Count - 1; i >= 0; i--)
             {
+                IEnumerator coroutine = _coroutines[i];
+
                 // If our yield instruction is WaitForSeconds, we check if it is done.
                 if (coroutine.Current is WaitForSeconds waitForSeconds) 
                 {
@@ -40,7 +42,7 @@ namespace bravens.Utilities
 
                 if (!coroutine.MoveNext()) 
                 {
-                    _coroutines.Remove(coroutine); // Delete coroutine if finished.
+                    _coroutines.RemoveAt(i); // Delete coroutine if finished.
                 }
             }
         }

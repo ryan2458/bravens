@@ -94,6 +94,18 @@ namespace bravens
             player.AddComponent(() => new Health(player, 1));
 
             player.GetComponent<Health>().Died += LivesManager.PlayerDiedEventHandler;
+
+            // Player invincibility (Apply collider after a delay)
+            CoroutineRunner.StartCoroutine(ApplyColliderOnDelay(player, 5f));
+        }
+
+        private IEnumerator ApplyColliderOnDelay(GameObject gameObject, float delay) 
+        {
+            Console.WriteLine("Invincibility Started");
+            yield return new WaitForSeconds(delay);
+            Collider collider = gameObject.AddComponent<Collider>();
+            collider.Tag = CollisionTag.Player;
+            Console.WriteLine("Invincibility Ended");
         }
 
 
