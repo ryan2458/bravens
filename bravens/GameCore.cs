@@ -1,5 +1,6 @@
 ﻿using bravens.Managers;
 using bravens.ObjectComponent.Components;
+using bravens.ObjectComponent.Enums;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -79,6 +80,7 @@ namespace bravens
             player.AddComponent<PlayerControls>();
             player.AddComponent<PlayerGun>();
             player.AddComponent<Collider>();
+            player.AddComponent(() => new Health(player, 100));
 
             player.GetComponent<Collider>().Tag = ObjectComponent.Enums.CollisionTag.Player;
         }
@@ -88,6 +90,10 @@ namespace bravens
             GameObject enemyA = GameObjectManager.Create(null, null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
+            enemyA.AddComponent<Collider>();
+            enemyA.AddComponent(() => new Health(enemyA, 10));
+
+            enemyA.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
 
         public void CreateBoss()
@@ -95,6 +101,10 @@ namespace bravens
             GameObject boss = GameObjectManager.Create(null, null, "boss");
             boss.AddComponent<BossBehavior>();
             boss.AddComponent<BossGun>();
+            boss.AddComponent<Collider>();
+            boss.AddComponent(() => new Health(boss, 120));
+
+            boss.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
 
         public void CreateEnemyTypeB()
@@ -102,6 +112,10 @@ namespace bravens
             GameObject enemyB = GameObjectManager.Create(null, null, "square_2");
             enemyB.AddComponent<EnemyBBehaviour>();
             enemyB.AddComponent<EnemyBGun>();
+            enemyB.AddComponent<Collider>();
+            enemyB.AddComponent(() => new Health(enemyB, 20));
+
+            enemyB.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
     }
 }

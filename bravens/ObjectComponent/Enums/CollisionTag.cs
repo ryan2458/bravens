@@ -10,6 +10,8 @@ namespace bravens.ObjectComponent.Enums
     {
         None,
         Player,
-        Enemy
+        Enemy,
+        EnemyProjectile,
+        PlayerProjectile,
     }
 }

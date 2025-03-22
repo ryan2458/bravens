@@ -38,15 +38,11 @@ namespace bravens.ObjectComponent.Components
 
         private void CreateAndFireProjectile()
         {
-            //Vector2 position = GetGameObject().GetComponent<Transform>().Position;
-            //GameObject projectile = GameObjectManager.Create(new Vector2(position.X, position.Y));
-            ////projectile.AddComponent<Transform>();
-            ////projectile.AddComponent<Sprite>();
-            ////projectile.AddComponent<Projectile>();
-
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
             GameObject projectile = GameObjectManager.Create($"PlayerAProjectile{projectileCount++}", GetGameObject(), "enemyAProjectile");
             projectile.AddComponent<Projectile>();
+            projectile.AddComponent<Collider>();
+            projectile.GetComponent<Collider>().Tag = Enums.CollisionTag.PlayerProjectile;
             Transform transform = projectile.GetComponent<Transform>();
             transform.Translate(position);
         }

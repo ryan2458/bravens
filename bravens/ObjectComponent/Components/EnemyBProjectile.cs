@@ -1,5 +1,8 @@
 ﻿using bravens.Managers;
+using bravens.ObjectComponent.Enums;
+using bravens.ObjectComponent.Interfaces;
 using bravens.ObjectComponent.Objects;
+using bravens.Utilities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -9,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace bravens.ObjectComponent.Components
 {
-    public class EnemyBProjectile : Component
+    public class EnemyBProjectile : Component, ICollisionObserver
     {
         private GameObjectManager GameObjectManager { get; }
 
@@ -17,6 +20,7 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
 
         private float speed = 30.0f;
+        private int projectileDamage = 5;
 
         public EnemyBProjectile(GameObject parent) : base(parent, nameof(EnemyBProjectile))
         {
@@ -28,30 +32,24 @@ namespace bravens.ObjectComponent.Components
         public override void Update(GameTime deltaTime)
         {
             GameObject projectileGameObject = GetGameObject();
-
             Transform transform = projectileGameObject.GetComponent<Transform>();
-
             transform.Translate(new Vector2(0.0f, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
 
-            if (!IsVisible())
+            if (!GameBounds.IsGameObjectVisible(projectileGameObject))
             {
-                GameObjectManager.Destroy(GetGameObject());
+                GameObjectManager.Destroy(projectileGameObject);
             }
 
             speed = speed + 5;
         }
 
-        private bool IsVisible()
+        public void OnCollisionEnter(Collider collider)
         {
-            GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
-
-            if (transform.Position.Y > graphics.PreferredBackBufferHeight + sprite.SpriteTexture.Height)
+            if (collider.Tag == CollisionTag.Player)
             {
-                return false;
+                collider.GetGameObject().GetComponent<Health>().DamageUnit(projectileDamage);
+                GameObjectManager.Destroy(GetGameObject());
             }
-
-            return true;
         }
-
     }
 }

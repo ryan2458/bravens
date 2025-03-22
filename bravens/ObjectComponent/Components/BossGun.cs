@@ -72,6 +72,14 @@ namespace bravens.ObjectComponent.Components
             projectile2.AddComponent<BossProjectile>();
             projectile3.AddComponent<BossProjectile>();
 
+            projectile1.AddComponent<Collider>();
+            projectile2.AddComponent<Collider>();
+            projectile3.AddComponent<Collider>();
+
+            projectile1.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
+            projectile2.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
+            projectile3.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
+
             Transform transform1 = projectile1.GetComponent<Transform>();
             Transform transform2 = projectile2.GetComponent<Transform>();
             Transform transform3 = projectile3.GetComponent<Transform>();

@@ -38,8 +38,13 @@ namespace bravens.ObjectComponent.Components
         /// </param>
         public Collider(GameObject parent) : base(parent, nameof(Collider))
         {
+            Sprite sprite = parent.GetComponent<Sprite>();
+
             Transform = parent.GetComponent<Transform>();
             Position = Transform.Position;
+
+            // get an approximate radius.  We'll use sprites that have roughly even heights and widths.
+            Radius = Math.Min(sprite.SpriteTexture.Height, sprite.SpriteTexture.Width) / 2;
             CollisionManager.RegisterCollider(this);
         }
 
