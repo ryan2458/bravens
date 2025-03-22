@@ -50,7 +50,7 @@ namespace bravens.ObjectComponent.Components
             projectile.AddComponent<EnemyAProjectile>();
             projectile.AddComponent<Collider>();
 
-            projectile.GetComponent<Collider>().Tag = CollisionTag.Enemy;
+            projectile.GetComponent<Collider>().Tag = CollisionTag.EnemyProjectile;
             Transform transform = projectile.GetComponent<Transform>();
             transform.Translate(position);
         }

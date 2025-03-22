@@ -1,5 +1,7 @@
 ﻿using bravens.Managers;
+using bravens.ObjectComponent.Interfaces;
 using bravens.ObjectComponent.Objects;
+using bravens.Utilities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -9,11 +11,12 @@ using System.Threading.Tasks;
 
 namespace bravens.ObjectComponent.Components
 {
-    public class Projectile : Component
+    public class Projectile : Component, ICollisionObserver
     {
         private GameObjectManager GameObjectManager { get; }
 
         private float speed = 500.0f;
+        private int projectileDamage = 5;
 
         public Projectile(GameObject parent) : base(parent, nameof(Projectile))
         {
@@ -23,22 +26,21 @@ namespace bravens.ObjectComponent.Components
         public override void Update(GameTime deltaTime)
         {
             GameObject projectileGameObject = GetGameObject();
-
             Transform transform = projectileGameObject.GetComponent<Transform>();
-
             transform.Translate(new Vector2(0.0f, -speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
 
-
-            if (!IsVisible())
+            if (!GameBounds.IsGameObjectVisible(projectileGameObject))
             {
-                GameObjectManager.Destroy(GetGameObject());
+                GameObjectManager.Destroy(projectileGameObject);
             }
         }
 
-        private bool IsVisible()
+        public void OnCollisionEnter(Collider collider)
         {
-            // TODO: Check if we're in screen bounds.
-            return true;
+            if (collider.Tag == Enums.CollisionTag.Enemy)
+            {
+                collider.GetGameObject().GetComponent<Health>().DamageUnit(projectileDamage);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using bravens.Managers;
 using bravens.ObjectComponent.Interfaces;
 using bravens.ObjectComponent.Objects;
+using bravens.Utilities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -21,27 +22,24 @@ namespace bravens.ObjectComponent.Components
 
         private readonly float yOffset = GetRandomYOffset();
 
+        private int projectileDamage = 8;
+
         public BossProjectile(GameObject parent) : base(parent, nameof(BossProjectile))
         {
             GameObjectManager = parent.Core.GameObjectManager;
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
-
-            parent.AddComponent<Collider>();
-            parent.GetComponent<Collider>().Tag = Enums.CollisionTag.Enemy;
         }
 
         public override void Update(GameTime deltaTime)
         {
             GameObject projectileGameObject = GetGameObject();
-
             Transform transform = projectileGameObject.GetComponent<Transform>();
-
             transform.Translate(new Vector2(yOffset, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
 
-            if (!IsVisible())
+            if (!GameBounds.IsGameObjectVisible(projectileGameObject))
             {
-                GameObjectManager.Destroy(GetGameObject());
+                GameObjectManager.Destroy(projectileGameObject);
             }
         }
 
@@ -76,7 +74,8 @@ namespace bravens.ObjectComponent.Components
         {
             if (collider.Tag == Enums.CollisionTag.Player)
             {
-                Console.WriteLine("Hit player!");
+                collider.GetGameObject().GetComponent<Health>().DamageUnit(projectileDamage);
+                GameObjectManager.Destroy(GetGameObject());
             }
         }
     }
