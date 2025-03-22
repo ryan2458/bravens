@@ -53,18 +53,7 @@ namespace bravens.ObjectComponent.Components
             }
 
             transform.Translate(movement * currentSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
-
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
-            {
-                transform.Rotate(rotationSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Q))
-            {
-                transform.Rotate(-rotationSpeed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
-            }
-
             
-
             ConfineToWindow();
         }
 
