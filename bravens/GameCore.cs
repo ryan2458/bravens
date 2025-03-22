@@ -122,5 +122,16 @@ namespace bravens
 
             enemyB.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
+
+        public void CreateFinalBoss() 
+        {
+            GameObject finalBoss = GameObjectManager.Create(null, null, "boss");
+            finalBoss.AddComponent<FinalBossBehavior>();
+            finalBoss.AddComponent<FinalBossGun>();
+            finalBoss.AddComponent<Collider>();
+            finalBoss.AddComponent(() => new Health(finalBoss, 200));
+
+            finalBoss.GetComponent<Collider>().Tag= CollisionTag.Enemy;
+        }
     }
 }

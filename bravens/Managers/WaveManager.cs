@@ -17,12 +17,15 @@ namespace bravens.Managers
         private List<int> _enemyASpawnTimes = [5,7,10,15,18];
         private int _enemyASpawnIndex = 0;
 
-        private List<int> _enemyBSpawnTimes = [13, 19];
+        private List<int> _enemyBSpawnTimes = [13,19];
         private int _enemyBSpawnIndex = 0;
 
 
         private List<int> _bossSpawnTimes = [25];
         private int _bossSpawnIndex = 0;
+
+        private List<int> _finalBossSpawnTimes = [60];
+        private int _finalBossSpawnIndex = 0;
 
 
         private int _timeLastCheckedInSeconds = 0;
@@ -54,6 +57,7 @@ namespace bravens.Managers
                 CheckEnemySpawn(_enemyASpawnTimes, ref _enemyASpawnIndex, "EnemyA");
                 CheckEnemySpawn(_enemyBSpawnTimes, ref _enemyBSpawnIndex, "EnemyB");
                 CheckEnemySpawn(_bossSpawnTimes, ref _bossSpawnIndex, "Boss");
+                CheckEnemySpawn(_finalBossSpawnTimes, ref _finalBossSpawnIndex, "FinalBoss");
 
                 _timeLastCheckedInSeconds = globalTimerInSeconds;
             }
@@ -98,13 +102,14 @@ namespace bravens.Managers
                     case "Boss":
                         gameCore.CreateBoss();
                         break;
+                    case "FinalBoss":
+                        gameCore.CreateFinalBoss();
+                        break;
                     default:
                         Console.WriteLine("Could not find enemy type. Spawning EnemyA...");
                         gameCore.CreateEnemyTypeA();
                         break;
                 }
-
-                
 
                 currentSpawnIndex++;
             }          
