@@ -28,7 +28,7 @@ namespace bravens.ObjectComponent.Components
         {
             double currentTime = deltaTime.TotalGameTime.TotalMilliseconds;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.F) || Keyboard.GetState().IsKeyDown(Keys.Space)
+            if (Keyboard.GetState().IsKeyDown(Keys.Space)
                 && currentTime - lastShotTime >= shotCooldown)
             {
                 CreateAndFireProjectile();
