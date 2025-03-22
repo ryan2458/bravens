@@ -96,6 +96,7 @@ namespace bravens
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
             enemyA.AddComponent<Collider>();
+            enemyA.AddComponent(() => new EnemyDuration(this, enemyA, 5f));
             enemyA.AddComponent(() => new Health(enemyA, 10));
 
             enemyA.GetComponent<Collider>().Tag = CollisionTag.Enemy;
