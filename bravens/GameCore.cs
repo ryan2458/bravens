@@ -17,6 +17,8 @@ namespace bravens
 
         public WaveManager WaveManager { get; }
 
+        public LivesManager LivesManager { get; private set; }
+
         public GraphicsDeviceManager GraphicsDeviceManager { get; }
 
         public SpriteBatch SpriteBatch { get; protected set; }
@@ -39,6 +41,7 @@ namespace bravens
             GraphicsDeviceManager.ApplyChanges();
 
             GameObjectManager.Initialize();
+            LivesManager = new LivesManager(this);
 
             CreatePlayer();
 
@@ -84,6 +87,7 @@ namespace bravens
             player.AddComponent(() => new Health(player, 100));
 
             player.GetComponent<Collider>().Tag = CollisionTag.Player;
+            player.GetComponent<Health>().Died += LivesManager.PlayerDiedEventHandler;
         }
 
         public void CreateEnemyTypeA()
