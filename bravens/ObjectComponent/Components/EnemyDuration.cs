@@ -17,8 +17,6 @@ namespace bravens.ObjectComponent.Components
         private int _elapsedTimeInSeconds;
         private bool _isActive;
 
-        //public event EventHandler<GameObject> DurationEnded;
-
         public EnemyDuration(GameCore core, GameObject parent, float duration) : base(parent, nameof(EnemyDuration))
         {
             _core = core;
@@ -37,7 +35,6 @@ namespace bravens.ObjectComponent.Components
             if (_elapsedTimeInSeconds >= _duration) 
             {
                 _isActive = false;
-               // DurationEnded?.Invoke(this, GetGameObject());
                 _core.GameObjectManager.Destroy(GetGameObject());
                 Console.WriteLine($"{GetGameObject().Name} has left.");
             }

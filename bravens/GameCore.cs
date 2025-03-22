@@ -96,8 +96,8 @@ namespace bravens
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
             enemyA.AddComponent<Collider>();
-            enemyA.AddComponent(() => new EnemyDuration(this, enemyA, 5f));
             enemyA.AddComponent(() => new Health(enemyA, 10));
+            enemyA.AddComponent(() => new EnemyDuration(this, enemyA, 10f));
 
             enemyA.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
@@ -109,6 +109,7 @@ namespace bravens
             boss.AddComponent<BossGun>();
             boss.AddComponent<Collider>();
             boss.AddComponent(() => new Health(boss, 120));
+            boss.AddComponent(() => new EnemyDuration(this, boss, 25f));
 
             boss.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
@@ -120,6 +121,7 @@ namespace bravens
             enemyB.AddComponent<EnemyBGun>();
             enemyB.AddComponent<Collider>();
             enemyB.AddComponent(() => new Health(enemyB, 20));
+            enemyB.AddComponent(() => new EnemyDuration(this, enemyB, 10f));
 
             enemyB.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
@@ -131,6 +133,7 @@ namespace bravens
             finalBoss.AddComponent<FinalBossGun>();
             finalBoss.AddComponent<Collider>();
             finalBoss.AddComponent(() => new Health(finalBoss, 200));
+            finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 25f));
 
             finalBoss.GetComponent<Collider>().Tag= CollisionTag.Enemy;
         }
