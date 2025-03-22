@@ -64,13 +64,15 @@ namespace bravens.Managers
             }
         }
 
+        public GameObject Create(Vector2 position, GameObject parent = null, string objectName = null, string texturePath = null)
+        {
+            GameObject newGameObject = Create(objectName, parent, texturePath);
+            newGameObject.GetComponent<Transform>().SetPositionXY(position.X, position.Y);
+            return newGameObject;
+        }
+
         public GameObject Create(string objectName = null, GameObject parent = null, string texturePath = null)
         {
-            if (GameObjects.Select(go => go.Name).Any(n => n.Equals(objectName)))
-            {
-                throw new Exception("GameObject names must be unique.");
-            }
-
             if (texturePath == null) texturePath = "ball";
 
             GameObject newGameObject = new GameObject(gameCore, parent, objectName);

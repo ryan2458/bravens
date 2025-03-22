@@ -17,6 +17,8 @@ namespace bravens
 
         public WaveManager WaveManager { get; }
 
+        public LivesManager LivesManager { get; private set; }
+
         public GraphicsDeviceManager GraphicsDeviceManager { get; }
 
         public SpriteBatch SpriteBatch { get; protected set; }
@@ -28,8 +30,6 @@ namespace bravens
             WaveManager = new WaveManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-            
         }
 
         protected override void Initialize()
@@ -41,6 +41,7 @@ namespace bravens
             GraphicsDeviceManager.ApplyChanges();
 
             GameObjectManager.Initialize();
+            LivesManager = new LivesManager(this);
 
             CreatePlayer();
 
@@ -74,15 +75,19 @@ namespace bravens
             base.Draw(gameTime);
         }
 
-        private void CreatePlayer()
+        public void CreatePlayer()
         {
-            GameObject player = GameObjectManager.Create("Player", null);
+            float x = GraphicsDeviceManager.PreferredBackBufferWidth / 2.0f;
+            float y = GraphicsDeviceManager.PreferredBackBufferHeight - 100.0f;
+
+            GameObject player = GameObjectManager.Create(new Vector2(x, y), null, "Player"); ;
             player.AddComponent<PlayerControls>();
             player.AddComponent<PlayerGun>();
             player.AddComponent<Collider>();
             player.AddComponent(() => new Health(player, 100));
 
-            player.GetComponent<Collider>().Tag = ObjectComponent.Enums.CollisionTag.Player;
+            player.GetComponent<Collider>().Tag = CollisionTag.Player;
+            player.GetComponent<Health>().Died += LivesManager.PlayerDiedEventHandler;
         }
 
         public void CreateEnemyTypeA()
