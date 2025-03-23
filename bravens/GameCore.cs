@@ -2,12 +2,15 @@
 using bravens.ObjectComponent.Components;
 using bravens.ObjectComponent.Enums;
 using bravens.ObjectComponent.Objects;
+using bravens.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace bravens
 {
@@ -83,12 +86,20 @@ namespace bravens
             GameObject player = GameObjectManager.Create(new Vector2(x, y), null, "Player"); ;
             player.AddComponent<PlayerControls>();
             player.AddComponent<PlayerGun>();
-            player.AddComponent<Collider>();
             player.AddComponent(() => new Health(player, 1));
 
-            player.GetComponent<Collider>().Tag = CollisionTag.Player;
             player.GetComponent<Health>().Died += LivesManager.PlayerDiedEventHandler;
+
+            Console.WriteLine("Invincibility Started");
+            Task.Run(async () =>
+            {
+                await Task.Delay(5000);
+                player.AddComponent<Collider>();
+                player.GetComponent<Collider>().Tag = CollisionTag.Player;
+                Console.WriteLine("Invincibility Ended");
+            });
         }
+
 
         public void CreateEnemyTypeA()
         {
