@@ -1,0 +1,37 @@
+{
+	"waves":
+	{
+		"wave":
+		{
+			"id": 1
+			"spawnTimes"
+			{
+				"EnemyA": [ ... ]
+				"EnemyB": [ ... ]
+				"BossA": [ ... ]
+				"BossB": [ ... ]
+			}
+			"EnemyA":
+			{
+				// EnemyA attribute modifications
+			},
+			"EnemyB":
+			{
+				// EnemyB attribute modifications
+			},
+			"BossA":
+			{
+				// BossA attribute modifications
+			},
+			"BossB":
+			{
+				// BossB attribute modifications
+			},
+			"Player":
+			{
+				// Player attribute modifications
+			}
+		},
+		... // more waves
+	}
+}
