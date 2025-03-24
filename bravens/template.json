@@ -3,13 +3,13 @@
 	{
 		"wave":
 		{
-			"id": 1
+			"id": 1,
 			"spawnTimes"
 			{
-				"EnemyA": [ ... ]
-				"EnemyB": [ ... ]
-				"BossA": [ ... ]
-				"BossB": [ ... ]
+				"EnemyA": [ ... ],
+				"EnemyB": [ ... ],
+				"BossA": [ ... ],
+				"BossB": [ ... ],
 			}
 			"EnemyA":
 			{
