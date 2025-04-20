@@ -148,5 +148,15 @@ namespace bravens
 
             finalBoss.GetComponent<Collider>().Tag= CollisionTag.Enemy;
         }
+
+        public void CreateLifeToken()
+        {
+            GameObject lifeToken = GameObjectManager.Create(null, null, "plus");
+            lifeToken.AddComponent<LifeTokenBehavior>();
+            lifeToken.AddComponent<Collider>();
+            lifeToken.AddComponent(() => new EnemyDuration(this, lifeToken, 10f));
+
+            lifeToken.GetComponent<Collider>().Tag = CollisionTag.LifeToken;
+        }
     }
 }
