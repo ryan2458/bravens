@@ -17,7 +17,8 @@ namespace bravens.ObjectComponent.Components
         public int CurrentHealth { get; private set; }
 
         public event EventHandler<GameObject> Died = delegate { };
-        
+        public event EventHandler<GameObject> LifeUp = delegate { };
+
         public Health(GameObject parent, int maxHealth) : base(parent, nameof(Health))
         {
             MaxHealth = maxHealth;
@@ -45,6 +46,8 @@ namespace bravens.ObjectComponent.Components
             {
                 CurrentHealth = MaxHealth;
             }
+
+            LifeUp(this, GetGameObject());
         }
 
         public void Die()
