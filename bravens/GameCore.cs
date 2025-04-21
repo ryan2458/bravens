@@ -140,8 +140,8 @@ namespace bravens
         public void CreateFinalBoss() 
         {
             GameObject finalBoss = GameObjectManager.Create(null, null, "boss");
-            finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<FinalBossGun>();
+            finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<Collider>();
             finalBoss.AddComponent(() => new Health(finalBoss, 200));
             finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 60f));

@@ -15,7 +15,7 @@ namespace bravens.ObjectComponent.Components
         private readonly Transform transform;
 
         private readonly Sprite sprite;
-        private readonly BossGun gun;
+        private FinalBossGun gun;
 
         private TimeSpan timer;
         private int timerInSeconds;
@@ -33,9 +33,8 @@ namespace bravens.ObjectComponent.Components
         {
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
-            gun = parent.GetComponent<BossGun>();
+            gun = parent.GetComponent<FinalBossGun>();
 
-            KeepFromTopOfScreen();
             CenterBoss();
 
             timer = TimeSpan.Zero;
@@ -56,6 +55,7 @@ namespace bravens.ObjectComponent.Components
                 _currentDestination = DetermineNextPosition();
                 _timeToSwitchNextPosition = timerInSeconds + newPositionCooldownInSeconds;
                 _isMovingToDestination = true;
+                gun.CreateAndFireBurstProjectiles();
             }
 
             if (_isMovingToDestination) 
@@ -70,6 +70,7 @@ namespace bravens.ObjectComponent.Components
                 {
                     Console.WriteLine("Reached Position");
                     _isMovingToDestination = false;
+                    gun.CreateAndFireBurstProjectiles();
                 }
             }
 
@@ -86,30 +87,6 @@ namespace bravens.ObjectComponent.Components
             return new Vector2(randMaxX, randMaxY);
         }
 
-        private void SwitchDirectionsIfNeeded()
-        {
-            GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
-
-            var randMax = _random.Next(graphics.PreferredBackBufferWidth / 3);
-
-            if (transform.Position.X > graphics.PreferredBackBufferWidth - sprite.SpriteTexture.Width / 2 - randMax)
-            {
-                xDirection = -1;
-            }
-            else if (transform.Position.X < sprite.SpriteTexture.Width / 2 + randMax)
-            {
-                xDirection = 1;
-            }
-        }
-
-        private void KeepFromTopOfScreen()
-        {
-            if (transform.Position.Y < sprite.SpriteTexture.Height / 2)
-            {
-                transform.SetPositionY(sprite.SpriteTexture.Height / 2);
-            }
-        }
-
         /// <summary>
         /// Center the boss on the screen.
         /// </summary>
@@ -118,6 +95,7 @@ namespace bravens.ObjectComponent.Components
             GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
 
             transform.SetPositionX(graphics.PreferredBackBufferWidth / 2);
+            transform.SetPositionY(graphics.PreferredBackBufferHeight / 2 - sprite.SpriteTexture.Height);
         }
     }
 }
