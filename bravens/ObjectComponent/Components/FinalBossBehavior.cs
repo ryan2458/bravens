@@ -17,8 +17,17 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
         private readonly BossGun gun;
 
-        private float speed = 200.0f;
+        private TimeSpan timer;
+        private int timerInSeconds;
+
+        private float speed = 800.0f;
         private int xDirection = 1;
+        private int newPositionCooldownInSeconds = 3;
+
+        private int _timeLastCheckedInSeconds = 0;
+        private int _timeToSwitchNextPosition;
+        private Vector2 _currentDestination;
+        private bool _isMovingToDestination = false;
 
         public FinalBossBehavior(GameObject parent) : base(parent, nameof(FinalBossBehavior))
         {
@@ -28,16 +37,53 @@ namespace bravens.ObjectComponent.Components
 
             KeepFromTopOfScreen();
             CenterBoss();
+
+            timer = TimeSpan.Zero;
+            timerInSeconds = (int)timer.TotalSeconds;
+
+            _timeToSwitchNextPosition = timerInSeconds + newPositionCooldownInSeconds;
+            _currentDestination = transform.Position;
         }
 
         public override void Update(GameTime deltaTime)
         {
-            Vector2 movement = Vector2.Zero;
-            movement.X = xDirection;
+            timer += deltaTime.ElapsedGameTime;
+            timerInSeconds = (int)timer.TotalSeconds;
 
-            transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
+            if (timerInSeconds >= _timeToSwitchNextPosition)
+            {
+                Console.WriteLine("switch positions");
+                _currentDestination = DetermineNextPosition();
+                _timeToSwitchNextPosition = timerInSeconds + newPositionCooldownInSeconds;
+                _isMovingToDestination = true;
+            }
 
-            SwitchDirectionsIfNeeded();
+            if (_isMovingToDestination) 
+            {
+                Vector2 direction = _currentDestination - transform.Position;
+                if (direction.Length() > 10f)
+                {
+                    direction.Normalize();
+                    transform.Translate(direction * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
+                }
+                else 
+                {
+                    Console.WriteLine("Reached Position");
+                    _isMovingToDestination = false;
+                }
+            }
+
+            _timeLastCheckedInSeconds = timerInSeconds;
+        }
+
+        private Vector2 DetermineNextPosition() 
+        {
+            GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
+
+            var randMaxX = _random.Next(sprite.SpriteTexture.Width, graphics.PreferredBackBufferWidth - sprite.SpriteTexture.Width);
+            var randMaxY = _random.Next(sprite.SpriteTexture.Height, (graphics.PreferredBackBufferHeight / 2) - sprite.SpriteTexture.Height);
+
+            return new Vector2(randMaxX, randMaxY);
         }
 
         private void SwitchDirectionsIfNeeded()
