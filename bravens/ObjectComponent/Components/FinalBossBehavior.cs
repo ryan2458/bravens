@@ -55,7 +55,7 @@ namespace bravens.ObjectComponent.Components
                 _currentDestination = DetermineNextPosition();
                 _timeToSwitchNextPosition = timerInSeconds + newPositionCooldownInSeconds;
                 _isMovingToDestination = true;
-                gun.CreateAndFireBurstProjectiles();
+                //gun.CreateAndFireBurstProjectiles();
             }
 
             if (_isMovingToDestination) 
@@ -70,7 +70,8 @@ namespace bravens.ObjectComponent.Components
                 {
                     Console.WriteLine("Reached Position");
                     _isMovingToDestination = false;
-                    gun.CreateAndFireBurstProjectiles();
+                    //gun.CreateAndFireBurstProjectiles();
+                    gun.StartSpiralAttack();
                 }
             }
 

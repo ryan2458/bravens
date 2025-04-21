@@ -1,6 +1,7 @@
 ﻿using bravens.Managers;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace bravens.ObjectComponent.Components
@@ -9,16 +10,54 @@ namespace bravens.ObjectComponent.Components
     {
         private GameObjectManager GameObjectManager { get; }
 
+        private readonly Transform transform;
+
+        private float spiralDuration = 2f;
+        private float spiralTimer = 0;
+        public bool isSpiraling = false;
+        private int bulletsPerSpiral = 64;
+        private float spiralRadius = 200f;
+        private float bulletSpeed = 300f;
+
+        private int bulletsFired;
+
         private static int projectileCount = 0;
 
         public FinalBossGun(GameObject parent) : base(parent, nameof(FinalBossGun))
         {
             GameObjectManager = parent.Core.GameObjectManager;
+            transform = parent.GetComponent<Transform>();
         }
 
         public override void Update(GameTime deltaTime)
         {
-            
+            if (!isSpiraling) return;
+
+            float elapsed = (float)deltaTime.ElapsedGameTime.TotalSeconds;
+            spiralTimer += elapsed;
+
+            float progress = MathHelper.Clamp(spiralTimer / spiralDuration, 0f, 1f);
+            int targetBulletsFired = (int)(bulletsPerSpiral * progress);
+
+            while (bulletsFired < targetBulletsFired) 
+            {
+                FireSpiralProjectile(bulletsFired);
+                bulletsFired++;
+            }
+
+            if (spiralTimer >= spiralDuration) 
+            {
+                isSpiraling = false;
+                bulletsFired = 0;
+            }
+        }
+
+        public void StartSpiralAttack() 
+        {
+            if (isSpiraling) return;
+
+            spiralTimer = 0f;
+            isSpiraling = true;
         }
 
         public void CreateAndFireBurstProjectiles()
@@ -86,6 +125,22 @@ namespace bravens.ObjectComponent.Components
                 projectile.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
                 projectile.GetComponent<Transform>().Translate(position);
             }
+        }
+
+        private void FireSpiralProjectile(int bulletIndex) 
+        {
+            float angle = MathHelper.TwoPi * (bulletIndex / (float)bulletsPerSpiral * 3f);
+
+            float radius = spiralRadius * (bulletIndex / (float)bulletsPerSpiral);
+
+            Vector2 spawnPos = transform.Position + new Vector2((float)Math.Cos(angle) * radius, (float)Math.Sin(angle) * radius);
+
+            Vector2 direction = Vector2.Normalize(spawnPos - transform.Position);
+
+            GameObject projectile = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
+            projectile.GetComponent<Transform>().SetPositionXY(spawnPos.X, spawnPos.Y);
+            projectile.AddComponent(() => new FinalBossProjectile(projectile, direction));
+            projectile.AddComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
         }
     }
 }
