@@ -1,119 +1,177 @@
-﻿using bravens.ObjectComponent;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
+using bravens.ObjectComponent;
 
 namespace bravens.Managers
 {
-    public class WaveManager : BaseObject
+    public class WaveManager
     {
-        public TimeSpan globalTimer;
-        public int globalTimerInSeconds;
+        private readonly GameObjectManager _gameObjectManager;
+        private WaveConfig _waveConfig;
+        private int _currentWaveIndex;
+        private float _waveTimer;
+        private float _spawnTimer;
+        private Dictionary<string, int> _enemySpawnCounts;
+        private bool _isBossSpawned;
+        private string _currentDifficulty;
 
-        private GameCore gameCore;
-        private GameObjectManager gameObjectManager;
-
-        // Spawn times need to be in ascending order and there cannot be any repeats. If you have [5,5], it won't ever read the second 5.
-        private List<int> _enemyASpawnTimes = [5,7,10,15,18,50,51,52,53,54,55,60,61,62,63,64,65,70,71,72,73,74,75,80,81,82,83,84,85];
-        private int _enemyASpawnIndex = 0;
-
-        private List<int> _enemyBSpawnTimes = [13,19,55,56,57,58,59,60,62,64,66,68,70,71,72,73,74,75,76,77,78,79,80];
-        private int _enemyBSpawnIndex = 0;
-
-
-        private List<int> _bossSpawnTimes = [25];
-        private int _bossSpawnIndex = 0;
-
-        private List<int> _finalBossSpawnTimes = [90];
-        private int _finalBossSpawnIndex = 0;
-
-
-        private int _timeLastCheckedInSeconds = 0;
-
-        private double lastSpawnTime = 0; // for using 1, 2, 3 to debug enemies
-        private double spawnCooldown = 500; // Delay between shots in milliseconds
-
-        public WaveManager(GameCore core) : base(nameof(WaveManager))
+        public WaveManager(GameObjectManager gameObjectManager)
         {
-            gameCore = core;
-            gameObjectManager = core.GameObjectManager;
+            _gameObjectManager = gameObjectManager;
+            LoadWaveConfig();
+            _currentWaveIndex = 0;
+            _waveTimer = 0;
+            _spawnTimer = 0;
+            _enemySpawnCounts = new Dictionary<string, int>();
+            _currentDifficulty = "normal";
         }
 
-        public override void Initialize() { }
-        public override void Load() { }
-        public override void Unload() { }
-        public override void Update(GameTime deltaTime) 
+        private void LoadWaveConfig()
         {
-            globalTimer += deltaTime.ElapsedGameTime;
-            globalTimerInSeconds = (int)globalTimer.TotalSeconds;
-            
-            double currentTime = deltaTime.TotalGameTime.TotalMilliseconds;
-
-            // This is to prevent spawning multiple enemies of the same type at once
-            if (_timeLastCheckedInSeconds != globalTimerInSeconds) 
-            {
-                Console.WriteLine($"Current Spawn Timer: {globalTimerInSeconds}");
-
-                CheckEnemySpawn(_enemyASpawnTimes, ref _enemyASpawnIndex, "EnemyA");
-                CheckEnemySpawn(_enemyBSpawnTimes, ref _enemyBSpawnIndex, "EnemyB");
-                CheckEnemySpawn(_bossSpawnTimes, ref _bossSpawnIndex, "Boss");
-                CheckEnemySpawn(_finalBossSpawnTimes, ref _finalBossSpawnIndex, "FinalBoss");
-
-                _timeLastCheckedInSeconds = globalTimerInSeconds;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F1) && currentTime - lastSpawnTime >= spawnCooldown)
-            {
-                gameCore.CreateEnemyTypeA();
-                lastSpawnTime = currentTime;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F2) && currentTime - lastSpawnTime >= spawnCooldown)
-            {
-                gameCore.CreateEnemyTypeB();
-                lastSpawnTime = currentTime;
-            }
-
-                _timeLastCheckedInSeconds = globalTimerInSeconds;
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && currentTime - lastSpawnTime >= spawnCooldown)
-            {
-                gameCore.CreateBoss();
-                lastSpawnTime = currentTime;
-            }
-
-            
+            string jsonString = File.ReadAllText("Content/waves.json");
+            _waveConfig = JsonSerializer.Deserialize<WaveConfig>(jsonString);
         }
-        public override void Draw() { }
 
-        private void CheckEnemySpawn(List<int> spawnTimes, ref int currentSpawnIndex, string enemyType) 
+        public void Update(GameTime gameTime)
         {
-            if (currentSpawnIndex >= spawnTimes.Count) return;
+            if (_currentWaveIndex >= _waveConfig.waves.Count) return;
 
-            if (globalTimerInSeconds == spawnTimes[currentSpawnIndex]) 
+            var currentWave = _waveConfig.waves[_currentWaveIndex];
+            _waveTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _spawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            foreach (var enemy in currentWave.enemies)
             {
-                switch (enemyType) 
+                if (!_enemySpawnCounts.ContainsKey(enemy.type))
                 {
-                    case "EnemyA":
-                        gameCore.CreateEnemyTypeA();
-                        break;
-                    case "EnemyB":
-                        gameCore.CreateEnemyTypeB();
-                        break;
-                    case "Boss":
-                        gameCore.CreateBoss();
-                        break;
-                    case "FinalBoss":
-                        gameCore.CreateFinalBoss();
-                        break;
-                    default:
-                        Console.WriteLine("Could not find enemy type. Spawning EnemyA...");
-                        gameCore.CreateEnemyTypeA();
-                        break;
+                    _enemySpawnCounts[enemy.type] = 0;
                 }
 
-                currentSpawnIndex++;
-            }          
+                if (_enemySpawnCounts[enemy.type] < enemy.count && _spawnTimer >= enemy.spawnDelay)
+                {
+                    SpawnEnemy(enemy);
+                    _enemySpawnCounts[enemy.type]++;
+                    _spawnTimer = 0;
+                }
+            }
+
+            if (!_isBossSpawned && currentWave.boss != null && IsWaveEnemiesCleared(currentWave))
+            {
+                SpawnBoss(currentWave.boss);
+                _isBossSpawned = true;
+            }
+
+            if (_waveTimer >= currentWave.duration && IsWaveComplete(currentWave))
+            {
+                StartNextWave();
+            }
         }
+
+        private void SpawnEnemy(EnemyConfig enemy)
+        {
+            float healthMultiplier = _waveConfig.difficulties[_currentDifficulty].enemyHealthMultiplier;
+            float speedMultiplier = _waveConfig.difficulties[_currentDifficulty].enemySpeedMultiplier;
+
+            // Enemy spawning logic here
+            // Apply difficulty multipliers and create enemy based on type
+        }
+
+        private void SpawnBoss(BossConfig boss)
+        {
+            float healthMultiplier = _waveConfig.difficulties[_currentDifficulty].enemyHealthMultiplier;
+            // Boss spawning logic here
+        }
+
+        private bool IsWaveEnemiesCleared(Wave wave)
+        {
+            foreach (var enemy in wave.enemies)
+            {
+                if (_enemySpawnCounts[enemy.type] < enemy.count)
+                    return false;
+            }
+            return true;
+        }
+
+        private bool IsWaveComplete(Wave wave)
+        {
+            if (!IsWaveEnemiesCleared(wave)) return false;
+            if (wave.boss != null && !_isBossSpawned) return false;
+            // Check if all enemies are defeated
+            return true;
+        }
+
+        private void StartNextWave()
+        {
+            _currentWaveIndex++;
+            _waveTimer = 0;
+            _spawnTimer = 0;
+            _enemySpawnCounts.Clear();
+            _isBossSpawned = false;
+        }
+
+        public void SetDifficulty(string difficulty)
+        {
+            if (_waveConfig.difficulties.ContainsKey(difficulty))
+            {
+                _currentDifficulty = difficulty;
+            }
+        }
+    }
+
+    public class WaveConfig
+    {
+        public List<Wave> waves { get; set; }
+        public Dictionary<string, PowerUpConfig> powerUps { get; set; }
+        public Dictionary<string, DifficultyConfig> difficulties { get; set; }
+    }
+
+    public class Wave
+    {
+        public int id { get; set; }
+        public List<EnemyConfig> enemies { get; set; }
+        public float duration { get; set; }
+        public BossConfig boss { get; set; }
+    }
+
+    public class EnemyConfig
+    {
+        public string type { get; set; }
+        public int count { get; set; }
+        public float spawnDelay { get; set; }
+        public int health { get; set; }
+        public float dropRate { get; set; }
+        public List<string> drops { get; set; }
+    }
+
+    public class BossConfig
+    {
+        public string type { get; set; }
+        public int health { get; set; }
+        public List<BossPhase> phases { get; set; }
+    }
+
+    public class BossPhase
+    {
+        public float healthThreshold { get; set; }
+        public string attackPattern { get; set; }
+    }
+
+    public class PowerUpConfig
+    {
+        public int healAmount { get; set; }
+        public int collectionsForExtraLife { get; set; }
+        public int damage { get; set; }
+        public int radius { get; set; }
+    }
+
+    public class DifficultyConfig
+    {
+        public float enemyHealthMultiplier { get; set; }
+        public float enemySpeedMultiplier { get; set; }
+        public float playerDamageMultiplier { get; set; }
     }
 }

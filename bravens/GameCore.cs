@@ -30,7 +30,7 @@ namespace bravens
         {
             GameObjectManager = new GameObjectManager(this);
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
-            WaveManager = new WaveManager(this);
+            WaveManager = new WaveManager(GameObjectManager);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
