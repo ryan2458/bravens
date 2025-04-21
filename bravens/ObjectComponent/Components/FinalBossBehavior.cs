@@ -29,6 +29,8 @@ namespace bravens.ObjectComponent.Components
         private Vector2 _currentDestination;
         private bool _isMovingToDestination = false;
 
+        private int positionSwitchCount = 0;
+
         public FinalBossBehavior(GameObject parent) : base(parent, nameof(FinalBossBehavior))
         {
             transform = parent.GetComponent<Transform>();
@@ -52,10 +54,16 @@ namespace bravens.ObjectComponent.Components
             if (timerInSeconds >= _timeToSwitchNextPosition)
             {
                 Console.WriteLine("switch positions");
+                positionSwitchCount++;
                 _currentDestination = DetermineNextPosition();
                 _timeToSwitchNextPosition = timerInSeconds + newPositionCooldownInSeconds;
                 _isMovingToDestination = true;
-                //gun.CreateAndFireBurstProjectiles();
+
+                if (positionSwitchCount % 2 != 0) 
+                {
+                    gun.CreateAndFireBurstProjectiles();
+                }
+                
             }
 
             if (_isMovingToDestination) 
@@ -70,8 +78,15 @@ namespace bravens.ObjectComponent.Components
                 {
                     Console.WriteLine("Reached Position");
                     _isMovingToDestination = false;
-                    //gun.CreateAndFireBurstProjectiles();
-                    gun.StartSpiralAttack();
+                    if (positionSwitchCount % 2 != 0)
+                    {
+                        gun.CreateAndFireBurstProjectiles();
+                    }
+                    else 
+                    {
+                        gun.StartSpiralAttack();
+                    }
+                    
                 }
             }
 

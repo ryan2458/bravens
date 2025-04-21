@@ -135,12 +135,19 @@ namespace bravens.ObjectComponent.Components
 
             Vector2 spawnPos = transform.Position + new Vector2((float)Math.Cos(angle) * radius, (float)Math.Sin(angle) * radius);
 
-            Vector2 direction = Vector2.Normalize(spawnPos - transform.Position);
+            GameObject player = GameObjectManager.FindGameObjectByName("Player");
+            if (player != null) 
+            {
+                Vector2 playerPosition = player.GetComponent<Transform>().Position;
+                Vector2 direction = Vector2.Normalize(playerPosition - spawnPos);
 
-            GameObject projectile = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            projectile.GetComponent<Transform>().SetPositionXY(spawnPos.X, spawnPos.Y);
-            projectile.AddComponent(() => new FinalBossProjectile(projectile, direction));
-            projectile.AddComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
+                GameObject projectile = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
+                projectile.GetComponent<Transform>().SetPositionXY(spawnPos.X, spawnPos.Y);
+                projectile.AddComponent(() => new FinalBossProjectile(projectile, direction));
+                projectile.AddComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
+            }
+
+            
         }
     }
 }
