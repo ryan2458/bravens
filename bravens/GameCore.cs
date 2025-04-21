@@ -26,6 +26,9 @@ namespace bravens
 
         public SpriteBatch SpriteBatch { get; protected set; }
 
+        private Texture2D backgroundTexture;
+
+
         public GameCore()
         {
             GameObjectManager = new GameObjectManager(this);
@@ -53,7 +56,8 @@ namespace bravens
 
         protected override void LoadContent()
         {
-            
+            backgroundTexture = Content.Load<Texture2D>("Background");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -73,7 +77,17 @@ namespace bravens
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDeviceManager.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            SpriteBatch.Begin();
+
+            SpriteBatch.Draw(
+                backgroundTexture,
+                new Rectangle(0, 0, GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight),
+                Color.White
+            );
             GameObjectManager.Draw();
+
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }
