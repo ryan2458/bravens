@@ -105,7 +105,7 @@ namespace bravens
             if (IsGameOver)
             {
                 SpriteBatch.Begin();
-                SpriteBatch.DrawString(gameFont, "GAME OVER", new Vector2(400, 300), Color.Red);
+                // SpriteBatch.DrawString(gameFont, "GAME OVER", new Vector2(400, 300), Color.Red);
                 SpriteBatch.End();
             }
 
