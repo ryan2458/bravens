@@ -49,6 +49,34 @@
           }
         ]
       }
+    },
+    {
+      "id": 3,
+      "enemies": [
+        {
+          "type": "EnemyB",
+          "count": 5,
+          "spawnDelay": 0.8,
+          "health": 120,
+          "dropRate": 0.4,
+          "drops": [ "HealthPiece", "BombPiece" ]
+        }
+      ],
+      "duration": 60,
+      "boss": {
+        "type": "FinalBoss",
+        "health": 3000,
+        "phases": [
+          {
+            "healthThreshold": 0.9,
+            "attackPattern": "CircleShot"
+          },
+          {
+            "healthThreshold": 0.3,
+            "attackPattern": "SpreadShot"
+          }
+        ]
+      }
     }
   ],
   "powerUps": {
@@ -79,4 +107,3 @@
     }
   }
 }
-
