@@ -4,7 +4,6 @@ using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,10 +45,9 @@ namespace bravens.ObjectComponent.Components
 
         private void CreateAndFireProjectile() 
         {
-            var spriteSheet = GetGameObject().Core.Content.Load<Texture2D>("enemyAProjectile");
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
-            GameObject projectile = GameObjectManager.Create($"enemyAProjectile{projectileCount++}" , GetGameObject(), "blank");
-            projectile.AddComponent(() => new EnemyAProjectile(projectile, spriteSheet));
+            GameObject projectile = GameObjectManager.Create($"EnemyAProjectile{projectileCount++}" , GetGameObject(), "enemyAProjectile");
+            projectile.AddComponent<EnemyAProjectile>();
             projectile.AddComponent<Collider>();
 
             projectile.GetComponent<Collider>().Tag = CollisionTag.EnemyProjectile;

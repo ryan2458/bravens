@@ -26,15 +26,11 @@ namespace bravens
 
         public SpriteBatch SpriteBatch { get; protected set; }
 
-
-        private Texture2D backgroundTexture;
-        
         public bool IsGameOver { get; private set; } = false;
 
 
         public GameCore()
         {
-            Content.Unload();
             GameObjectManager = new GameObjectManager(this);
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
             WaveManager = new WaveManager(this);
@@ -63,8 +59,7 @@ namespace bravens
         }
         protected override void LoadContent()
         {
-            backgroundTexture = Content.Load<Texture2D>("Background");
-
+            
         }
 
         protected override void Update(GameTime gameTime)
@@ -89,18 +84,7 @@ namespace bravens
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDeviceManager.GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            SpriteBatch.Begin();
-
-            SpriteBatch.Draw(
-                backgroundTexture,
-                new Rectangle(0, 0, GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight),
-                Color.White
-            );
             GameObjectManager.Draw();
-
-
-            SpriteBatch.End();
 
             if (IsGameOver)
             {
@@ -137,7 +121,7 @@ namespace bravens
 
         public void CreateEnemyTypeA()
         {
-            GameObject enemyA = GameObjectManager.Create(null, null, "blank");
+            GameObject enemyA = GameObjectManager.Create(null, null, "square");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
             enemyA.AddComponent<Collider>();
@@ -161,7 +145,7 @@ namespace bravens
 
         public void CreateEnemyTypeB()
         {
-            GameObject enemyB = GameObjectManager.Create(null, null, "blank");
+            GameObject enemyB = GameObjectManager.Create(null, null, "square_2");
             enemyB.AddComponent<EnemyBBehaviour>();
             enemyB.AddComponent<EnemyBGun>();
             enemyB.AddComponent<Collider>();

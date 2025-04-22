@@ -38,8 +38,10 @@ namespace bravens.ObjectComponent.Components
         public override void Draw()
         {
             Vector2 origin = new Vector2(SpriteTexture.Width / 2, SpriteTexture.Height / 2);
+            spriteBatch.Begin();
             spriteBatch.Draw(SpriteTexture, Position, null, Color.White, Rotation,
-                origin, 1.0f, SpriteEffects.None, 0f);
+            origin, 1.0f, SpriteEffects.None, 0f);
+            spriteBatch.End();
         }
 
 
