@@ -41,14 +41,30 @@ namespace bravens.ObjectComponent.Components
 
         private void CreateAndFireProjectile()
         {
-            var spriteSheet = GetGameObject().Core.Content.Load<Texture2D>("PlayerProjectile"); 
-            Vector2 position = GetGameObject().GetComponent<Transform>().Position;
+            var spriteSheet = GetGameObject().Core.Content.Load<Texture2D>("PlayerProjectile");
+            Vector2 playerPosition = GetGameObject().GetComponent<Transform>().Position;
+
+            var playerSprite = GetGameObject().GetComponent<Sprite>();
+            float playerWidth = playerSprite.SpriteTexture.Width;
+            float playerHeight = playerSprite.SpriteTexture.Height;
+
+            float projectileWidth = spriteSheet.Width;
+            float projectileHeight = spriteSheet.Height;
+
+            Vector2 projectilePosition = new Vector2(
+                playerPosition.X - (playerWidth / 4) + (projectileWidth / 4),
+                playerPosition.Y - (playerHeight / 2) + (projectileHeight / 2)
+            );
+
             GameObject projectile = GameObjectManager.Create($"PlayerProjectile{projectileCount++}", GetGameObject(), "blank");
+
             projectile.AddComponent(() => new PlayerProjectile(projectile, spriteSheet));
             projectile.AddComponent<Collider>();
-            projectile.GetComponent<Collider>().Tag = Enums.CollisionTag.PlayerProjectile;
+
+
             Transform transform = projectile.GetComponent<Transform>();
-            transform.Translate(position);
+            transform.Translate(projectilePosition);
         }
+
     }
 }

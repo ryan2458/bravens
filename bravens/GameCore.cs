@@ -31,6 +31,7 @@ namespace bravens
 
         public GameCore()
         {
+            Content.Unload();
             GameObjectManager = new GameObjectManager(this);
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
             WaveManager = new WaveManager(this);
@@ -117,7 +118,7 @@ namespace bravens
 
         public void CreateEnemyTypeA()
         {
-            GameObject enemyA = GameObjectManager.Create(null, null, "square");
+            GameObject enemyA = GameObjectManager.Create(null, null, "blank");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
             enemyA.AddComponent<Collider>();
@@ -141,7 +142,7 @@ namespace bravens
 
         public void CreateEnemyTypeB()
         {
-            GameObject enemyB = GameObjectManager.Create(null, null, "square_2");
+            GameObject enemyB = GameObjectManager.Create(null, null, "blank");
             enemyB.AddComponent<EnemyBBehaviour>();
             enemyB.AddComponent<EnemyBGun>();
             enemyB.AddComponent<Collider>();
