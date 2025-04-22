@@ -26,7 +26,10 @@ namespace bravens
 
         public SpriteBatch SpriteBatch { get; protected set; }
 
+
         private Texture2D backgroundTexture;
+        
+        public bool IsGameOver { get; private set; } = false;
 
 
         public GameCore()
@@ -54,7 +57,10 @@ namespace bravens
 
             base.Initialize();
         }
-
+        public void TriggerGameOver()
+        {
+            IsGameOver = true;
+        }
         protected override void LoadContent()
         {
             backgroundTexture = Content.Load<Texture2D>("Background");
@@ -72,6 +78,11 @@ namespace bravens
             WaveManager.Update(gameTime);
             CollisionManager.CheckCollisions();
 
+            if (LivesManager.Lives <= 0)
+            {
+                TriggerGameOver();
+            }
+
             base.Update(gameTime);
         }
 
@@ -88,7 +99,15 @@ namespace bravens
             );
             GameObjectManager.Draw();
 
+
             SpriteBatch.End();
+
+            if (IsGameOver)
+            {
+                SpriteBatch.Begin();
+                SpriteBatch.DrawString(gameFont, "GAME OVER", new Vector2(400, 300), Color.Red);
+                SpriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }
@@ -129,7 +148,7 @@ namespace bravens
         }
 
         public void CreateBoss()
-        {
+        {                                                                                                                                                                                                
             GameObject boss = GameObjectManager.Create(null, null, "boss");
             boss.AddComponent<BossBehavior>();
             boss.AddComponent<BossGun>();
@@ -155,11 +174,11 @@ namespace bravens
         public void CreateFinalBoss() 
         {
             GameObject finalBoss = GameObjectManager.Create(null, null, "boss");
-            finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<FinalBossGun>();
+            finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<Collider>();
             finalBoss.AddComponent(() => new Health(finalBoss, 200));
-            finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 25f));
+            finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 60f));
 
             finalBoss.GetComponent<Collider>().Tag= CollisionTag.Enemy;
         }
