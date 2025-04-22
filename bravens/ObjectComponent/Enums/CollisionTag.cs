@@ -13,6 +13,5 @@ namespace bravens.ObjectComponent.Enums
         Enemy,
         EnemyProjectile,
         PlayerProjectile,
-        Blank,
     }
 }

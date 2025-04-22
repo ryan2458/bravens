@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
-
 
 namespace bravens.ObjectComponent.Components
 {
@@ -16,8 +14,6 @@ namespace bravens.ObjectComponent.Components
 
         private readonly Sprite sprite;
         //private readonly EnemyBGun gun;
-
-        private Animation animation;
 
         private float speed = 30.0f;
         private int yDirection = 1;
@@ -29,24 +25,13 @@ namespace bravens.ObjectComponent.Components
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
             //gun = parent.GetComponent<EnemyBGun>();
-            var spriteSheet = parent.Core.Content.Load<Texture2D>("enemy-medium");
-
-            animation = new Animation(
-            this,
-            spriteSheet,
-            frameWidth: 128,
-            frameHeight: 64,
-            frameCount: 2,
-            frameTime: 0.2f
-            );
-
+            
             transform.SetPositionX(random.Next(sprite.SpriteTexture.Width / 2, graphics.PreferredBackBufferWidth - sprite.SpriteTexture.Width / 2));
         }
 
         public override void Update(GameTime deltaTime)
         {
             Vector2 movement = Vector2.Zero;
-            animation.Update(deltaTime);
             movement.Y = 1;
 
             transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
@@ -64,12 +49,6 @@ namespace bravens.ObjectComponent.Components
                 Random random = new Random();
                 transform.SetPositionX(random.Next(sprite.SpriteTexture.Width / 2, graphics.PreferredBackBufferWidth - sprite.SpriteTexture.Width / 2));
             }
-        }
-
-        public override void Draw()
-        {
-            var spriteBatch = GetGameObject().Core.SpriteBatch;
-            animation.Draw(spriteBatch, transform.Position);
         }
     }
 }

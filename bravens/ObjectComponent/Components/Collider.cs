@@ -26,13 +26,7 @@ namespace bravens.ObjectComponent.Components
         /// <summary>
         /// Gets or sets the radius of the collider.
         /// </summary>
-        // public float Radius { get; set; } = 25.0f;
-
-        /// <summary>
-        /// Gets or sets the hitbox of the collider.
-        /// </summary>
-        public Rectangle Hitbox { get; private set; }
-
+        public float Radius { get; set; } = 25.0f;
 
         public CollisionTag Tag { get; set; } = CollisionTag.None;
 
@@ -49,28 +43,14 @@ namespace bravens.ObjectComponent.Components
             Transform = parent.GetComponent<Transform>();
             Position = Transform.Position;
 
-            Hitbox = new Rectangle(
-            (int)Position.X,
-            (int)Position.Y,
-            sprite.SpriteTexture.Width,
-            sprite.SpriteTexture.Height
-        );
-
             // get an approximate radius.  We'll use sprites that have roughly even heights and widths.
-            // Radius = Math.Min(sprite.SpriteTexture.Height, sprite.SpriteTexture.Width) / 2;
+            Radius = Math.Min(sprite.SpriteTexture.Height, sprite.SpriteTexture.Width) / 2;
             CollisionManager.RegisterCollider(this);
         }
 
         public override void Update(GameTime deltaTime)
         {
             Position = Transform.Position;
-
-            Hitbox = new Rectangle(
-            (int)Position.X,
-            (int)Position.Y,
-            Hitbox.Width,
-            Hitbox.Height
-            );
         }
 
         public override void Unload()

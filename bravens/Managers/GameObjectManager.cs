@@ -73,7 +73,7 @@ namespace bravens.Managers
 
         public GameObject Create(string objectName = null, GameObject parent = null, string texturePath = null)
         {
-            if (texturePath == null) texturePath = "Player";
+            if (texturePath == null) texturePath = "ball";
 
             GameObject newGameObject = new GameObject(gameCore, parent, objectName);
             newGameObject.AddComponent<Transform>();
