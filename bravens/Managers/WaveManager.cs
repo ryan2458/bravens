@@ -84,7 +84,7 @@ namespace bravens.Managers
 
             if (Keyboard.GetState().IsKeyDown(Keys.F4) && currentTime - lastSpawnTime >= spawnCooldown)
             {
-                gameCore.CreateLifeToken();
+                gameCore.CreateLifeToken(500, 500);
                 lastSpawnTime = currentTime;
             }
 

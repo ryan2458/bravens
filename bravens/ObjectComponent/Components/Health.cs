@@ -1,5 +1,6 @@
 ﻿using bravens.Managers;
 using bravens.ObjectComponent.Objects;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace bravens.ObjectComponent.Components
     public class Health : Component
     {
         private readonly GameObjectManager gameObjectManager;
+
+        private readonly GameCore core;
 
         public int MaxHealth { get; }
 
@@ -25,6 +28,7 @@ namespace bravens.ObjectComponent.Components
             CurrentHealth = maxHealth;
 
             gameObjectManager = parent.Core.GameObjectManager;
+            core = parent.Core;
         }
 
         public void DamageUnit(int damageAmount)
@@ -52,6 +56,13 @@ namespace bravens.ObjectComponent.Components
 
         public void Die()
         {
+            Random rand = new Random();
+            int lifeChance = rand.Next(0, 19);
+            System.Console.WriteLine(GetGameObject().GetComponent<PlayerControls>());
+            if(lifeChance == 0 && GetGameObject().GetComponent<PlayerControls>() == null)
+            {
+                core.CreateLifeToken(GetGameObject().GetComponent<Transform>().Position.X, GetGameObject().GetComponent<Transform>().Position.Y);
+            }
             Died(this, GetGameObject());
             Died = null; // clear subscriptions before we delete this game object.
             gameObjectManager.Destroy(GetGameObject());

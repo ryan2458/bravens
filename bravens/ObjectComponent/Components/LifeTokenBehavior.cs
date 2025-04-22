@@ -20,7 +20,7 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
 
 
-        private float speed = 200.0f;
+        private float speed = 100.0f;
         private int lifeValue = 1;
 
         public LifeTokenBehavior(GameObject parent) : base(parent, nameof(LifeTokenBehavior))

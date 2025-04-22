@@ -150,9 +150,9 @@ namespace bravens
             finalBoss.GetComponent<Collider>().Tag= CollisionTag.Enemy;
         }
 
-        public void CreateLifeToken()
+        public void CreateLifeToken(float x, float y)
         {
-            Vector2 pos = new Vector2(500,500);
+            Vector2 pos = new Vector2(x,y);
             GameObject lifeToken = GameObjectManager.Create(pos, null, "square_2");
             lifeToken.AddComponent<LifeTokenBehavior>();
             lifeToken.AddComponent<Collider>();
