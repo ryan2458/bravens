@@ -14,9 +14,10 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
         private readonly Vector2 direction;
 
-        private readonly float speed = 200.0f;
+        private readonly float speed = 400.0f;
 
         private int projectileDamage = 10;
+        private float pushForce = 300f;
 
         public FinalBossHeavyProjectile(GameObject parent, Vector2 direction) : base(parent, nameof(FinalBossHeavyProjectile))
         {
@@ -51,6 +52,20 @@ namespace bravens.ObjectComponent.Components
         /// <inheritdoc />
         public void OnCollisionEnter(Collider collider)
         {
+            if (collider.Tag == Enums.CollisionTag.EnemyProjectile) 
+            {
+                GameObject otherProjectile = collider.GetGameObject();
+
+                Vector2 pushDirection = this.direction;
+                
+                var otherProjectileComponent = otherProjectile.GetComponent<FinalBossProjectile>();
+                if (otherProjectileComponent != null)
+                {
+                    Transform otherTransform = otherProjectile.GetComponent<Transform>();
+                    otherTransform.Translate(pushDirection * pushForce * 0.1f);
+                }
+            }
+
             if (collider.Tag == Enums.CollisionTag.Player)
             {
                 collider.GetGameObject().GetComponent<Health>().DamageUnit(projectileDamage);

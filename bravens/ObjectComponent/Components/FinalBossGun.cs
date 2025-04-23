@@ -127,6 +127,18 @@ namespace bravens.ObjectComponent.Components
             }
         }
 
+        public void CreateAndFireHeavyProjectile() 
+        {
+            Vector2 position = GetGameObject().GetComponent<Transform>().Position;
+
+            GameObject projectile = GameObjectManager.Create($"FinalBossHeavyProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-large");
+
+            projectile.AddComponent(() => new FinalBossHeavyProjectile(projectile, new Vector2(0, 1)));
+            projectile.AddComponent<Collider>();
+            projectile.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectileHeavy;
+            projectile.GetComponent<Transform>().Translate(position);
+        }
+        
         private void FireSpiralProjectile(int bulletIndex) 
         {
             float angle = MathHelper.TwoPi * (bulletIndex / (float)bulletsPerSpiral * 3f);
@@ -146,8 +158,7 @@ namespace bravens.ObjectComponent.Components
                 projectile.AddComponent(() => new FinalBossProjectile(projectile, direction));
                 projectile.AddComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
             }
-
-            
         }
+
     }
 }

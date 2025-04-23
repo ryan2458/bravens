@@ -62,6 +62,7 @@ namespace bravens.ObjectComponent.Components
                 if (positionSwitchCount % 2 != 0) 
                 {
                     gun.CreateAndFireBurstProjectiles();
+                    gun.CreateAndFireHeavyProjectile();
                 }
                 
             }
@@ -81,10 +82,12 @@ namespace bravens.ObjectComponent.Components
                     if (positionSwitchCount % 2 != 0)
                     {
                         gun.CreateAndFireBurstProjectiles();
+                        gun.CreateAndFireHeavyProjectile();
                     }
                     else 
                     {
                         gun.StartSpiralAttack();
+                        gun.CreateAndFireHeavyProjectile();
                     }
                     
                 }
