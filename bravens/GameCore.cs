@@ -174,7 +174,7 @@ namespace bravens
 
         public void CreateFinalBoss() 
         {
-            GameObject finalBoss = GameObjectManager.Create(null, null, "boss");
+            GameObject finalBoss = GameObjectManager.Create(null, null, "FinalBoss-large");
             finalBoss.AddComponent<FinalBossGun>();
             finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<Collider>();
@@ -187,7 +187,7 @@ namespace bravens
         public void CreateLifeToken(float x, float y)
         {
             Vector2 pos = new Vector2(x,y);
-            GameObject lifeToken = GameObjectManager.Create(pos, null, "square_2");
+            GameObject lifeToken = GameObjectManager.Create(pos, null, "plus");
             lifeToken.AddComponent<LifeTokenBehavior>();
             lifeToken.AddComponent<Collider>();
             lifeToken.AddComponent(() => new EnemyDuration(this, lifeToken, 10f));
