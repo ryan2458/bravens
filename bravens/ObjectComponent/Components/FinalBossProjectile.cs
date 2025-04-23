@@ -17,25 +17,27 @@ namespace bravens.ObjectComponent.Components
 
         private readonly Transform transform;
         private readonly Sprite sprite;
+        private readonly Vector2 direction;
 
-        private readonly float speed = 500.0f + new Random().Next(-5, 3);
+        private readonly float speed = 200.0f + new Random().Next(-5, 3);
 
         private readonly float yOffset = GetRandomYOffset();
 
         private int projectileDamage = 10;
 
-        public FinalBossProjectile(GameObject parent) : base(parent, nameof(FinalBossProjectile))
+        public FinalBossProjectile(GameObject parent, Vector2 direction) : base(parent, nameof(FinalBossProjectile))
         {
             GameObjectManager = parent.Core.GameObjectManager;
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
+           this.direction = direction;
         }
 
         public override void Update(GameTime deltaTime)
         {
             GameObject projectileGameObject = GetGameObject();
             Transform transform = projectileGameObject.GetComponent<Transform>();
-            transform.Translate(new Vector2(yOffset, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+            transform.Translate(direction * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
 
             if (!GameBounds.IsGameObjectVisible(projectileGameObject))
             {

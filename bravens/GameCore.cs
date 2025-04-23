@@ -26,8 +26,15 @@ namespace bravens
 
         public SpriteBatch SpriteBatch { get; protected set; }
 
+
+        private Texture2D backgroundTexture;
+        
+        public bool IsGameOver { get; private set; } = false;
+
+
         public GameCore()
         {
+            Content.Unload();
             GameObjectManager = new GameObjectManager(this);
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
             WaveManager = new WaveManager(this);
@@ -50,10 +57,14 @@ namespace bravens
 
             base.Initialize();
         }
-
+        public void TriggerGameOver()
+        {
+            IsGameOver = true;
+        }
         protected override void LoadContent()
         {
-            
+            backgroundTexture = Content.Load<Texture2D>("Background");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -67,13 +78,36 @@ namespace bravens
             WaveManager.Update(gameTime);
             CollisionManager.CheckCollisions();
 
+            if (LivesManager.Lives <= 0)
+            {
+                TriggerGameOver();
+            }
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDeviceManager.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            SpriteBatch.Begin();
+
+            SpriteBatch.Draw(
+                backgroundTexture,
+                new Rectangle(0, 0, GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight),
+                Color.White
+            );
             GameObjectManager.Draw();
+
+
+            SpriteBatch.End();
+
+            if (IsGameOver)
+            {
+                SpriteBatch.Begin();
+                // SpriteBatch.DrawString(gameFont, "GAME OVER", new Vector2(400, 300), Color.Red);
+                SpriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }
@@ -104,7 +138,7 @@ namespace bravens
 
         public void CreateEnemyTypeA()
         {
-            GameObject enemyA = GameObjectManager.Create(null, null, "square");
+            GameObject enemyA = GameObjectManager.Create(null, null, "blank");
             enemyA.AddComponent<EnemyABehaviour>();
             enemyA.AddComponent<EnemyAGun>();
             enemyA.AddComponent<Collider>();
@@ -115,7 +149,7 @@ namespace bravens
         }
 
         public void CreateBoss()
-        {
+        {                                                                                                                                                                                                
             GameObject boss = GameObjectManager.Create(null, null, "boss");
             boss.AddComponent<BossBehavior>();
             boss.AddComponent<BossGun>();
@@ -128,7 +162,7 @@ namespace bravens
 
         public void CreateEnemyTypeB()
         {
-            GameObject enemyB = GameObjectManager.Create(null, null, "square_2");
+            GameObject enemyB = GameObjectManager.Create(null, null, "blank");
             enemyB.AddComponent<EnemyBBehaviour>();
             enemyB.AddComponent<EnemyBGun>();
             enemyB.AddComponent<Collider>();
@@ -141,11 +175,11 @@ namespace bravens
         public void CreateFinalBoss() 
         {
             GameObject finalBoss = GameObjectManager.Create(null, null, "boss");
-            finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<FinalBossGun>();
+            finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<Collider>();
             finalBoss.AddComponent(() => new Health(finalBoss, 200));
-            finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 25f));
+            finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 60f));
 
             finalBoss.GetComponent<Collider>().Tag= CollisionTag.Enemy;
         }
