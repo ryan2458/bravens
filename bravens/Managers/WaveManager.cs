@@ -99,7 +99,7 @@ namespace bravens.Managers
 
             if (_timeLastCheckedInSeconds != globalTimerInSeconds)
             {
-                Console.WriteLine($"⏱ Time: {globalTimerInSeconds}s | 🌊 Wave: {_currentWaveIndex + 1}");
+                Console.WriteLine($"Time: {globalTimerInSeconds}s | Wave: {_currentWaveIndex + 1}");
 
                 foreach (var kvp in _enemySpawnCounts)
                 {
@@ -154,6 +154,12 @@ namespace bravens.Managers
                 case "EnemyB":
                     gameCore.CreateEnemyTypeB();
                     break;
+                case "Boss":
+                    gameCore.CreateBoss();
+                    break;
+                case "FinalBoss":
+                    gameCore.CreateFinalBoss();
+                    break;
                 default:
                     Console.WriteLine("Unknown enemy type: " + enemy.type);
                     break;
@@ -168,7 +174,7 @@ namespace bravens.Managers
             gameCore.CreateBoss();
         }
 
-        private void SpawnFinalBoss(BossConfig boss)
+        private void SpawnFinalBoss(BossConfig finalboss)
         {
             float healthMultiplier = _waveConfig.difficulties[_currentDifficulty].enemyHealthMultiplier;
             // Extend boss logic if multiple boss types are supported
@@ -202,7 +208,7 @@ namespace bravens.Managers
             _enemySpawnCounts.Clear();
             _isBossSpawned = false;
             _isFinalBossSpawned = false;
-            Console.WriteLine($" Starting Wave {_currentWaveIndex} complete. Starting wave {_currentWaveIndex + 1}.");
+            Console.WriteLine($"Wave {_currentWaveIndex} complete. Starting wave {_currentWaveIndex + 1}.");
         }
 
         public void SetDifficulty(string difficulty)

@@ -28,6 +28,7 @@ namespace bravens
 
         public bool IsGameOver { get; private set; } = false;
 
+        private SpriteFont gameFont;
 
         public GameCore()
         {
@@ -59,7 +60,8 @@ namespace bravens
         }
         protected override void LoadContent()
         {
-            
+            gameFont = Content.Load<SpriteFont>("gameFont");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -89,7 +91,7 @@ namespace bravens
             if (IsGameOver)
             {
                 SpriteBatch.Begin();
-                SpriteBatch.DrawString(gameFont, "GAME OVER", new Vector2(400, 300), Color.Red);
+                SpriteBatch.DrawString(gameFont, "GAME OVER! ", new Vector2(200, 300), Color.Red);
                 SpriteBatch.End();
             }
 
