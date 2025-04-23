@@ -175,7 +175,7 @@ namespace bravens.Managers
 
             switch (boss.type) 
             {
-                case "Boss1":
+                case "Boss":
                     Console.WriteLine("Spawning Boss!");
                     gameCore.CreateBoss();
                     break;

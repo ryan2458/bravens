@@ -59,42 +59,19 @@
     {
       "id": 5,
       "enemies": [
-        {
-          "type": "EnemyA",
-          "count": 3,
-          "spawnDelay": 0.8,
-          "health": 120,
-          "dropRate": 0.4,
-          "drops": [ "HealthPiece", "BombPiece" ]
-        }
       ],
       "boss": {
         "type": "Boss",
+        "count": 2,
+        "spawnDelay": 0.3,
         "health": 1000,
-        "phases": [
-          {
-            "healthThreshold": 0.7,
-            "attackPattern": "CircleShot"
-          },
-          {
-            "healthThreshold": 0.3,
-            "attackPattern": "SpreadShot"
-          }
-        ]
+        "dropRate":  0.4
       },
       "duration": 5
     },
     {
       "id": 6,
       "enemies": [
-        {
-          "type": "EnemyB",
-          "count": 5,
-          "spawnDelay": 0.8,
-          "health": 120,
-          "dropRate": 0.4,
-          "drops": [ "HealthPiece", "BombPiece" ]
-        }
       ],
       "boss": {
         "type": "FinalBoss",
@@ -106,11 +83,19 @@
           },
           {
             "healthThreshold": 0.3,
+            "attackPattern": "TargetPlayerSequence"
+          },
+          {
+            "healthThreshold": 0.9,
+            "attackPattern": "SpiralSequence"
+          },
+          {
+            "healthThreshold": 0.3,
             "attackPattern": "HeavySequence"
           }
         ]
       },
-      "duration": 7
+      "duration": 100
     }
   ],
   "powerUps": {
