@@ -46,8 +46,8 @@ namespace bravens.Managers
 
         private static bool IsColliding(Collider a, Collider b)
         {
-            // return Vector2.Distance(a.Position, b.Position) < (a.Radius + b.Radius);
-            return a.Hitbox.Intersects(b.Hitbox);
+            return Vector2.Distance(a.Position, b.Position) < (a.Radius + b.Radius);
+            // return a.Hitbox.Intersects(b.Hitbox);
         }
     }
 }

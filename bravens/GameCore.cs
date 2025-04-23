@@ -62,6 +62,7 @@ namespace bravens
         public void TriggerGameOver()
         {
             IsGameOver = true;
+            GameObjectManager.ClearAllObjects();
         }
         protected override void LoadContent()
         {
@@ -79,11 +80,6 @@ namespace bravens
 
             WaveManager.Update(gameTime);
             CollisionManager.CheckCollisions();
-
-            if (LivesManager.Lives <= 0)
-            {
-                TriggerGameOver();
-            }
 
             base.Update(gameTime);
         }
@@ -175,6 +171,7 @@ namespace bravens
             enemyB.AddComponent(() => new EnemyDuration(this, enemyB, 10f));
 
             enemyB.GetComponent<Collider>().Tag = CollisionTag.Enemy;
+            enemyB.GetComponent<Collider>().Radius = 64;
         }
 
         public void CreateFinalBoss() 
