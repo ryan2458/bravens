@@ -87,8 +87,19 @@ namespace bravens.Managers
 
         public void Destroy(GameObject gameObject)
         {
-            gameObject.Unload();
-            GameObjects.Remove(gameObject);
+            if (gameObject != null)
+            {
+                gameObject.Unload();
+                GameObjects.Remove(gameObject);
+            }
+        }
+        public void ClearAllObjects()
+        {
+            // Create a copy of the list to avoid modification during iteration
+            foreach (var gameObject in GameObjects.ToList())
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
