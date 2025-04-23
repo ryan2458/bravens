@@ -131,12 +131,52 @@ namespace bravens.ObjectComponent.Components
         {
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
 
-            GameObject projectile = GameObjectManager.Create($"FinalBossHeavyProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-large");
+            GameObject projectile1 = GameObjectManager.Create($"FinalBossHeavyProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-large");
+            GameObject projectile2 = GameObjectManager.Create($"FinalBossHeavyProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-large");
+            GameObject projectile3 = GameObjectManager.Create($"FinalBossHeavyProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-large");
+            GameObject projectile4 = GameObjectManager.Create($"FinalBossHeavyProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-large");
+  
 
-            projectile.AddComponent(() => new FinalBossHeavyProjectile(projectile, new Vector2(0, 1)));
-            projectile.AddComponent<Collider>();
-            projectile.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectileHeavy;
-            projectile.GetComponent<Transform>().Translate(position);
+            List<GameObject> projectiles = new List<GameObject>();
+            
+            projectiles.Add(projectile1);
+            projectiles.Add(projectile2);
+            projectiles.Add(projectile3);
+            projectiles.Add(projectile4);
+
+            projectile1.AddComponent(() => new FinalBossHeavyProjectile(projectile1, new Vector2(0, 1)));
+            projectile2.AddComponent(() => new FinalBossHeavyProjectile(projectile2, new Vector2(0, -1)));
+            projectile3.AddComponent(() => new FinalBossHeavyProjectile(projectile3, new Vector2(1, 0)));
+            projectile4.AddComponent(() => new FinalBossHeavyProjectile(projectile4, new Vector2(-1, 0)));
+
+            foreach (var projectile in projectiles)
+            {
+                projectile.AddComponent<Collider>();
+                projectile.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
+                projectile.GetComponent<Transform>().Translate(position);
+            }
+        }
+
+        public void CreateAndFireCircularBurstProjectiles(int projectilesToSpawn = 64, float radius = 5f) 
+        {
+            Vector2 centerPosition = GetGameObject().GetComponent<Transform>().Position;
+
+            for (int i = 0; i < projectilesToSpawn; i++)
+            {
+                float angle = MathHelper.TwoPi * (i / (float)projectilesToSpawn);
+
+                Vector2 spawnPos = centerPosition + new Vector2(
+                    (float)Math.Cos(angle) * radius,
+                    (float)Math.Sin(angle) * radius
+                );
+
+                Vector2 direction = Vector2.Normalize(spawnPos - centerPosition);
+
+                GameObject projectile = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+                projectile.GetComponent<Transform>().SetPositionXY(spawnPos.X, spawnPos.Y);
+                projectile.AddComponent(() => new FinalBossProjectile(projectile, direction));
+                projectile.AddComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
+            }
         }
         
         private void FireSpiralProjectile(int bulletIndex) 

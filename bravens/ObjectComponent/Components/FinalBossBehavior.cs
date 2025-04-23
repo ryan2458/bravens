@@ -40,6 +40,11 @@ namespace bravens.ObjectComponent.Components
         private bool _phasesInitialized = false;
         private BossPhase _currentPhase;
 
+        // Heavy Sequence
+        private float _heavyProjectileDelayTimer = 0f;
+        private float _heavyProjectileWaitDuration = 1f;
+        private bool _shouldFireHeavyProjectile = false;
+
         public FinalBossBehavior(GameObject parent) : base(parent, nameof(FinalBossBehavior))
         {
             transform = parent.GetComponent<Transform>();
@@ -61,7 +66,7 @@ namespace bravens.ObjectComponent.Components
 
             _phaseTimer += (float)deltaTime.ElapsedGameTime.TotalSeconds;
 
-            Console.WriteLine($"PhaseTimer: {_phaseTimer}");
+            //Console.WriteLine($"PhaseTimer: {_phaseTimer}");
 
             if (_phaseTimer >= _phaseDuration && _currentPhaseIndex < _phases.Count - 1) 
             {
@@ -80,6 +85,7 @@ namespace bravens.ObjectComponent.Components
                     break;
 
                 case "HeavySequence":
+                    ExecuteHeavySequencePhase(deltaTime);
                     break;
             }
 
@@ -144,6 +150,54 @@ namespace bravens.ObjectComponent.Components
                         gun.StartSpiralAttack();
                     }
 
+                }
+            }
+
+            _timeLastCheckedInSeconds = timerInSeconds;
+        }
+
+        private void ExecuteHeavySequencePhase(GameTime deltaTime)
+        {
+            timer += deltaTime.ElapsedGameTime;
+            timerInSeconds = (int)timer.TotalSeconds;
+
+            if (timerInSeconds >= _timeToSwitchNextPosition)
+            {
+                Console.WriteLine("switch positions");
+                positionSwitchCount++;
+                _currentDestination = DetermineNextPosition();
+                _timeToSwitchNextPosition = timerInSeconds + newPositionCooldownInSeconds;
+                _isMovingToDestination = true;
+            }
+
+            if (_isMovingToDestination)
+            {
+                Vector2 direction = _currentDestination - transform.Position;
+                if (direction.Length() > 10f)
+                {
+                    direction.Normalize();
+                    transform.Translate(direction * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
+                }
+                else
+                {
+                    Console.WriteLine("Reached Position");
+                    _isMovingToDestination = false;
+
+                    gun.CreateAndFireCircularBurstProjectiles();
+  
+                    _heavyProjectileDelayTimer = _heavyProjectileWaitDuration;
+                    _shouldFireHeavyProjectile = true;
+                }
+            }
+
+            // Handle delayed heavy projectile firing
+            if (_shouldFireHeavyProjectile)
+            {
+                _heavyProjectileDelayTimer -= (float)deltaTime.ElapsedGameTime.TotalSeconds;
+                if (_heavyProjectileDelayTimer <= 0f)
+                {
+                    gun.CreateAndFireHeavyProjectile();
+                    _shouldFireHeavyProjectile = false;
                 }
             }
 

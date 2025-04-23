@@ -19,7 +19,7 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
         private readonly Vector2 direction;
 
-        private readonly float speed = 200.0f + new Random().Next(-5, 3);
+        private readonly float speed = 150.0f + new Random().Next(-5, 3);
 
         private readonly float yOffset = GetRandomYOffset();
 

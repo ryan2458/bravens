@@ -13,11 +13,11 @@
         "phases": [
           {
             "healthThreshold": 0.9,
-            "attackPattern": "SpiralSequence"
+            "attackPattern": "HeavySequence"
           },
           {
             "healthThreshold": 0.3,
-            "attackPattern": "HeavySequence"
+            "attackPattern": "SpiralSequence"
           }
         ]
       }
