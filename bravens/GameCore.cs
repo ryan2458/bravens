@@ -123,6 +123,7 @@ namespace bravens
             player.AddComponent(() => new Health(player, 1));
 
             player.GetComponent<Health>().Died += LivesManager.PlayerDiedEventHandler;
+            player.GetComponent<Health>().LifeUp += LivesManager.PlayerHealedEventHandler;
 
             Console.WriteLine("Invincibility Started");
             Task.Run(async () =>
@@ -181,6 +182,17 @@ namespace bravens
             finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 60f));
 
             finalBoss.GetComponent<Collider>().Tag= CollisionTag.Enemy;
+        }
+
+        public void CreateLifeToken(float x, float y)
+        {
+            Vector2 pos = new Vector2(x,y);
+            GameObject lifeToken = GameObjectManager.Create(pos, null, "square_2");
+            lifeToken.AddComponent<LifeTokenBehavior>();
+            lifeToken.AddComponent<Collider>();
+            lifeToken.AddComponent(() => new EnemyDuration(this, lifeToken, 10f));
+
+            lifeToken.GetComponent<Collider>().Tag = CollisionTag.LifeToken;
         }
     }
 }

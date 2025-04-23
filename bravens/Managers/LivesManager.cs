@@ -48,6 +48,31 @@ namespace bravens.Managers
             }
         }
 
+        public void PlayerHealedEventHandler(object sender, GameObject healedObject)
+        {
+            if (Lives < 3)
+            {
+                Lives += 1;
+                Console.WriteLine($"Current Lives: {Lives}");
+
+                while(lifeIconObjects.Count >0)
+                {
+                    GameObject lifeIconObject = lifeIconObjects.LastOrDefault();
+                    Core.GameObjectManager.Destroy(lifeIconObject);
+                    lifeIconObjects.Remove(lifeIconObject);
+                }
+
+                float x = Core.GraphicsDeviceManager.PreferredBackBufferWidth - 35.0f;
+                float y = Core.GraphicsDeviceManager.PreferredBackBufferHeight - 35.0f;
+
+                for (int i = 0; i < Lives; ++i)
+                {
+                    GameObject lifeIcon = Core.GameObjectManager.Create(new Vector2(x - (i * 65), y), null, null, null);
+                    lifeIconObjects.Add(lifeIcon);
+                }
+            }
+        }
+
         public void GameOver()
         {
             Console.WriteLine("Game Over!");

@@ -131,12 +131,20 @@ namespace bravens.Managers
             {
                 gameCore.CreateBoss();
                 lastSpawnTime = currentTime;
-            }
+            } 
+
             if (Keyboard.GetState().IsKeyDown(Keys.F4) && currentTime - lastSpawnTime >= spawnCooldown)
             {
                 gameCore.CreateFinalBoss();
                 lastSpawnTime = currentTime;
             }
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.F5) && currentTime - lastSpawnTime >= spawnCooldown)
+            {
+                gameCore.CreateLifeToken(500, 500);
+                lastSpawnTime = currentTime;
+            }
+
         }
 
         public override void Draw() { }
