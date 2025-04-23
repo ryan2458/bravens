@@ -1,4 +1,5 @@
-﻿using bravens.ObjectComponent.Objects;
+﻿using bravens.Managers;
+using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,14 @@ namespace bravens.ObjectComponent.Components
 
         private int positionSwitchCount = 0;
 
+        // Phase Management
+        private List<BossPhase> _phases;
+        private int _currentPhaseIndex = 0;
+        private float _phaseDuration;
+        private float _phaseTimer = 0f;
+        private bool _phasesInitialized = false;
+        private BossPhase _currentPhase;
+
         public FinalBossBehavior(GameObject parent) : base(parent, nameof(FinalBossBehavior))
         {
             transform = parent.GetComponent<Transform>();
@@ -48,6 +57,54 @@ namespace bravens.ObjectComponent.Components
 
         public override void Update(GameTime deltaTime)
         {
+            if (!_phasesInitialized) return;
+
+            _phaseTimer += (float)deltaTime.ElapsedGameTime.TotalSeconds;
+
+            Console.WriteLine($"PhaseTimer: {_phaseTimer}");
+
+            if (_phaseTimer >= _phaseDuration && _currentPhaseIndex < _phases.Count - 1) 
+            {
+                _currentPhaseIndex++;
+                _phaseTimer = 0f;
+                OnPhaseChanged(_phases[_currentPhaseIndex]);
+                Console.WriteLine($"Boss entered phase {_currentPhaseIndex + 1}");
+            }
+            
+
+            if (_currentPhase == null) return;
+            switch (_currentPhase.attackPattern) 
+            {
+                case "SpiralSequence":
+                    ExecuteSpiralSequencePhase(deltaTime);
+                    break;
+
+                case "HeavySequence":
+                    break;
+            }
+
+            
+        }
+
+        public void InitializePhases(List<BossPhase> phases, float totalDuration) 
+        {
+            _phases = phases;
+            _phaseDuration = totalDuration / phases.Count;
+            _phasesInitialized = true;
+            _currentPhaseIndex = 0;
+            _phaseTimer = 0f;
+            OnPhaseChanged(_phases[_currentPhaseIndex]);
+            Console.WriteLine($"Boss phases initialized with {phases.Count} phases, {_phaseDuration}s each");
+        }
+
+        private void OnPhaseChanged(BossPhase newPhase) 
+        {
+            _currentPhase = newPhase;
+        }
+
+        private void ExecuteSpiralSequencePhase(GameTime deltaTime) 
+        {
+
             timer += deltaTime.ElapsedGameTime;
             timerInSeconds = (int)timer.TotalSeconds;
 
@@ -59,15 +116,14 @@ namespace bravens.ObjectComponent.Components
                 _timeToSwitchNextPosition = timerInSeconds + newPositionCooldownInSeconds;
                 _isMovingToDestination = true;
 
-                if (positionSwitchCount % 2 != 0) 
+                if (positionSwitchCount % 2 != 0)
                 {
                     gun.CreateAndFireBurstProjectiles();
-                    gun.CreateAndFireHeavyProjectile();
                 }
-                
+
             }
 
-            if (_isMovingToDestination) 
+            if (_isMovingToDestination)
             {
                 Vector2 direction = _currentDestination - transform.Position;
                 if (direction.Length() > 10f)
@@ -75,21 +131,19 @@ namespace bravens.ObjectComponent.Components
                     direction.Normalize();
                     transform.Translate(direction * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
                 }
-                else 
+                else
                 {
                     Console.WriteLine("Reached Position");
                     _isMovingToDestination = false;
                     if (positionSwitchCount % 2 != 0)
                     {
                         gun.CreateAndFireBurstProjectiles();
-                        gun.CreateAndFireHeavyProjectile();
                     }
-                    else 
+                    else
                     {
                         gun.StartSpiralAttack();
-                        gun.CreateAndFireHeavyProjectile();
                     }
-                    
+
                 }
             }
 
