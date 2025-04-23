@@ -45,6 +45,10 @@ namespace bravens.ObjectComponent.Components
         private float _heavyProjectileWaitDuration = 1f;
         private bool _shouldFireHeavyProjectile = false;
 
+        // Player Target Sequence
+        private float _projectileTimer = 0f;
+        private const float PROJECTILE_FIRE_RATE = 0.25f;
+
         public FinalBossBehavior(GameObject parent) : base(parent, nameof(FinalBossBehavior))
         {
             transform = parent.GetComponent<Transform>();
@@ -66,8 +70,6 @@ namespace bravens.ObjectComponent.Components
 
             _phaseTimer += (float)deltaTime.ElapsedGameTime.TotalSeconds;
 
-            //Console.WriteLine($"PhaseTimer: {_phaseTimer}");
-
             if (_phaseTimer >= _phaseDuration && _currentPhaseIndex < _phases.Count - 1) 
             {
                 _currentPhaseIndex++;
@@ -87,9 +89,12 @@ namespace bravens.ObjectComponent.Components
                 case "HeavySequence":
                     ExecuteHeavySequencePhase(deltaTime);
                     break;
-            }
 
-            
+                case "TargetPlayerSequence":
+                    ExecuteTargetPlayerSequence(deltaTime);
+                    break;
+
+            }
         }
 
         public void InitializePhases(List<BossPhase> phases, float totalDuration) 
@@ -190,7 +195,6 @@ namespace bravens.ObjectComponent.Components
                 }
             }
 
-            // Handle delayed heavy projectile firing
             if (_shouldFireHeavyProjectile)
             {
                 _heavyProjectileDelayTimer -= (float)deltaTime.ElapsedGameTime.TotalSeconds;
@@ -198,6 +202,46 @@ namespace bravens.ObjectComponent.Components
                 {
                     gun.CreateAndFireHeavyProjectile();
                     _shouldFireHeavyProjectile = false;
+                }
+            }
+
+            _timeLastCheckedInSeconds = timerInSeconds;
+        }
+
+        private void ExecuteTargetPlayerSequence(GameTime deltaTime)
+        {
+            timer += deltaTime.ElapsedGameTime;
+            timerInSeconds = (int)timer.TotalSeconds;
+
+            _projectileTimer += (float)deltaTime.ElapsedGameTime.TotalSeconds;
+
+            if (_projectileTimer >= PROJECTILE_FIRE_RATE)
+            {
+                gun.CreateAndFirePlayerTargetedProjectiles();
+                _projectileTimer = 0f;
+            }
+
+            if (timerInSeconds >= _timeToSwitchNextPosition)
+            {
+                Console.WriteLine("switch positions");
+                positionSwitchCount++;
+                _currentDestination = DetermineNextPosition();
+                _timeToSwitchNextPosition = timerInSeconds + newPositionCooldownInSeconds;
+                _isMovingToDestination = true;
+            }
+
+            if (_isMovingToDestination)
+            {
+                Vector2 direction = _currentDestination - transform.Position;
+                if (direction.Length() > 10f)
+                {
+                    direction.Normalize();
+                    transform.Translate(direction * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
+                }
+                else
+                {
+                    Console.WriteLine("Reached Position");
+                    _isMovingToDestination = false;
                 }
             }
 

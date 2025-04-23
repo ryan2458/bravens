@@ -135,12 +135,6 @@ namespace bravens.Managers
                 gameCore.CreateBoss();
                 lastSpawnTime = currentTime;
             } 
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F4) && currentTime - lastSpawnTime >= spawnCooldown)
-            {
-                gameCore.CreateFinalBoss();
-                lastSpawnTime = currentTime;
-            }
             
             if (Keyboard.GetState().IsKeyDown(Keys.F5) && currentTime - lastSpawnTime >= spawnCooldown)
             {

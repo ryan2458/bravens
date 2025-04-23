@@ -178,6 +178,25 @@ namespace bravens.ObjectComponent.Components
                 projectile.AddComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
             }
         }
+
+        public void CreateAndFirePlayerTargetedProjectiles() 
+        {
+            Vector2 centerPosition = GetGameObject().GetComponent<Transform>().Position;
+            Vector2 spawnPos = centerPosition;
+
+            GameObject player = GameObjectManager.FindGameObjectByName("Player");
+            if (player != null)
+            {
+                Vector2 playerPosition = player.GetComponent<Transform>().Position;
+                Vector2 direction = Vector2.Normalize(playerPosition - spawnPos);
+
+                GameObject projectile = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+                projectile.GetComponent<Transform>().Translate(spawnPos);
+                projectile.AddComponent(() => new FinalBossProjectile(projectile, direction));
+                projectile.AddComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
+            }
+            
+        }
         
         private void FireSpiralProjectile(int bulletIndex) 
         {
