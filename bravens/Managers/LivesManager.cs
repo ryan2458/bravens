@@ -39,8 +39,8 @@ namespace bravens.Managers
                 Core.GameObjectManager.Destroy(lifeIconObject);
                 lifeIconObjects.Remove(lifeIconObject);
                 Core.CreatePlayer();
-                Lives -= 1;
                 Console.WriteLine($"Current Lives: {Lives}");
+                Lives -= 1;
             }
             else
             {
@@ -76,6 +76,7 @@ namespace bravens.Managers
         public void GameOver()
         {
             Console.WriteLine("Game Over!");
+            Core.TriggerGameOver();
         }
     }
 }

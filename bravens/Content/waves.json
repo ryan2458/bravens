@@ -33,7 +33,7 @@
       "enemies": [
         {
           "type": "EnemyA",
-          "count": 6,
+          "count": 3,
           "spawnDelay": 0.3,
           "health": 100,
           "dropRate": 0.4,
@@ -61,7 +61,7 @@
       "enemies": [
         {
           "type": "EnemyA",
-          "count": 5,
+          "count": 3,
           "spawnDelay": 0.8,
           "health": 120,
           "dropRate": 0.4,

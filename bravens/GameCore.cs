@@ -63,6 +63,7 @@ namespace bravens
         public void TriggerGameOver()
         {
             IsGameOver = true;
+            GameObjectManager.ClearAllObjects();
         }
         protected override void LoadContent()
         {
@@ -80,11 +81,6 @@ namespace bravens
 
             WaveManager.Update(gameTime);
             CollisionManager.CheckCollisions();
-
-            if (LivesManager.Lives <= 0)
-            {
-                TriggerGameOver();
-            }
 
             base.Update(gameTime);
         }

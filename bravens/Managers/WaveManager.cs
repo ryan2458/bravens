@@ -55,6 +55,10 @@ namespace bravens.Managers
 
         public override void Update(GameTime gameTime)
         {
+            if (gameCore.IsGameOver)
+            {
+                return;
+            }
             globalTimer += gameTime.ElapsedGameTime;
             globalTimerInSeconds = (int)globalTimer.TotalSeconds;
             double currentTime = gameTime.TotalGameTime.TotalMilliseconds;
