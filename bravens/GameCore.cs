@@ -31,6 +31,8 @@ namespace bravens
 
         private SpriteFont gameFont;
 
+        private bool isScreenFlipped = false;
+
 
         public bool IsGameOver { get; private set; } = false;
 
@@ -93,13 +95,22 @@ namespace bravens
         {
             GraphicsDeviceManager.GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            Matrix flipMatrix = isScreenFlipped
+                ? Matrix.CreateTranslation(-GraphicsDevice.Viewport.Width / 2, -GraphicsDevice.Viewport.Height / 2, 0) *
+                Matrix.CreateScale(1, -1, 1) *
+                Matrix.CreateTranslation(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2, 0)
+                : Matrix.Identity;
+
             SpriteBatch.Begin();
+
+
 
             SpriteBatch.Draw(
                 backgroundTexture,
                 new Rectangle(0, 0, GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight),
                 Color.White
             );
+
             GameObjectManager.Draw();
 
 
