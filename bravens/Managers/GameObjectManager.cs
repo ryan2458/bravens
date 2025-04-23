@@ -30,6 +30,8 @@ namespace bravens.Managers
             {
                 GameObjects[i].Draw();
             }
+
+
         }
 
         public override void Initialize()
