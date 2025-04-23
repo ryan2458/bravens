@@ -3,15 +3,10 @@ using bravens.ObjectComponent.Interfaces;
 using bravens.ObjectComponent.Objects;
 using bravens.Utilities;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bravens.ObjectComponent.Components
 {
-    public  class FinalBossProjectile : Component, ICollisionObserver
+    internal class FinalBossHeavyProjectile : Component, ICollisionObserver
     {
         private GameObjectManager GameObjectManager { get; }
 
@@ -19,18 +14,17 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
         private readonly Vector2 direction;
 
-        private readonly float speed = 150.0f + new Random().Next(-5, 3);
-
-        private readonly float yOffset = GetRandomYOffset();
+        private readonly float speed = 400.0f;
 
         private int projectileDamage = 10;
+        private float pushForce = 300f;
 
-        public FinalBossProjectile(GameObject parent, Vector2 direction) : base(parent, nameof(FinalBossProjectile))
+        public FinalBossHeavyProjectile(GameObject parent, Vector2 direction) : base(parent, nameof(FinalBossHeavyProjectile))
         {
             GameObjectManager = parent.Core.GameObjectManager;
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
-           this.direction = direction;
+            this.direction = direction;
         }
 
         public override void Update(GameTime deltaTime)
@@ -45,10 +39,6 @@ namespace bravens.ObjectComponent.Components
             }
         }
 
-        /// <summary>
-        /// Checks if the projectile is visible on the screen. This will check for all bounds.
-        /// </summary>
-        /// <returns>Indication if the projectile is visible.</returns>
         private bool IsVisible()
         {
             GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
@@ -59,21 +49,23 @@ namespace bravens.ObjectComponent.Components
                    !(transform.Position.X < sprite.SpriteTexture.Width);
         }
 
-        /// <summary>
-        /// Generate a random number to indicate the angle which
-        /// will be between -2.5 and 2.5.
-        /// </summary>
-        /// <returns>Random yOffset for current projectile.</returns>
-        private static float GetRandomYOffset()
-        {
-            var random = new Random();
-
-            return (float)(random.NextDouble() * 5 - 2.5);
-        }
-
         /// <inheritdoc />
         public void OnCollisionEnter(Collider collider)
         {
+            if (collider.Tag == Enums.CollisionTag.EnemyProjectile) 
+            {
+                GameObject otherProjectile = collider.GetGameObject();
+
+                Vector2 pushDirection = this.direction;
+                
+                var otherProjectileComponent = otherProjectile.GetComponent<FinalBossProjectile>();
+                if (otherProjectileComponent != null)
+                {
+                    Transform otherTransform = otherProjectile.GetComponent<Transform>();
+                    otherTransform.Translate(pushDirection * pushForce * 0.1f);
+                }
+            }
+
             if (collider.Tag == Enums.CollisionTag.Player)
             {
                 collider.GetGameObject().GetComponent<Health>().DamageUnit(projectileDamage);

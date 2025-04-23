@@ -12,6 +12,7 @@ namespace bravens.ObjectComponent.Enums
         Player,
         Enemy,
         EnemyProjectile,
+        EnemyProjectileHeavy,
         PlayerProjectile,
         LifeToken,
         Blank,
