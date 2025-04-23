@@ -64,22 +64,22 @@ namespace bravens.ObjectComponent.Components
         {
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
 
-            GameObject projectile1 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile2 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile3 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile4 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile5 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile6 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile7 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile8 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile9 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile10 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile11 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile12 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile13 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile14 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile15 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile16 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
+            GameObject projectile1 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile2 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile3 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile4 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile5 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile6 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile7 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile8 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile9 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile10 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile11 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile12 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile13 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile14 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile15 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
+            GameObject projectile16 = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
 
             projectile1.AddComponent(() => new FinalBossProjectile(projectile1, new Vector2(0, 1)));
             projectile2.AddComponent(() => new FinalBossProjectile(projectile2, new Vector2(1, 0)));
@@ -141,7 +141,7 @@ namespace bravens.ObjectComponent.Components
                 Vector2 playerPosition = player.GetComponent<Transform>().Position;
                 Vector2 direction = Vector2.Normalize(playerPosition - spawnPos);
 
-                GameObject projectile = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
+                GameObject projectile = GameObjectManager.Create($"FinalBossProjectile{projectileCount++}", GetGameObject(), "finalBossProjectile-small");
                 projectile.GetComponent<Transform>().SetPositionXY(spawnPos.X, spawnPos.Y);
                 projectile.AddComponent(() => new FinalBossProjectile(projectile, direction));
                 projectile.AddComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;

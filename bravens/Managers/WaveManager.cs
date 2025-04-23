@@ -171,11 +171,24 @@ namespace bravens.Managers
         private void SpawnBoss(BossConfig boss)
         {
             float healthMultiplier = _waveConfig.difficulties[_currentDifficulty].enemyHealthMultiplier;
+
+            switch (boss.type) 
+            {
+                case "Boss1":
+                    Console.WriteLine("Spawning Boss!");
+                    gameCore.CreateBoss();
+                    break;
+                case "FinalBoss":
+                    Console.WriteLine("Spawning Final Boss!");
+                    gameCore.CreateFinalBoss();
+                    break;
+            }
+
             // Extend boss logic if multiple boss types are supported
-            Console.WriteLine("Spawning Boss!");
-            gameCore.CreateBoss();
+            
         }
 
+        // Currently unused
         private void SpawnFinalBoss(BossConfig boss)
         {
             float healthMultiplier = _waveConfig.difficulties[_currentDifficulty].enemyHealthMultiplier;
