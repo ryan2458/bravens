@@ -173,6 +173,7 @@ namespace bravens
             enemyB.AddComponent(() => new EnemyDuration(this, enemyB, 10f));
 
             enemyB.GetComponent<Collider>().Tag = CollisionTag.Enemy;
+            enemyB.GetComponent<Collider>().Radius = 64;
         }
 
         public void CreateFinalBoss() 
