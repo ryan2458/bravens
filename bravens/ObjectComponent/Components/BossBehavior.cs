@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 using System.Threading.Tasks;
 
 namespace bravens.ObjectComponent.Components
@@ -17,6 +18,8 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
         private readonly BossGun gun;
 
+        private Animation animation;
+
         private float speed = 200.0f;
         private int xDirection = 1;
 
@@ -25,7 +28,19 @@ namespace bravens.ObjectComponent.Components
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
             gun = parent.GetComponent<BossGun>();
-            
+
+            var spriteSheet = parent.Core.Content.Load<Texture2D>("boss");
+
+
+            animation = new Animation(
+            this,
+            spriteSheet,
+            frameWidth: 96,
+            frameHeight: 128,
+            frameCount: 2,
+            frameTime: 0.2f
+            );
+
             KeepFromTopOfScreen();
             CenterBoss();
         }
@@ -34,6 +49,7 @@ namespace bravens.ObjectComponent.Components
         {
             Vector2 movement = Vector2.Zero;
             movement.X = xDirection;
+            animation.Update(deltaTime);
 
             transform.Translate(movement * speed * (float)deltaTime.ElapsedGameTime.TotalSeconds);
 
@@ -72,6 +88,12 @@ namespace bravens.ObjectComponent.Components
             GraphicsDeviceManager graphics = GetGameObject().Core.GraphicsDeviceManager;
             
             transform.SetPositionX(graphics.PreferredBackBufferWidth / 2);
+        }
+
+        public override void Draw()
+        {
+            var spriteBatch = GetGameObject().Core.SpriteBatch;
+            animation.Draw(spriteBatch, transform.Position);
         }
     }
 }

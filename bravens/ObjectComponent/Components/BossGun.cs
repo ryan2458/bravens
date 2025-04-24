@@ -64,9 +64,9 @@ namespace bravens.ObjectComponent.Components
         {
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
 
-            GameObject projectile1 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile2 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile3 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
+            GameObject projectile1 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "FinalBossProjectile-small");
+            GameObject projectile2 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "finalbossProjectile-small");
+            GameObject projectile3 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "finalbossProjectile-small");
 
             projectile1.AddComponent<BossProjectile>();
             projectile2.AddComponent<BossProjectile>();
