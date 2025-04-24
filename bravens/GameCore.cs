@@ -154,7 +154,8 @@ namespace bravens
                    (float)enemyConfig.timeBetweenProjectileInSeconds,
                    enemyConfig.projectile.speed,
                    enemyConfig.projectile.projectileDamage,
-                   projectileSprite
+                   projectileSprite,
+                   enemyConfig.projectile.movement
                 )
             );
             // enemyA.AddComponent<EnemyAGun>().timeBetweenProjectileInSeconds = enemyConfig.timeBetweenProjectileInSeconds;
@@ -190,7 +191,8 @@ namespace bravens
                    (float)enemyConfig.timeBetweenProjectileInSeconds,
                    enemyConfig.projectile.speed,
                    enemyConfig.projectile.projectileDamage,
-                   projectileSprite
+                   projectileSprite,
+                   enemyConfig.projectile.movement
                 )
             );
             enemyB.AddComponent<Collider>();

@@ -21,14 +21,16 @@ namespace bravens.ObjectComponent.Components
         private float speed;
         private int projectileDamage;
         private Texture2D projectileSprite;
+        private string movementType;
 
-        public EnemyBGun(GameObject parent, float fireInterval, float speed, int projectileDamage, Texture2D projectileSprite) : base(parent, nameof(EnemyAGun))
+        public EnemyBGun(GameObject parent, float fireInterval, float speed, int projectileDamage, Texture2D projectileSprite, string MovementType) : base(parent, nameof(EnemyAGun))
         {
             GameObjectManager = parent.Core.GameObjectManager;
             this.timeBetweenProjectileInSeconds = fireInterval;
             this.speed = speed;
             this.projectileDamage = projectileDamage;
             this.projectileSprite = projectileSprite;
+            this.movementType = MovementType;
         }
 
         public override void Update(GameTime deltaTime)
@@ -50,8 +52,8 @@ namespace bravens.ObjectComponent.Components
             var spriteSheet = GetGameObject().Core.Content.Load<Texture2D>("enemyBProjectile");
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
             GameObject projectile = GameObjectManager.Create($"enemyBProjectile{projectileCount++}", GetGameObject(), "blank");
-            projectile.AddComponent(() => new EnemyAProjectile(projectile, spriteSheet));
-            var projectileComponent = projectile.AddComponent(() => new EnemyBProjectile(projectile, projectileSprite));
+            projectile.AddComponent(() => new EnemyBProjectile(projectile, spriteSheet, movementType));
+            var projectileComponent = projectile.AddComponent(() => new EnemyBProjectile(projectile, projectileSprite, movementType));
             projectileComponent.speed = speed;
             projectileComponent.projectileDamage = projectileDamage;
             projectile.AddComponent<Collider>();

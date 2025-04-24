@@ -23,12 +23,14 @@ namespace bravens.ObjectComponent.Components
 
         public float speed { get; set; }
         public int projectileDamage { get; set; }
+        private string movementType;
 
-        public EnemyAProjectile(GameObject parent, Texture2D spriteSheet) : base(parent, nameof(EnemyAProjectile))
+        public EnemyAProjectile(GameObject parent, Texture2D spriteSheet, string movementType) : base(parent, nameof(EnemyAProjectile))
         {
             GameObjectManager = parent.Core.GameObjectManager;
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
+            this.movementType = movementType;
 
             animation = new Animation(
                 this,
@@ -47,6 +49,9 @@ namespace bravens.ObjectComponent.Components
 
             Transform transform = projectileGameObject.GetComponent<Transform>();
 
+            Vector2 movement = GetMovement((float)deltaTime.ElapsedGameTime.TotalSeconds);
+            transform.Translate(movement);
+
             transform.Translate(new Vector2(0.0f, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
 
             if (!GameBounds.IsGameObjectVisible(projectileGameObject)) 
@@ -54,6 +59,25 @@ namespace bravens.ObjectComponent.Components
                 GameObjectManager.Destroy(projectileGameObject);
             }
             // speed = speed + 5;
+        }
+
+        private Vector2 GetMovement(float deltaSeconds)
+        {
+            switch (movementType.ToLower())
+            {
+                case "spiral":
+                    float spiralSpeed = 50f; // Adjust this as needed
+                    return new Vector2((float)Math.Cos(transform.Position.Y / 20) * spiralSpeed, speed * deltaSeconds);
+                case "zigzag":
+                    return new Vector2((float)Math.Sin(transform.Position.Y / 30) * 50f, speed * deltaSeconds);
+                case "curveleft":
+                    return new Vector2(-30f * deltaSeconds, speed * deltaSeconds);
+                case "curveright":
+                    return new Vector2(30f * deltaSeconds, speed * deltaSeconds);
+                case "straight":
+                default:
+                    return new Vector2(0f, speed * deltaSeconds);
+            }
         }
 
         public void OnCollisionEnter(Collider collider)

@@ -13,9 +13,10 @@
           "dropRate": 0.5,
           "duration": 20,
           "projectile": {
-            "type":  "EnemyAProjectile",
+            "type": "EnemyAProjectile",
             "speed": 30.0,
-            "projectileDamage": 2
+            "projectileDamage": 2,
+            "movement": "zigzag"
           }
         }
       ],
@@ -37,7 +38,8 @@
           "projectile": {
             "type": "EnemyAProjectile",
             "speed": 300.0,
-            "projectileDamage": 2
+            "projectileDamage": 2,
+            "movement": "zigzag"
           }
         }
       ],
@@ -59,7 +61,8 @@
           "projectile": {
             "type": "EnemyAProjectile",
             "speed": 30,
-            "projectileDamage": 5
+            "projectileDamage": 5,
+            "movement": "zigzag"
           }
         }
       ],
@@ -81,7 +84,8 @@
           "projectile": {
             "type": "EnemyAProjectile",
             "speed": 400.0,
-            "projectileDamage": 10
+            "projectileDamage": 10,
+            "movement": "zigzag"
           }
         }
       ],
@@ -128,6 +132,13 @@
       },
       "duration": 100
     }
+  ],
+  "availableMovements": [
+    "straight",
+    "zigzag",
+    "curveleft",
+    "curveright",
+    "spiral"
   ],
   "defaultDifficulty": "easy",
   "difficulties": {
