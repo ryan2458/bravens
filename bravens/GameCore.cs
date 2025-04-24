@@ -180,8 +180,8 @@ namespace bravens
             finalBoss.AddComponent<FinalBossGun>();
             finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<Collider>();
-            finalBoss.AddComponent(() => new Health(finalBoss, 200));
-            finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 120f));
+            finalBoss.AddComponent(() => new Health(finalBoss, 300));
+            finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 60f));
 
             finalBoss.GetComponent<Collider>().Tag= CollisionTag.Enemy;
         }
