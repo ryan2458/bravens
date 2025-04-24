@@ -106,7 +106,7 @@ namespace bravens.Managers
 
             if (_timeLastCheckedInSeconds != globalTimerInSeconds)
             {
-                Console.WriteLine($"⏱ Time: {globalTimerInSeconds}s | 🌊 Wave: {_currentWaveIndex + 1}");
+                Console.WriteLine($" Time: {globalTimerInSeconds}s | Wave: {_currentWaveIndex + 1}");
 
                 foreach (var kvp in _enemySpawnCounts)
                 {
@@ -230,7 +230,7 @@ namespace bravens.Managers
             _enemySpawnCounts.Clear();
             _isBossSpawned = false;
             _isFinalBossSpawned = false;
-            Console.WriteLine($" Starting Wave {_currentWaveIndex} complete. Starting wave {_currentWaveIndex + 1}.");
+            Console.WriteLine($"Wave {_currentWaveIndex} complete. Starting wave {_currentWaveIndex + 1}.");
         }
 
         public void SetDifficulty(string difficulty)
