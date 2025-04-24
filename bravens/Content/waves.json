@@ -16,7 +16,7 @@
             "type": "EnemyAProjectile",
             "speed": 30.0,
             "projectileDamage": 2,
-            "movement": "zigzag"
+            "movement": "straight"
           }
         }
       ],
@@ -62,7 +62,7 @@
             "type": "EnemyAProjectile",
             "speed": 30,
             "projectileDamage": 5,
-            "movement": "zigzag"
+            "movement": "straight"
           }
         }
       ],
@@ -97,12 +97,22 @@
       ],
       "boss": {
         "type": "Boss",
-        "count": 2,
+        "count": 1,
+        "duration": 25,
+        "timeBetweenProjectileInSeconds": 1.5,
         "spawnDelay": 0.3,
         "health": 1000,
-        "dropRate": 0.4
+        "speed": 200.0,
+        "dropRate": 0.4,
+        "projectile": {
+          "type": "BossProjectile",
+          "speed": 400,
+          "projectileDamage": 50,
+          "movement": "spiral",
+          "spreadOffsets": [ -20.0, 10.0, 20.0 ]
+        }
       },
-      "duration": 5
+      "duration": 25
     },
     {
       "id": 6,

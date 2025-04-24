@@ -1,5 +1,6 @@
 ﻿using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
         private readonly BossGun gun;
 
-        private float speed = 200.0f;
+        public float speed { get; set; }
         private int xDirection = 1;
 
         public BossBehavior(GameObject parent) : base(parent, nameof(BossBehavior))
@@ -25,7 +26,8 @@ namespace bravens.ObjectComponent.Components
             transform = parent.GetComponent<Transform>();
             sprite = parent.GetComponent<Sprite>();
             gun = parent.GetComponent<BossGun>();
-            
+            var spriteSheet = parent.Core.Content.Load<Texture2D>("boss");
+
             KeepFromTopOfScreen();
             CenterBoss();
         }

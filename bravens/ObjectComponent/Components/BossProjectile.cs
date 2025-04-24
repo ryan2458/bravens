@@ -3,6 +3,7 @@ using bravens.ObjectComponent.Interfaces;
 using bravens.ObjectComponent.Objects;
 using bravens.Utilities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,30 +19,65 @@ namespace bravens.ObjectComponent.Components
         private readonly Transform transform;
         private readonly Sprite sprite;
 
-        private readonly float speed = 500.0f + new Random().Next(-5, 3);
-
         private readonly float yOffset = GetRandomYOffset();
+        private float spreadOffsetX = 0f;
 
-        private int projectileDamage = 8;
+        public float speed { get; set; }
+        public int projectileDamage { get; set; }
+        private string movementType;
 
-        public BossProjectile(GameObject parent) : base(parent, nameof(BossProjectile))
+        public BossProjectile(GameObject parent, Texture2D sprite, string movementType, float spreadOffsetX = 0f) : base(parent, nameof(BossProjectile))
         {
             GameObjectManager = parent.Core.GameObjectManager;
             transform = parent.GetComponent<Transform>();
-            sprite = parent.GetComponent<Sprite>();
+            this.sprite = parent.GetComponent<Sprite>();
+
+            this.movementType = movementType;
+            this.spreadOffsetX = spreadOffsetX;
         }
 
         public override void Update(GameTime deltaTime)
         {
             GameObject projectileGameObject = GetGameObject();
             Transform transform = projectileGameObject.GetComponent<Transform>();
-            transform.Translate(new Vector2(yOffset, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+            // transform.Translate(new Vector2(yOffset, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+
+            Vector2 movement = GetMovement((float)deltaTime.ElapsedGameTime.TotalSeconds);
+            transform.Translate(movement);
 
             if (!GameBounds.IsGameObjectVisible(projectileGameObject))
             {
                 GameObjectManager.Destroy(projectileGameObject);
             }
         }
+
+        private Vector2 GetMovement(float deltaSeconds)
+        {
+            float vx = spreadOffsetX; // Default horizontal spread
+
+            switch (movementType.ToLower())
+            {
+                case "spiral":
+                    float spiralSpeed = 50f;
+                    vx += (float)Math.Cos(transform.Position.Y / 20) * spiralSpeed;
+                    break;
+                case "zigzag":
+                    vx += (float)Math.Sin(transform.Position.Y / 30) * 50f;
+                    break;
+                case "curveleft":
+                    vx += -30f * deltaSeconds;
+                    break;
+                case "curveright":
+                    vx += 30f * deltaSeconds;
+                    break;
+                case "straight":
+                default:
+                    break;
+            }
+
+            return new Vector2(vx, speed * deltaSeconds);
+        }
+
 
         /// <summary>
         /// Checks if the projectile is visible on the screen. This will check for all bounds.

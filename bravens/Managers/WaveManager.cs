@@ -21,6 +21,7 @@ namespace bravens.Managers
         private EnemyConfig enemYConfig;
         private EnemyConfig _testEnemyA;
         private EnemyConfig _testEnemyB;
+        private BossConfig _testBoss;
 
 
         private WaveConfig _waveConfig;
@@ -158,7 +159,7 @@ namespace bravens.Managers
 
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && currentTime - lastSpawnTime >= spawnCooldown)
             {
-                gameCore.CreateBoss();
+                gameCore.CreateBoss(_testBoss);
                 lastSpawnTime = currentTime;
             } 
             
@@ -199,7 +200,7 @@ namespace bravens.Managers
             {
                 case "Boss":
                     Console.WriteLine("Spawning Boss!");
-                    gameCore.CreateBoss();
+                    gameCore.CreateBoss(boss);
                     break;
                 case "FinalBoss":
                     Console.WriteLine("Spawning Final Boss!");
@@ -299,7 +300,17 @@ namespace bravens.Managers
     public class BossConfig
     {
         public string type { get; set; }
+        public int count { get; set; }
+        public float spawnDelay { get; set; }
+        public float speed { get; set; }
         public int health { get; set; }
+        public double timeBetweenProjectileInSeconds { get; set; }
+        public int Health { get; set; }
+        public float dropRate { get; set; }
+        public float duration { get; set; }
+        public string movementType { get; set; }
+        public ProjectileConfig projectile { get; set; }
+        public List<string> drops { get; set; }
         public List<BossPhase> phases { get; set; }
     }
 
@@ -322,6 +333,7 @@ namespace bravens.Managers
         public float speed { get; set; }
         public int projectileDamage { get; set; }
         public string movement { get; set; }
+        public List<float> spreadOffsets { get; set; } = new List<float> { 0 }; // Default: one straight shot
     }
 
     public class DifficultyConfig

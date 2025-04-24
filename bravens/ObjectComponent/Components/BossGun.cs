@@ -1,6 +1,7 @@
 ﻿using bravens.Managers;
 using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace bravens.ObjectComponent.Components
 
         // Burst firing variables
         private int burstSize = 10; // Number of shots in a burst
-        private double timeBetweenShotsInBurst = 0.1; // Delay between shots inside a burst
+        public double timeBetweenShotsInBurst{ get; set; }
         private double timeBetweenBursts = 3; // Delay before starting a new burst
 
         private double accumulatedTime = 0.0;
@@ -24,10 +25,22 @@ namespace bravens.ObjectComponent.Components
         private bool isBurstFiring = false;
 
         private static int projectileCount = 0;
+        private float speed;
+        private int projectileDamage;
+        private Texture2D projectileSprite;
+        private string movementType;
+        private List<float> spreadOffsets;
 
-        public BossGun(GameObject parent) : base(parent, nameof(BossGun))
+        public BossGun(GameObject parent, float fireInterval, float speed, int projectileDamage, Texture2D projectileSprite, string MovementType, ProjectileConfig config) : base(parent, nameof(BossGun))
         {
             GameObjectManager = parent.Core.GameObjectManager;
+            this.timeBetweenBursts = fireInterval;
+            this.speed = speed;
+            this.projectileDamage = projectileDamage;
+            this.projectileSprite = projectileSprite;
+            this.movementType = MovementType;
+            this.spreadOffsets = config.spreadOffsets;
+
         }
 
         public override void Update(GameTime deltaTime)
@@ -62,31 +75,24 @@ namespace bravens.ObjectComponent.Components
 
         private void CreateAndFireProjectile()
         {
+            var spriteSheet = GetGameObject().Core.Content.Load<Texture2D>("BossProjectile");
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
 
-            GameObject projectile1 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile2 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
-            GameObject projectile3 = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
+            foreach (float spread in spreadOffsets)
+            {
+                GameObject projectile = GameObjectManager.Create($"BossProjectile{projectileCount++}", GetGameObject(), "bossProjectile");
 
-            projectile1.AddComponent<BossProjectile>();
-            projectile2.AddComponent<BossProjectile>();
-            projectile3.AddComponent<BossProjectile>();
+                var projectileComponent = projectile.AddComponent(() =>
+                    new BossProjectile(projectile, projectileSprite, movementType, spread));
 
-            projectile1.AddComponent<Collider>();
-            projectile2.AddComponent<Collider>();
-            projectile3.AddComponent<Collider>();
+                projectileComponent.speed = speed;
+                projectileComponent.projectileDamage = projectileDamage;
 
-            projectile1.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
-            projectile2.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
-            projectile3.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
+                projectile.AddComponent<Collider>();
+                projectile.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;
 
-            Transform transform1 = projectile1.GetComponent<Transform>();
-            Transform transform2 = projectile2.GetComponent<Transform>();
-            Transform transform3 = projectile3.GetComponent<Transform>();
-
-            transform1.Translate(position);
-            transform2.Translate(position);
-            transform3.Translate(position);
+                projectile.GetComponent<Transform>().Translate(position);
+            }
         }
     }
 }

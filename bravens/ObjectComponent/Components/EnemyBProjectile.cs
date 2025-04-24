@@ -47,7 +47,7 @@ namespace bravens.ObjectComponent.Components
 
             GameObject projectileGameObject = GetGameObject();
             Transform transform = projectileGameObject.GetComponent<Transform>();
-            transform.Translate(new Vector2(0.0f, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+            // transform.Translate(new Vector2(0.0f, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
 
             Vector2 movement = GetMovement((float)deltaTime.ElapsedGameTime.TotalSeconds);
             transform.Translate(movement);

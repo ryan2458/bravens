@@ -166,16 +166,29 @@ namespace bravens
             enemyA.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
 
-        public void CreateBoss()
-        {                                                                                                                                                                                                
+        public void CreateBoss(BossConfig enemyConfig)
+        {
+            Texture2D projectileSprite = Content.Load<Texture2D>(enemyConfig.projectile.type);
             GameObject boss = GameObjectManager.Create(null, null, "boss");
             boss.AddComponent<BossBehavior>();
-            boss.AddComponent<BossGun>();
+            ProjectileConfig projectileConfig = new ProjectileConfig
+            {
+                spreadOffsets = enemyConfig.projectile.spreadOffsets // Pass the spreadOffsets from the config
+            };
+            var gun = boss.AddComponent(() => new BossGun(
+                boss,
+                (float)enemyConfig.timeBetweenProjectileInSeconds, 
+                enemyConfig.projectile.speed,
+                enemyConfig.projectile.projectileDamage,
+                projectileSprite,
+                enemyConfig.projectile.movement,
+                projectileConfig
+            ));
             boss.AddComponent<Collider>();
-            boss.AddComponent(() => new Health(boss, 120));
-            boss.AddComponent(() => new EnemyDuration(this, boss, 25f));
-
             boss.GetComponent<Collider>().Tag = CollisionTag.Enemy;
+
+            boss.AddComponent(() => new Health(boss, enemyConfig.Health));
+            boss.AddComponent(() => new EnemyDuration(this, boss,enemyConfig.duration));
         }
 
         public void CreateEnemyTypeB(EnemyConfig enemyConfig)

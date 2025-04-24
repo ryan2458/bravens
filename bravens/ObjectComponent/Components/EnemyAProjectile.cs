@@ -52,7 +52,7 @@ namespace bravens.ObjectComponent.Components
             Vector2 movement = GetMovement((float)deltaTime.ElapsedGameTime.TotalSeconds);
             transform.Translate(movement);
 
-            transform.Translate(new Vector2(0.0f, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
+            // transform.Translate(new Vector2(0.0f, speed * (float)deltaTime.ElapsedGameTime.TotalSeconds));
 
             if (!GameBounds.IsGameObjectVisible(projectileGameObject)) 
             {
