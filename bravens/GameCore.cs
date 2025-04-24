@@ -153,7 +153,7 @@ namespace bravens
 
         public void CreateBoss()
         {                                                                                                                                                                                                
-            GameObject boss = GameObjectManager.Create(null, null, "boss");
+            GameObject boss = GameObjectManager.Create(null, null, "blank");
             boss.AddComponent<BossBehavior>();
             boss.AddComponent<BossGun>();
             boss.AddComponent<Collider>();
