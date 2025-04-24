@@ -21,8 +21,8 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
         private Animation animation;
 
-        private float speed = 30.0f;
-        private int projectileDamage = 5;
+        public float speed { get; set; }
+        public int projectileDamage { get; set; }
 
         public EnemyBProjectile(GameObject parent, Texture2D spriteSheet) : base(parent, nameof(EnemyBProjectile))
         {

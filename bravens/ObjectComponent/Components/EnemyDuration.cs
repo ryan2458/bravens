@@ -30,13 +30,15 @@ namespace bravens.ObjectComponent.Components
             if (!_isActive) return;
 
             _elapsedTime += deltaTime.ElapsedGameTime;
-            _elapsedTimeInSeconds = (int)_elapsedTime.TotalSeconds;
+            // _elapsedTimeInSeconds = (int)_elapsedTime.TotalSeconds;
 
             if (_elapsedTimeInSeconds >= _duration) 
             {
                 _isActive = false;
                 _core.GameObjectManager.Destroy(GetGameObject());
                 Console.WriteLine($"{GetGameObject().Name} has left.");
+                Console.WriteLine($"[EnemyDuration] {GetGameObject().Name} lived for {_elapsedTime.TotalSeconds:F2}s, lifespan: {_duration}s");
+
             }
         }
     }

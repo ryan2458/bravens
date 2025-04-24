@@ -18,6 +18,10 @@ namespace bravens.Managers
 
         private GameCore gameCore;
         private GameObjectManager gameObjectManager;
+        private EnemyConfig enemYConfig;
+        private EnemyConfig _testEnemyA;
+        private EnemyConfig _testEnemyB;
+
 
         private WaveConfig _waveConfig;
         private int _currentWaveIndex;
@@ -43,7 +47,13 @@ namespace bravens.Managers
             _waveTimer = 0;
             _spawnTimer = 0;
             _enemySpawnCounts = new Dictionary<string, int>();
-            _currentDifficulty = "normal";
+            _currentDifficulty = _waveConfig.defaultDifficulty;
+
+            if (!_waveConfig.difficulties.ContainsKey(_currentDifficulty))
+            {
+                Console.WriteLine($"[WaveManager] Invalid default difficulty in JSON: {_currentDifficulty}. Falling back to 'normal'.");
+                _currentDifficulty = "normal";
+            }
         }
 
         private void LoadWaveConfig()
@@ -78,6 +88,12 @@ namespace bravens.Managers
                 {
                     _enemySpawnCounts[enemy.type] = 0;
                 }
+
+                if (enemy.type == "EnemyA" && _testEnemyA == null)
+                    _testEnemyA = enemy;
+
+                if (enemy.type == "EnemyB" && _testEnemyB == null)
+                    _testEnemyB = enemy;
 
                 if (_enemySpawnCounts[enemy.type] < enemy.count && _spawnTimer >= enemy.spawnDelay)
                 {
@@ -124,14 +140,20 @@ namespace bravens.Managers
 
             if (Keyboard.GetState().IsKeyDown(Keys.F1) && currentTime - lastSpawnTime >= spawnCooldown)
             {
-                gameCore.CreateEnemyTypeA();
-                lastSpawnTime = currentTime;
+                if (_testEnemyA != null)
+                {
+                    gameCore.CreateEnemyTypeA(_testEnemyA);
+                    lastSpawnTime = currentTime;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.F2) && currentTime - lastSpawnTime >= spawnCooldown)
             {
-                gameCore.CreateEnemyTypeB();
-                lastSpawnTime = currentTime;
+                if (_testEnemyB != null)
+                {
+                    gameCore.CreateEnemyTypeB(_testEnemyB);
+                    lastSpawnTime = currentTime;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && currentTime - lastSpawnTime >= spawnCooldown)
@@ -158,10 +180,10 @@ namespace bravens.Managers
             switch (enemy.type)
             {
                 case "EnemyA":
-                    gameCore.CreateEnemyTypeA();
+                    gameCore.CreateEnemyTypeA(enemy);
                     break;
                 case "EnemyB":
-                    gameCore.CreateEnemyTypeB();
+                    gameCore.CreateEnemyTypeB(enemy);
                     break;
                 default:
                     Console.WriteLine("Unknown enemy type: " + enemy.type);
@@ -244,6 +266,7 @@ namespace bravens.Managers
 
     public class WaveConfig
     {
+        public string defaultDifficulty { get; set; }
         public List<Wave> waves { get; set; }
         public Dictionary<string, PowerUpConfig> powerUps { get; set; }
         public Dictionary<string, DifficultyConfig> difficulties { get; set; }
@@ -263,8 +286,13 @@ namespace bravens.Managers
         public string type { get; set; }
         public int count { get; set; }
         public float spawnDelay { get; set; }
-        public int health { get; set; }
+        public float speed { get; set; }
+        public double timeBetweenProjectileInSeconds { get; set; }
+        public int Health { get; set; }
         public float dropRate { get; set; }
+        public float duration { get; set; }
+        public string movementType { get; set; }
+        public ProjectileConfig projectile { get; set; }
         public List<string> drops { get; set; }
     }
 
@@ -287,6 +315,13 @@ namespace bravens.Managers
         public int collectionsForExtraLife { get; set; }
         public int damage { get; set; }
         public int radius { get; set; }
+    }
+    public class ProjectileConfig
+    {
+        public string type { get; set; }
+        public float speed { get; set; }
+        public int projectileDamage { get; set; }
+        public string movement { get; set; }
     }
 
     public class DifficultyConfig

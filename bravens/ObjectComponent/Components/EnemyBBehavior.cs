@@ -19,7 +19,7 @@ namespace bravens.ObjectComponent.Components
 
         private Animation animation;
 
-        private float speed = 30.0f;
+        public float speed { get; set; }
         private int yDirection = 1;
 
         public EnemyBBehaviour(GameObject parent) : base(parent, nameof(EnemyABehaviour))

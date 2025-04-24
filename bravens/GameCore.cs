@@ -8,9 +8,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
 
 namespace bravens
 {
@@ -33,7 +36,6 @@ namespace bravens
 
         public bool IsGameOver { get; private set; } = false;
 
-
         public GameCore()
         {
             Content.Unload();
@@ -42,6 +44,9 @@ namespace bravens
             WaveManager = new WaveManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            var json = File.ReadAllText("Content/waves.json");
+            var enemiesConfig = JsonSerializer.Deserialize<EnemyConfig>(json);
         }
 
         protected override void Initialize()
@@ -137,14 +142,25 @@ namespace bravens
         }
 
 
-        public void CreateEnemyTypeA()
+        public void CreateEnemyTypeA(EnemyConfig enemyConfig)
         {
+            Texture2D projectileSprite = Content.Load<Texture2D>("EnemyAProjectile");
+
             GameObject enemyA = GameObjectManager.Create(null, null, "blank");
-            enemyA.AddComponent<EnemyABehaviour>();
-            enemyA.AddComponent<EnemyAGun>();
+            enemyA.AddComponent<EnemyABehaviour>().speed = enemyConfig.speed;
+            var gun = enemyA.AddComponent(() =>
+            new EnemyAGun(
+               enemyA,
+                   (float)enemyConfig.timeBetweenProjectileInSeconds,
+                   enemyConfig.projectile.speed,
+                   enemyConfig.projectile.projectileDamage,
+                   projectileSprite
+                )
+            );
+            // enemyA.AddComponent<EnemyAGun>().timeBetweenProjectileInSeconds = enemyConfig.timeBetweenProjectileInSeconds;
             enemyA.AddComponent<Collider>();
-            enemyA.AddComponent(() => new Health(enemyA, 10));
-            enemyA.AddComponent(() => new EnemyDuration(this, enemyA, 10f));
+            enemyA.AddComponent(() => new Health(enemyA, enemyConfig.Health));
+            enemyA.AddComponent(() => new EnemyDuration(this, enemyA, enemyConfig.duration));
 
             enemyA.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
@@ -161,14 +177,25 @@ namespace bravens
             boss.GetComponent<Collider>().Tag = CollisionTag.Enemy;
         }
 
-        public void CreateEnemyTypeB()
+        public void CreateEnemyTypeB(EnemyConfig enemyConfig)
         {
+            Texture2D projectileSprite = Content.Load<Texture2D>("EnemyBProjectile");
+
             GameObject enemyB = GameObjectManager.Create(null, null, "blank");
-            enemyB.AddComponent<EnemyBBehaviour>();
-            enemyB.AddComponent<EnemyBGun>();
+            enemyB.AddComponent<EnemyBBehaviour>().speed = enemyConfig.speed;
+            // enemyB.AddComponent<EnemyBGun>().timeBetweenProjectileInSeconds = enemyConfig.timeBetweenProjectileInSeconds;
+            var gun = enemyB.AddComponent(() =>
+            new EnemyBGun(
+               enemyB,
+                   (float)enemyConfig.timeBetweenProjectileInSeconds,
+                   enemyConfig.projectile.speed,
+                   enemyConfig.projectile.projectileDamage,
+                   projectileSprite
+                )
+            );
             enemyB.AddComponent<Collider>();
-            enemyB.AddComponent(() => new Health(enemyB, 20));
-            enemyB.AddComponent(() => new EnemyDuration(this, enemyB, 10f));
+            enemyB.AddComponent(() => new Health(enemyB, enemyConfig.Health));
+            enemyB.AddComponent(() => new EnemyDuration(this, enemyB, enemyConfig.duration));
 
             enemyB.GetComponent<Collider>().Tag = CollisionTag.Enemy;
             enemyB.GetComponent<Collider>().Radius = 64;

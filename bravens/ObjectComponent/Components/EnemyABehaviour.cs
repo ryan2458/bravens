@@ -17,7 +17,7 @@ namespace bravens.ObjectComponent.Components
         private readonly EnemyAGun gun;
         private Animation animation;
 
-        private float speed = 200.0f;
+        public float speed { get; set; }
         private int xDirection = 1;
 
         public EnemyABehaviour(GameObject parent) : base(parent, nameof(EnemyABehaviour))

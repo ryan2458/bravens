@@ -14,14 +14,21 @@ namespace bravens.ObjectComponent.Components
     {
         private GameObjectManager GameObjectManager { get; }
 
-        private double timeBetweenProjectileInSeconds = 1.5;
+        public double timeBetweenProjectileInSeconds { get; set; }
 
         private static int projectileCount = 0;
         private double accumulatedTime = 0.0;
+        private float speed;
+        private int projectileDamage;
+        private Texture2D projectileSprite;
 
-        public EnemyBGun(GameObject parent) : base(parent, nameof(EnemyAGun))
+        public EnemyBGun(GameObject parent, float fireInterval, float speed, int projectileDamage, Texture2D projectileSprite) : base(parent, nameof(EnemyAGun))
         {
             GameObjectManager = parent.Core.GameObjectManager;
+            this.timeBetweenProjectileInSeconds = fireInterval;
+            this.speed = speed;
+            this.projectileDamage = projectileDamage;
+            this.projectileSprite = projectileSprite;
         }
 
         public override void Update(GameTime deltaTime)
@@ -44,6 +51,9 @@ namespace bravens.ObjectComponent.Components
             Vector2 position = GetGameObject().GetComponent<Transform>().Position;
             GameObject projectile = GameObjectManager.Create($"enemyBProjectile{projectileCount++}", GetGameObject(), "blank");
             projectile.AddComponent(() => new EnemyAProjectile(projectile, spriteSheet));
+            var projectileComponent = projectile.AddComponent(() => new EnemyBProjectile(projectile, projectileSprite));
+            projectileComponent.speed = speed;
+            projectileComponent.projectileDamage = projectileDamage;
             projectile.AddComponent<Collider>();
 
             projectile.GetComponent<Collider>().Tag = Enums.CollisionTag.EnemyProjectile;

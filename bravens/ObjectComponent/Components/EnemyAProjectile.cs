@@ -21,9 +21,8 @@ namespace bravens.ObjectComponent.Components
         private readonly Sprite sprite;
         private Animation animation;
 
-
-        private float speed = 300.0f;
-        private int projectileDamage = 2;
+        public float speed { get; set; }
+        public int projectileDamage { get; set; }
 
         public EnemyAProjectile(GameObject parent, Texture2D spriteSheet) : base(parent, nameof(EnemyAProjectile))
         {
@@ -54,6 +53,7 @@ namespace bravens.ObjectComponent.Components
             {
                 GameObjectManager.Destroy(projectileGameObject);
             }
+            // speed = speed + 5;
         }
 
         public void OnCollisionEnter(Collider collider)
