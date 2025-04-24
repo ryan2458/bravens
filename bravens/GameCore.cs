@@ -144,7 +144,7 @@ namespace bravens
 
         public void CreateEnemyTypeA(EnemyConfig enemyConfig)
         {
-            Texture2D projectileSprite = Content.Load<Texture2D>("EnemyAProjectile");
+            Texture2D projectileSprite = Content.Load<Texture2D>(enemyConfig.projectile.type);
 
             GameObject enemyA = GameObjectManager.Create(null, null, "blank");
             enemyA.AddComponent<EnemyABehaviour>().speed = enemyConfig.speed;
@@ -179,7 +179,7 @@ namespace bravens
 
         public void CreateEnemyTypeB(EnemyConfig enemyConfig)
         {
-            Texture2D projectileSprite = Content.Load<Texture2D>("EnemyBProjectile");
+            Texture2D projectileSprite = Content.Load<Texture2D>(enemyConfig.projectile.type);
 
             GameObject enemyB = GameObjectManager.Create(null, null, "blank");
             enemyB.AddComponent<EnemyBBehaviour>().speed = enemyConfig.speed;

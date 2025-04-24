@@ -13,6 +13,7 @@
           "dropRate": 0.5,
           "duration": 20,
           "projectile": {
+            "type":  "EnemyAProjectile",
             "speed": 30.0,
             "projectileDamage": 2
           }
@@ -34,6 +35,7 @@
           "duration": 20,
           "drops": [],
           "projectile": {
+            "type": "EnemyAProjectile",
             "speed": 300.0,
             "projectileDamage": 2
           }
@@ -55,6 +57,7 @@
           "duration": 10,
           "drops": [],
           "projectile": {
+            "type": "EnemyAProjectile",
             "speed": 30,
             "projectileDamage": 5
           }
@@ -76,6 +79,7 @@
           "duration": 10,
           "drops": [],
           "projectile": {
+            "type": "EnemyAProjectile",
             "speed": 400.0,
             "projectileDamage": 10
           }
