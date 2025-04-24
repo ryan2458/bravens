@@ -31,7 +31,6 @@ namespace bravens
 
         private SpriteFont gameFont;
 
-
         public bool IsGameOver { get; private set; } = false;
 
 
@@ -63,6 +62,7 @@ namespace bravens
         public void TriggerGameOver()
         {
             IsGameOver = true;
+            GameObjectManager.ClearAllObjects();
         }
         protected override void LoadContent()
         {
@@ -81,11 +81,6 @@ namespace bravens
             WaveManager.Update(gameTime);
             CollisionManager.CheckCollisions();
 
-            if (LivesManager.Lives <= 0)
-            {
-                TriggerGameOver();
-            }
-
             base.Update(gameTime);
         }
 
@@ -95,11 +90,14 @@ namespace bravens
 
             SpriteBatch.Begin();
 
+
+
             SpriteBatch.Draw(
                 backgroundTexture,
                 new Rectangle(0, 0, GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight),
                 Color.White
             );
+
             GameObjectManager.Draw();
 
 
@@ -178,12 +176,12 @@ namespace bravens
 
         public void CreateFinalBoss() 
         {
-            GameObject finalBoss = GameObjectManager.Create(null, null, "FinalBoss-large");
+            GameObject finalBoss = GameObjectManager.Create("FinalBoss", null, "FinalBoss-large");
             finalBoss.AddComponent<FinalBossGun>();
             finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<Collider>();
             finalBoss.AddComponent(() => new Health(finalBoss, 200));
-            finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 60f));
+            finalBoss.AddComponent(() => new EnemyDuration(this, finalBoss, 120f));
 
             finalBoss.GetComponent<Collider>().Tag= CollisionTag.Enemy;
         }

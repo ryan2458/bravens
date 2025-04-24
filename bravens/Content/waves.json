@@ -6,37 +6,70 @@
         {
           "type": "EnemyA",
           "count": 3,
-          "spawnDelay": 1.0,
-          "health": 100,
+          "spawnDelay": 0.5,
+          "health": 80,
           "dropRate": 0.5,
           "drops": [ "HealthPiece", "BombPiece" ]
-        },
-        {
-          "type": "EnemyB",
-          "count": 2,
-          "spawnDelay": 2.0,
-          "health": 150,
-          "dropRate": 0.3,
-          "drops": [ "HealthPiece" ]
         }
       ],
-      "duration": 30
+      "duration": 6
     },
     {
       "id": 2,
       "enemies": [
         {
+          "type": "EnemyB",
+          "count": 2,
+          "spawnDelay": 0.6,
+          "health": 100,
+          "dropRate": 0.3,
+          "drops": [ "HealthPiece" ]
+        }
+      ],
+      "duration": 8
+    },
+    {
+      "id": 3,
+      "enemies": [
+        {
           "type": "EnemyA",
-          "count": 5,
+          "count": 3,
+          "spawnDelay": 0.3,
+          "health": 100,
+          "dropRate": 0.4,
+          "drops": [ "HealthPiece", "BombPiece" ]
+        }
+      ],
+      "duration": 6
+    },
+    {
+      "id": 4,
+      "enemies": [
+        {
+          "type": "EnemyB",
+          "count": 3,
+          "spawnDelay": 0.6,
+          "health": 120,
+          "dropRate": 0.2,
+          "drops": [ "HealthPiece" ]
+        }
+      ],
+      "duration": 8
+    },
+    {
+      "id": 5,
+      "enemies": [
+        {
+          "type": "EnemyA",
+          "count": 3,
           "spawnDelay": 0.8,
           "health": 120,
           "dropRate": 0.4,
           "drops": [ "HealthPiece", "BombPiece" ]
         }
       ],
-      "duration": 40,
       "boss": {
-        "type": "Boss1",
+        "type": "Boss",
         "health": 1000,
         "phases": [
           {
@@ -48,10 +81,11 @@
             "attackPattern": "SpreadShot"
           }
         ]
-      }
+      },
+      "duration": 5
     },
     {
-      "id": 3,
+      "id": 6,
       "enemies": [
         {
           "type": "EnemyB",
@@ -62,21 +96,21 @@
           "drops": [ "HealthPiece", "BombPiece" ]
         }
       ],
-      "duration": 60,
       "boss": {
         "type": "FinalBoss",
         "health": 3000,
         "phases": [
           {
             "healthThreshold": 0.9,
-            "attackPattern": "CircleShot"
+            "attackPattern": "SpiralSequence"
           },
           {
             "healthThreshold": 0.3,
-            "attackPattern": "SpreadShot"
+            "attackPattern": "HeavySequence"
           }
         ]
-      }
+      },
+      "duration": 7
     }
   ],
   "powerUps": {

@@ -1,9 +1,12 @@
 ﻿using bravens.ObjectComponent;
+using bravens.ObjectComponent.Components;
+using bravens.ObjectComponent.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
 namespace bravens.Managers
@@ -55,6 +58,10 @@ namespace bravens.Managers
 
         public override void Update(GameTime gameTime)
         {
+            if (gameCore.IsGameOver)
+            {
+                return;
+            }
             globalTimer += gameTime.ElapsedGameTime;
             globalTimerInSeconds = (int)globalTimer.TotalSeconds;
             double currentTime = gameTime.TotalGameTime.TotalMilliseconds;
@@ -80,9 +87,9 @@ namespace bravens.Managers
                 }
             }
 
-            if (!_isBossSpawned && currentWave.boss != null && IsWaveEnemiesCleared(currentWave))
+            if (!_isBossSpawned && currentWave != null && currentWave.boss != null && IsWaveEnemiesCleared(currentWave))
             {
-                SpawnBoss(currentWave.boss);
+                SpawnBoss(currentWave.boss, currentWave);
                 _isBossSpawned = true;
             }
 
@@ -132,12 +139,6 @@ namespace bravens.Managers
                 gameCore.CreateBoss();
                 lastSpawnTime = currentTime;
             } 
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F4) && currentTime - lastSpawnTime >= spawnCooldown)
-            {
-                gameCore.CreateFinalBoss();
-                lastSpawnTime = currentTime;
-            }
             
             if (Keyboard.GetState().IsKeyDown(Keys.F5) && currentTime - lastSpawnTime >= spawnCooldown)
             {
@@ -168,7 +169,7 @@ namespace bravens.Managers
             }
         }
 
-        private void SpawnBoss(BossConfig boss)
+        private void SpawnBoss(BossConfig boss, Wave wave)
         {
             float healthMultiplier = _waveConfig.difficulties[_currentDifficulty].enemyHealthMultiplier;
 
@@ -181,6 +182,12 @@ namespace bravens.Managers
                 case "FinalBoss":
                     Console.WriteLine("Spawning Final Boss!");
                     gameCore.CreateFinalBoss();
+                    GameObject finalBoss = gameObjectManager.FindGameObjectByName("FinalBoss");
+                    var bossBehavior = finalBoss.GetComponent<FinalBossBehavior>();
+                    if (bossBehavior != null && boss.phases != null && boss.phases.Count > 0)
+                    {
+                        bossBehavior.InitializePhases(boss.phases, wave.duration);
+                    }
                     break;
             }
 
