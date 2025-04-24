@@ -176,7 +176,7 @@ namespace bravens
 
         public void CreateFinalBoss() 
         {
-            GameObject finalBoss = GameObjectManager.Create("FinalBoss", null, "FinalBoss-large");
+            GameObject finalBoss = GameObjectManager.Create("FinalBoss", null, "blank");
             finalBoss.AddComponent<FinalBossGun>();
             finalBoss.AddComponent<FinalBossBehavior>();
             finalBoss.AddComponent<Collider>();

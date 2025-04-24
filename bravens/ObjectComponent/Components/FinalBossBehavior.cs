@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
+
 
 namespace bravens.ObjectComponent.Components
 {
@@ -17,6 +19,9 @@ namespace bravens.ObjectComponent.Components
 
         private readonly Sprite sprite;
         private FinalBossGun gun;
+
+        private Animation animation;
+
 
         private TimeSpan timer;
         private int timerInSeconds;
@@ -55,6 +60,18 @@ namespace bravens.ObjectComponent.Components
             sprite = parent.GetComponent<Sprite>();
             gun = parent.GetComponent<FinalBossGun>();
 
+            var spriteSheet = parent.Core.Content.Load<Texture2D>("FinalBoss");
+
+
+            animation = new Animation(
+            this,
+            spriteSheet,
+            frameWidth: 96,
+            frameHeight: 128,
+            frameCount: 2,
+            frameTime: 0.2f
+            );
+
             CenterBoss();
 
             timer = TimeSpan.Zero;
@@ -66,6 +83,7 @@ namespace bravens.ObjectComponent.Components
 
         public override void Update(GameTime deltaTime)
         {
+            animation.Update(deltaTime);
             if (!_phasesInitialized) return;
 
             _phaseTimer += (float)deltaTime.ElapsedGameTime.TotalSeconds;
@@ -267,6 +285,12 @@ namespace bravens.ObjectComponent.Components
 
             transform.SetPositionX(graphics.PreferredBackBufferWidth / 2);
             transform.SetPositionY(graphics.PreferredBackBufferHeight / 2 - sprite.SpriteTexture.Height);
+        }
+
+        public override void Draw()
+        {
+            var spriteBatch = GetGameObject().Core.SpriteBatch;
+            animation.Draw(spriteBatch, transform.Position);
         }
     }
 }
